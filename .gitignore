@@ -19,3 +19,6 @@
 .idea/*.iml
 .idea/sfGitCollab.iml
 /composer.phar
+.idea/workspace.xml
+
+.idea/workspace.xml
