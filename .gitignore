@@ -10,6 +10,6 @@
 /vendor/
 /bin/
 /.idea/
-.idea/*
 .idea/
+.idea/*
 /composer.phar
