@@ -10,7 +10,7 @@
 /vendor/
 /bin/
 /.idea/
-.idea/
+.idea/*
 .idea/*.xml
 .idea/encoding.xml
 .idea/misc.xml
