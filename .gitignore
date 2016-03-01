@@ -9,5 +9,6 @@
 /build/
 /vendor/
 /bin/
+.idea/
 /.idea/
 /composer.phar
