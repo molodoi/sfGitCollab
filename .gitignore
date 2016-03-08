@@ -9,6 +9,7 @@
 /build/
 /vendor/
 /bin/
+/.idea/
 .idea/*
 .idea/*.xml
 .idea/encoding.xml
@@ -19,3 +20,4 @@
 .idea/sfGitCollab.iml
 /composer.phar
 .idea/workspace.xml
+/.idea/workspace.xml
