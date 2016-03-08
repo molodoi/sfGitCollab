@@ -43,8 +43,8 @@ class AdvertFile
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MainBundle\Entity\Advert", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="MainBundle\Entity\Advert", inversedBy="fileadverts", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="advert_id", referencedColumnName="id", nullable=true)
      */
     private $advert;
 

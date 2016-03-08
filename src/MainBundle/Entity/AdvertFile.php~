@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AdvertFile
  *
- * @ORM\Table(name="advert_file")
+ * @ORM\Table(name="advert_file_sfgitcollab")
  * @ORM\Entity(repositoryClass="MainBundle\Repository\AdvertFileRepository")
  */
 class AdvertFile
@@ -43,8 +43,8 @@ class AdvertFile
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MainBundle\Entity\Advert", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="MainBundle\Entity\Advert", inversedBy="fileadverts", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="advert_id", referencedColumnName="id", nullable=true)
      */
     private $advert;
 
@@ -103,5 +103,51 @@ class AdvertFile
     public function getPath()
     {
         return $this->path;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return AdvertFile
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set advert
+     *
+     * @param \MainBundle\Entity\Advert $advert
+     * @return AdvertFile
+     */
+    public function setAdvert(\MainBundle\Entity\Advert $advert = null)
+    {
+        $this->advert = $advert;
+
+        return $this;
+    }
+
+    /**
+     * Get advert
+     *
+     * @return \MainBundle\Entity\Advert 
+     */
+    public function getAdvert()
+    {
+        return $this->advert;
     }
 }

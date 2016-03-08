@@ -145,6 +145,14 @@ class Advert
     private $tags;
 
     /**
+     * @var File
+     *
+     * @ORM\OneToMany(targetEntity="AdvertFile", mappedBy="advert", cascade={"persist", "remove"})
+     *
+     */
+    private $fileadverts;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -607,5 +615,38 @@ class Advert
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Add fileadverts
+     *
+     * @param \MainBundle\Entity\AdvertFile $fileadverts
+     * @return Advert
+     */
+    public function addFileadvert(\MainBundle\Entity\AdvertFile $fileadverts)
+    {
+        $this->fileadverts[] = $fileadverts;
+
+        return $this;
+    }
+
+    /**
+     * Remove fileadverts
+     *
+     * @param \MainBundle\Entity\AdvertFile $fileadverts
+     */
+    public function removeFileadvert(\MainBundle\Entity\AdvertFile $fileadverts)
+    {
+        $this->fileadverts->removeElement($fileadverts);
+    }
+
+    /**
+     * Get fileadverts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFileadverts()
+    {
+        return $this->fileadverts;
     }
 }
