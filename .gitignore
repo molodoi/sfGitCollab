@@ -11,11 +11,13 @@
 /bin/
 /.idea/
 .idea/
+.idea/*
 .idea/*.xml
 .idea/encoding.xml
 .idea/misc.xml
 .idea/modules.xml
 .idea/workspace.xml
+.idea/vcs.xml.xml
 .idea/*.iml
 .idea/sfGitCollab.iml
 /composer.phar
