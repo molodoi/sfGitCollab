@@ -1,0 +1,33 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div id="SignInForm" class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="myModalLabel"><i class="fa fa-lock"></i> Réinitialiser votre Mot de passe</h3>
+        </div>
+        <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p>Pour réinitialiser votre mot de passe , vous devez entrer un nom d'utilisateur ou une adresse e-mail valide ci-dessous</p>
+                        <div class="well">
+                        <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+                            {% if invalid_username is defined %}
+                                <div class="alert alert-warning">
+                                    {{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}
+                                </div>
+                            {% endif %}
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="UserEmail"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
+                                    <input type="text" class="form-control" id="username" name="username" required="required" title="Please enter you username" placeholder="example@gmail.com" />
+                                </div>
+                                <span class="help-block"></span>
+                            </div>
+                            <button type="submit" class="btn btn-success btn-block">{{ 'resetting.request.submit'|trans }}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

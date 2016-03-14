@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="user_sfgitcollab")
+ * 
  */
 class User extends BaseUser
 {
@@ -18,6 +19,18 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     *@ORM\OneToOne(targetEntity="MainBundle\Entity\Profile", mappedBy="user",cascade={"persist", "remove"})
+     *
+     */
+    private $profile;
+
+    /**
+     *@ORM\OneToOne(targetEntity="MainBundle\Entity\Avatar", mappedBy="user", cascade={"persist", "remove"})
+     *
+     */
+    private $avatar;
 
     /**
      * @ORM\OneToMany(targetEntity="MainBundle\Entity\Advert", mappedBy="user")
@@ -63,5 +76,51 @@ class User extends BaseUser
     public function getAdverts()
     {
         return $this->adverts;
+    }
+
+    /**
+     * Set profile
+     *
+     * @param \MainBundle\Entity\Profile $profile
+     * @return User
+     */
+    public function setProfile(\MainBundle\Entity\Profile $profile = null)
+    {
+        $this->profile = $profile;
+
+        return $this;
+    }
+
+    /**
+     * Get profile
+     *
+     * @return \MainBundle\Entity\Profile 
+     */
+    public function getProfile()
+    {
+        return $this->profile;
+    }
+
+    /**
+     * Set avatar
+     *
+     * @param \MainBundle\Entity\Avatar $avatar
+     * @return User
+     */
+    public function setAvatar(\MainBundle\Entity\Avatar $avatar = null)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * Get avatar
+     *
+     * @return \MainBundle\Entity\Avatar 
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
     }
 }

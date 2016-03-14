@@ -6,6 +6,61 @@
 
 {% block content %}
 
+    <div class="page-header">
+        <h1>Bienvenue sur le petit site d'annonce trankilou</h1>
+        <p class="lead">Faites votre recherche ci-desous</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <form>
+                <div class="form-group">
+                    <label class="sr-only" for="exampleInputEmail3">Mots clés</label>
+                    <input type="text" class="form-control input-lg" placeholder="Mots clés">
+                </div>
+                <div class="form-group">
+                    <select class="form-control input-lg">
+                        <option>Catégories</option>
+                        {% for i in 1..8 %}
+                            <option>Catégorie 0{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <div id="custom-geo-input">
+                        <div class="input-group col-md-12">
+                            <input type="text" class="form-control input-lg" placeholder="Ville/Cp" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info btn-lg" type="button">
+                                        <i class="glyphicon glyphicon-map-marker"></i>
+                                    </button>
+                                </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <select class="form-control input-lg">
+                        <option> < 10km</option>
+                        <option> < 50km</option>
+                        <option> < 100km</option>
+                        <option> < 200km</option>
+                        <option> Partout</option>
+                    </select>
+                </div>
+                {#<div class="form-group">
+                    <div class="range range-primary">
+                        <input type="range" name="range" min="1" max="100" value="50" onchange="rangePrimary.value=value">
+                        <output id="rangePrimary">50</output>
+                    </div>
+                </div>#}
+                <div class="clearfix"></div>
+                <br />
+                <button type="submit" class="btn btn-success btn-lg btn-block"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Rechercher</button>
+            </form>
+        </div>
+    </div>
+    <hr />
     <div class="row">
         {% for i in 1..6 %}
             <div class="col-md-12">

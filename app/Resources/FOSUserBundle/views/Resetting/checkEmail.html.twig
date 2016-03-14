@@ -1,0 +1,17 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="notify successbox">
+                <h1 class="text-center">Success!</h1>
+                <span class="alerticon"><img src="http://s22.postimg.org/i5iji9hv1/check.png" alt="checkmark" class="center-block" /></span>
+                <p>{{ 'resetting.check_email'|trans({'%email%': email}) }}</p>
+                    <p><a href="{{ path('front_homepage') }}">{{ 'registration.back'|trans }}</a></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

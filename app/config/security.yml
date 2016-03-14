@@ -13,19 +13,51 @@ security:
             id: fos_user.user_provider.username
 
     firewalls:
-        main:
-            pattern: ^/
-            form_login:
-                provider: fos_userbundle
-                csrf_token_generator: security.csrf.token_manager
-                # if you are using Symfony < 2.8, use the following config instead:
-                # csrf_provider: form.csrf_provider
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
 
-            logout:       true
+        # login area for backoffice users
+        #backoffice:
+            #context: primary_auth
+            #pattern: ^/back
+            #form_login:
+                #provider:       fos_userbundle
+                #login_path:     back_security_login
+                #use_forward:    true
+                #use_referer:    true
+                #check_path:     back_security_check
+                #failure_path:   null
+                #default_target_path: back_homepage
+            #logout:
+                #path: back_security_logout
+                #target: front_homepage
+            #anonymous:    true
+
+        # defaut login area for standard users
+        main:
+            context: primary_auth
+            pattern:            ^/
+            form_login:
+                provider:       fos_userbundle
+                login_path:     fos_user_security_login
+                use_forward:    true
+                use_referer:    true
+                check_path:     fos_user_security_check
+                #failure_path:   null
+                default_target_path: fos_user_profile_show
+            logout:
+                path: fos_user_security_logout
+                target: front_homepage
             anonymous:    true
 
     access_control:
+        # front
+        - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/profile, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/logout, role: IS_AUTHENTICATED_FULLY }
+        # back-office
         - { path: ^/back/, role: ROLE_ADMIN }
