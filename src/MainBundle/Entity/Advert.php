@@ -3,6 +3,7 @@
 namespace MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Advert
@@ -151,6 +152,15 @@ class Advert
      *
      */
     private $fileadverts;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+        $this->fileadverts = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -553,13 +563,6 @@ class Advert
     {
         return $this->price;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Add tags
@@ -567,9 +570,9 @@ class Advert
      * @param \MainBundle\Entity\Tag $tags
      * @return Advert
      */
-    public function addTag(\MainBundle\Entity\Tag $tags)
+    public function addTag(\MainBundle\Entity\Tag $tag)
     {
-        $this->tags[] = $tags;
+        $this->tags[] = $tag;
 
         return $this;
     }
@@ -626,6 +629,7 @@ class Advert
     public function addFileadvert(\MainBundle\Entity\AdvertFile $fileadverts)
     {
         $this->fileadverts[] = $fileadverts;
+        $fileadverts->setAdvert($this);
 
         return $this;
     }

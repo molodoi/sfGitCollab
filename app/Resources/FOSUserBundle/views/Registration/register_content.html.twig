@@ -1,7 +1,7 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 <div class="row">
-    <div class="main">
+    <div class="col-md-6">
         <h3>S'enregistrer, ou <a href="{{ path("fos_user_security_login") }}">S'identifier</a></h3>
         <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6">
@@ -16,30 +16,47 @@
             <span class="span-or">ou</span>
         </div>
         {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
-            {{ form_label(form.email) }}
-            <div class="form-group {% if form_errors(form.email) %} has-error {% endif %}">
-                {{ form_errors(form.email) }}
-                {{ form_widget(form.email , { 'attr': {'class': 'form-control', 'placeholder': 'Email'} }) }}
-            </div>
-            {{ form_label(form.username, 'Nom d\'utilisateur - pseudo') }}
-            <div class="form-group {% if form_errors(form.username) %} has-error {% endif %}">
-                {{ form_errors(form.username) }}
-                {{ form_widget(form.username , { 'attr': {'class': 'form-control', 'placeholder': 'Pseudonyme'} }) }}
-            </div>
-            {{ form_label(form.plainPassword.first, 'Mot de passe') }}
-            <div class="form-group {% if form_errors(form.plainPassword.first) %} has-error {% endif %}">
-                {{ form_errors(form.plainPassword.first) }}
-                {{ form_widget(form.plainPassword.first , { 'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'} }) }}
-            </div>
-            {{ form_label(form.plainPassword.second, 'Répétez votre mot de passe') }}
-            <div class="form-group {% if form_errors(form.plainPassword.second) %} has-error {% endif %}">
-                {{ form_errors(form.plainPassword.second) }}
-                {{ form_widget(form.plainPassword.second , { 'attr': {'class': 'form-control', 'placeholder': 'Répétez votre mot de passe'} }) }}
-            </div>
-            {{ form_rest(form) }}
-            <div>
-                <input type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn btn-primary" />
-            </div>
+        {{ form_label(form.email) }}
+        <div class="form-group {% if form_errors(form.email) %} has-error {% endif %}">
+            {{ form_errors(form.email) }}
+            {{ form_widget(form.email , { 'attr': {'class': 'form-control', 'placeholder': 'Email'} }) }}
+        </div>
+        {{ form_label(form.username, 'Nom d\'utilisateur - pseudo') }}
+        <div class="form-group {% if form_errors(form.username) %} has-error {% endif %}">
+            {{ form_errors(form.username) }}
+            {{ form_widget(form.username , { 'attr': {'class': 'form-control', 'placeholder': 'Pseudonyme'} }) }}
+        </div>
+        {{ form_label(form.plainPassword.first, 'Mot de passe') }}
+        <div class="form-group {% if form_errors(form.plainPassword.first) %} has-error {% endif %}">
+            {{ form_errors(form.plainPassword.first) }}
+            {{ form_widget(form.plainPassword.first , { 'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'} }) }}
+        </div>
+        {{ form_label(form.plainPassword.second, 'Répétez votre mot de passe') }}
+        <div class="form-group {% if form_errors(form.plainPassword.second) %} has-error {% endif %}">
+            {{ form_errors(form.plainPassword.second) }}
+            {{ form_widget(form.plainPassword.second , { 'attr': {'class': 'form-control', 'placeholder': 'Répétez votre mot de passe'} }) }}
+        </div>
+        {{ form_rest(form) }}
+        <div>
+            <input type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn btn-primary btn-block btn-lg" />
+        </div>
         {{ form_end(form) }}
+    </div>
+    <div class="col-md-6">
+        <br />
+        <h2>Terms and Conditions</h2>
+        <p>
+            By clicking on "Register" you agree to The Company's' Terms and Conditions
+        </p>
+        <p>
+            While rare, prices are subject to change based on exchange rate fluctuations -
+            should such a fluctuation happen, we may request an additional payment. You have the option to request a full refund or to pay the new price. (Paragraph 13.5.8)
+        </p>
+        <p>
+            Should there be an error in the description or pricing of a product, we will provide you with a full refund (Paragraph 13.5.6)
+        </p>
+        <p>
+            Acceptance of an order by us is dependent on our suppliers ability to provide the product. (Paragraph 13.5.6)
+        </p>
     </div>
 </div>

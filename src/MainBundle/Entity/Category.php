@@ -33,7 +33,6 @@ class Category
      */
     private $slug;
 
-
     /**
      * @var string
      *

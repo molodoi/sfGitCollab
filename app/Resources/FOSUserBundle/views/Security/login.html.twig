@@ -15,7 +15,7 @@
         {% endif %}
 
         <div class="row">
-            <div class="main">
+            <div class="col-md-6">
                 <h3>S'identifier, ou <a href="{{ path("fos_user_registration_register") }}">S'enregistrer</a></h3>
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-6">
@@ -45,14 +45,29 @@
                             <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
                             Se souvenir de moi</label>
                     </div>
-                    <button type="submit" class="btn btn btn-primary">
+                    <button type="submit" class="btn btn btn-primary btn-block btn-lg">
                         Se connecter
                     </button>
                 </form>
             </div>
+            <div class="col-md-6">
+                <br />
+                <h2>Terms and Conditions</h2>
+                <p>
+                    By clicking on "Register" you agree to The Company's' Terms and Conditions
+                </p>
+                <p>
+                    While rare, prices are subject to change based on exchange rate fluctuations -
+                    should such a fluctuation happen, we may request an additional payment. You have the option to request a full refund or to pay the new price. (Paragraph 13.5.8)
+                </p>
+                <p>
+                    Should there be an error in the description or pricing of a product, we will provide you with a full refund (Paragraph 13.5.6)
+                </p>
+                <p>
+                    Acceptance of an order by us is dependent on our suppliers ability to provide the product. (Paragraph 13.5.6)
+                </p>
+            </div>
         </div>
-
-
     {% endblock fos_user_content %}
 {% endblock %}
 

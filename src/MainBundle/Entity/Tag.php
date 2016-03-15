@@ -3,6 +3,7 @@
 namespace MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Tag
@@ -48,6 +49,13 @@ class Tag
      */
     private $adverts;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->adverts = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -81,13 +89,7 @@ class Tag
     {
         return $this->title;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->adverts = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+
 
     /**
      * Set createdAt

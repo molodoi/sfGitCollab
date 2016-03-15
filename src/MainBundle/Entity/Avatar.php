@@ -59,12 +59,6 @@ class Avatar
     private $oldFile;
 
     /**
-     * @ORM\OneToOne(targetEntity="MainBundle\Entity\User", inversedBy="avatar")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    private $user;
-
-    /**
      * created Time/Date
      *
      * @var \DateTime
@@ -81,6 +75,12 @@ class Avatar
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      */
     private $updatedAt;
+
+    /**
+     * @ORM\OneToOne(targetEntity="MainBundle\Entity\User", inversedBy="avatar")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
 
     /**
      * Get id
