@@ -1,0 +1,69 @@
+{% extends 'BackBundle::layout.html.twig' %}
+
+{% block content %}
+    <h1>Advert list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Slug</th>
+                <th>Description</th>
+                <th>Content</th>
+                <th>Price</th>
+                <th>Type</th>
+                <th>Longitude</th>
+                <th>Latitude</th>
+                <th>Token</th>
+                <th>Isavailable</th>
+                <th>Ispublic</th>
+                <th>Isactivated</th>
+                <th>Deletedat</th>
+                <th>Expiredat</th>
+                <th>Createdat</th>
+                <th>Updatedat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for advert in adverts %}
+            <tr>
+                <td><a href="{{ path('back_advert_show', { 'id': advert.id }) }}">{{ advert.id }}</a></td>
+                <td>{{ advert.title }}</td>
+                <td>{{ advert.slug }}</td>
+                <td>{{ advert.description }}</td>
+                <td>{{ advert.content }}</td>
+                <td>{{ advert.price }}</td>
+                <td>{{ advert.type }}</td>
+                <td>{{ advert.longitude }}</td>
+                <td>{{ advert.latitude }}</td>
+                <td>{{ advert.token }}</td>
+                <td>{% if advert.isAvailable %}Yes{% else %}No{% endif %}</td>
+                <td>{% if advert.isPublic %}Yes{% else %}No{% endif %}</td>
+                <td>{% if advert.isActivated %}Yes{% else %}No{% endif %}</td>
+                <td>{% if advert.deletedAt %}{{ advert.deletedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if advert.expiredAt %}{{ advert.expiredAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if advert.createdAt %}{{ advert.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if advert.updatedAt %}{{ advert.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('back_advert_show', { 'id': advert.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('back_advert_edit', { 'id': advert.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('back_advert_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

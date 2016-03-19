@@ -5,20 +5,30 @@
 {% endblock %}
 
 {% block content %}
-
-    <div class="page-header">
-        <h1>Bienvenue sur le petit site d'annonce trankilou</h1>
-        <p class="lead">Faites votre recherche ci-desous</p>
-    </div>
-
     <div class="row">
         <div class="col-md-12">
+            <h3 class="dark-grey">Recherche</h3>
+            <hr />
             <form>
-                <div class="form-group">
+                <div class="form-group col-lg-6 padding-left-0 padding-right-15">
                     <label class="sr-only" for="exampleInputEmail3">Mots clés</label>
                     <input type="text" class="form-control input-lg" placeholder="Mots clés">
                 </div>
-                <div class="form-group">
+
+                <div class="form-group col-lg-6 padding-right-0 padding-left-15">
+                    <div id="custom-geo-input">
+                        <div class="input-group col-md-12">
+                            <input type="text" class="form-control input-lg" placeholder="Ville/Cp" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-info btn-lg" type="button">
+                                            <i class="glyphicon glyphicon-map-marker"></i>
+                                        </button>
+                                    </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-6 padding-left-0 padding-right-15">
                     <select class="form-control input-lg">
                         <option>Catégories</option>
                         {% for i in 1..8 %}
@@ -27,19 +37,7 @@
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <div id="custom-geo-input">
-                        <div class="input-group col-md-12">
-                            <input type="text" class="form-control input-lg" placeholder="Ville/Cp" />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-info btn-lg" type="button">
-                                        <i class="glyphicon glyphicon-map-marker"></i>
-                                    </button>
-                                </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
+                <div class="form-group col-lg-6 padding-right-0 padding-left-15 ">
                     <select class="form-control input-lg">
                         <option> < 10km</option>
                         <option> < 50km</option>
@@ -48,18 +46,12 @@
                         <option> Partout</option>
                     </select>
                 </div>
-                {#<div class="form-group">
-                    <div class="range range-primary">
-                        <input type="range" name="range" min="1" max="100" value="50" onchange="rangePrimary.value=value">
-                        <output id="rangePrimary">50</output>
-                    </div>
-                </div>#}
                 <div class="clearfix"></div>
-                <br />
                 <button type="submit" class="btn btn-success btn-lg btn-block"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Rechercher</button>
             </form>
         </div>
     </div>
+
     <hr />
     <div class="row">
         {% for i in 1..6 %}

@@ -1,0 +1,24 @@
+back_advertfile_index:
+    path:     /
+    defaults: { _controller: "BackBundle:AdvertFile:index" }
+    methods:  GET
+
+back_advertfile_show:
+    path:     /{id}/show
+    defaults: { _controller: "BackBundle:AdvertFile:show" }
+    methods:  GET
+
+back_advertfile_new:
+    path:     /new
+    defaults: { _controller: "BackBundle:AdvertFile:new" }
+    methods:  [GET, POST]
+
+back_advertfile_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BackBundle:AdvertFile:edit" }
+    methods:  [GET, POST]
+
+back_advertfile_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BackBundle:AdvertFile:delete" }
+    methods:  DELETE

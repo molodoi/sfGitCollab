@@ -25,7 +25,7 @@
                 {% endif %}
                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                     <li>
-                        <a href="{{ path('fos_user_profile_edit') }}" {% if app.request.attributes.get('_route') == 'fos_user_profile_edit' %} class="active" {% endif %}>Votre profil</a>
+                        <a href="{{ path('fos_user_profile_show') }}" {% if app.request.attributes.get('_route') == 'fos_user_profile_show' %} class="active" {% endif %}>Votre profil</a>
                     </li>
                     <li>
                         <a href="#">Vos annonces</a>
@@ -81,9 +81,14 @@
                         </a>
                     {% endif %}
                     <ul class="dropdown-menu">
+                        {% if is_granted("ROLE_ADMIN") %}
+                            <li>
+                                <a href="{{ path('back_homepage') }}" {% if app.request.attributes.get('_route') == 'back_homepage' %} class="active" {% endif %}>Espace admin</a>
+                            </li>
+                        {% endif %}
                         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                             <li>
-                                <a href="{{ path('fos_user_profile_edit') }}" {% if app.request.attributes.get('_route') == 'fos_user_profile_edit' %} class="active" {% endif %}>Votre profil</a>
+                                <a href="{{ path('fos_user_profile_show') }}" {% if app.request.attributes.get('_route') == 'fos_user_profile_show' %} class="active" {% endif %}>Votre profil</a>
                             </li>
                             <li>
                                 <a href="#">Vos annonces</a>

@@ -1,0 +1,39 @@
+{% extends 'BackBundle::layout.html.twig' %}
+
+{% block content %}
+    <h1>Whishlist list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Createdat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for whishlist in whishlists %}
+            <tr>
+                <td><a href="{{ path('back_whishlist_show', { 'id': whishlist.id }) }}">{{ whishlist.id }}</a></td>
+                <td>{% if whishlist.createdAt %}{{ whishlist.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('back_whishlist_show', { 'id': whishlist.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('back_whishlist_edit', { 'id': whishlist.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('back_whishlist_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

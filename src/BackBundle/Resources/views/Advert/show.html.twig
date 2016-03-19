@@ -1,0 +1,92 @@
+{% extends 'BackBundle::layout.html.twig' %}
+
+{% block content %}
+    <h1>Advert</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ advert.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ advert.title }}</td>
+            </tr>
+            <tr>
+                <th>Slug</th>
+                <td>{{ advert.slug }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ advert.description }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ advert.content }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ advert.price }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ advert.type }}</td>
+            </tr>
+            <tr>
+                <th>Longitude</th>
+                <td>{{ advert.longitude }}</td>
+            </tr>
+            <tr>
+                <th>Latitude</th>
+                <td>{{ advert.latitude }}</td>
+            </tr>
+            <tr>
+                <th>Token</th>
+                <td>{{ advert.token }}</td>
+            </tr>
+            <tr>
+                <th>Isavailable</th>
+                <td>{% if advert.isAvailable %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Ispublic</th>
+                <td>{% if advert.isPublic %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Isactivated</th>
+                <td>{% if advert.isActivated %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Deletedat</th>
+                <td>{% if advert.deletedAt %}{{ advert.deletedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Expiredat</th>
+                <td>{% if advert.expiredAt %}{{ advert.expiredAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{% if advert.createdAt %}{{ advert.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updatedat</th>
+                <td>{% if advert.updatedAt %}{{ advert.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('back_advert_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('back_advert_edit', { 'id': advert.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

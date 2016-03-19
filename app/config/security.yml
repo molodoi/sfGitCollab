@@ -18,21 +18,21 @@ security:
             security: false
 
         # login area for backoffice users
-        #backoffice:
-            #context: primary_auth
-            #pattern: ^/back
-            #form_login:
-                #provider:       fos_userbundle
-                #login_path:     back_security_login
-                #use_forward:    true
-                #use_referer:    true
-                #check_path:     back_security_check
-                #failure_path:   null
-                #default_target_path: back_homepage
-            #logout:
-                #path: back_security_logout
-                #target: front_homepage
-            #anonymous:    true
+        backoffice:
+            context: primary_auth
+            pattern: ^/back
+            form_login:
+                provider:       fos_userbundle
+                login_path:     fos_user_security_login
+                use_forward:    true
+                use_referer:    true
+                check_path:     fos_user_security_check
+                failure_path:   null
+                default_target_path: back_homepage
+            logout:
+                path: fos_user_security_logout
+                target: front_homepage
+            anonymous:    true
 
         # defaut login area for standard users
         main:
@@ -45,13 +45,15 @@ security:
                 use_referer:    true
                 check_path:     fos_user_security_check
                 #failure_path:   null
-                default_target_path: fos_user_profile_show
+                default_target_path: front_homepage
             logout:
                 path: fos_user_security_logout
                 target: front_homepage
             anonymous:    true
 
     access_control:
+        #back-office
+        - { path: ^/back, role: ROLE_ADMIN }
         # front
         - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -59,5 +61,4 @@ security:
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/profile, role: IS_AUTHENTICATED_FULLY }
         - { path: ^/logout, role: IS_AUTHENTICATED_FULLY }
-        # back-office
-        - { path: ^/back/, role: ROLE_ADMIN }
+

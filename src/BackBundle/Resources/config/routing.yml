@@ -1,3 +1,35 @@
+back_whishlist:
+    resource: "@BackBundle/Resources/config/routing/whishlist.yml"
+    prefix:   /whishlist
+
+back_tag:
+    resource: "@BackBundle/Resources/config/routing/tag.yml"
+    prefix:   /tag
+
+back_profile:
+    resource: "@BackBundle/Resources/config/routing/profile.yml"
+    prefix:   /profile
+
+back_category:
+    resource: "@BackBundle/Resources/config/routing/category.yml"
+    prefix:   /category
+
+back_avatar:
+    resource: "@BackBundle/Resources/config/routing/avatar.yml"
+    prefix:   /avatar
+
+back_advertfile:
+    resource: "@BackBundle/Resources/config/routing/advertfile.yml"
+    prefix:   /advertfile
+
+back_advert:
+    resource: "@BackBundle/Resources/config/routing/advert.yml"
+    prefix:   /advert
+
+back_user:
+    resource: "@BackBundle/Resources/config/routing/user.yml"
+    prefix:   /user
+
 back_homepage:
     path:     /
     defaults: { _controller: BackBundle:Default:index }
