@@ -1,3 +1,20 @@
+body{
+    background: #fcfcfc;
+}
+
+.padding-left-0 {
+    padding-left: 0;
+}
+.padding-right-15{
+    padding-right: 15px;
+}
+.padding-right-0 {
+    padding-right: 0;
+}
+.padding-left-15{
+    padding-left: 15px;
+}
+
 /* --------------------------------------------------
 :: SCROLLUP
 -----------------------------------------------------*/

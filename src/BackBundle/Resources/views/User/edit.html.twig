@@ -1,0 +1,187 @@
+{% extends 'BackBundle::layout.html.twig' %}
+
+{% block content %}
+    <h1>User edit</h1>
+    {{ form_start(edit_form) }}
+        {{ form_errors(edit_form) }}
+        <div class="form-group col-lg-6 padding-left-0 padding-right-15">
+            <div class="form-group {% if form_errors(edit_form.username) %} has-error {% endif %}">
+                {{ form_errors(edit_form.username) }}
+                {{ form_widget(edit_form.username, { 'attr': {'class': 'form-control', 'placeholder': 'Username'} }) }}
+            </div>
+        </div>
+        <div class="form-group col-lg-6 padding-left-0 padding-right-15">
+            <div class="form-group {% if form_errors(edit_form.email) %} has-error {% endif %}">
+                {{ form_errors(edit_form.email) }}
+                {{ form_widget(edit_form.email, { 'attr': {'class': 'form-control', 'placeholder': 'Email'} }) }}
+            </div>
+        </div>
+        <div class="form-group col-lg-4 padding-left-0 padding-right-15">
+            <div class="form-group {% if form_errors(edit_form.password.first) %} has-error {% endif %}">
+                {{ form_errors(edit_form.password.first) }}
+                {{ form_widget(edit_form.password.first, { 'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'} }) }}
+            </div>
+        </div>
+        <div class="form-group col-lg-4 padding-left-0 padding-right-15">
+            <div class="form-group {% if form_errors(edit_form.password.second) %} has-error {% endif %}">
+                {{ form_errors(edit_form.password.second) }}
+                {{ form_widget(edit_form.password.second, { 'attr': {'class': 'form-control', 'placeholder': 'Vérification mot de passe'} }) }}
+            </div>
+        </div>
+        <div class="form-group col-lg-4 padding-left-0 padding-right-15">
+            <div class="form-group {% if form_errors(edit_form.roles) %} has-error {% endif %}">
+                {{ form_errors(edit_form.roles) }}
+                {{ form_widget(edit_form.roles, { 'attr': {'class': 'form-control', 'placeholder': 'Valide'} }) }}
+            </div>
+        </div>
+            <div class="form-group col-lg-6 padding-left-0 padding-right-15">
+                <div class="form-group {% if form_errors(edit_form.firstname) %} has-error {% endif %}">
+                    {{ form_errors(edit_form.firstname) }}
+                    {{ form_widget(edit_form.firstname, { 'attr': {'class': 'form-control', 'placeholder': 'Nom'} }) }}
+                </div>
+            </div>
+            <div class="form-group col-lg-6 padding-right-0 padding-left-15">
+                <div class="form-group {% if form_errors(edit_form.lastname) %} has-error {% endif %}">
+                    {{ form_errors(edit_form.lastname) }}
+                    {{ form_widget(edit_form.lastname, { 'attr': {'class': 'form-control', 'placeholder': 'Prénom'} }) }}
+                </div>
+            </div>
+            <div class="form-group col-lg-12 padding-right-0 padding-left-0">
+                <div class="form-group {% if form_errors(edit_form.address) %} has-error {% endif %}">
+                    {{ form_errors(edit_form.address) }}
+                    {{ form_widget(edit_form.address, { 'attr': {'class': 'form-control', 'placeholder': 'Adresse'} }) }}
+                </div>
+            </div>
+            <div class="form-group col-lg-12 padding-right-0 padding-left-0">
+                <div class="form-group {% if form_errors(edit_form.complement) %} has-error {% endif %}">
+                    {{ form_errors(edit_form.complement) }}
+                    {{ form_widget(edit_form.complement, { 'attr': {'class': 'form-control', 'placeholder': 'Complément'} }) }}
+                </div>
+            </div>
+            <div class="form-group col-lg-4 padding-right-15 padding-left-0">
+                <div class="form-group {% if form_errors(edit_form.zipcode) %} has-error {% endif %}">
+                    {{ form_errors(edit_form.zipcode) }}
+                    {{ form_widget(edit_form.zipcode, { 'attr': {'class': 'form-control', 'placeholder': 'Cp'} }) }}
+                </div>
+            </div>
+            <div class="form-group col-lg-4 padding-right-0 padding-left-0">
+                <div class="form-group {% if form_errors(edit_form.city) %} has-error {% endif %}">
+                    {{ form_errors(edit_form.city) }}
+                    {{ form_widget(edit_form.city, { 'attr': {'class': 'form-control', 'placeholder': 'Ville'} }) }}
+                </div>
+            </div>
+            <div class="form-group col-lg-4 padding-right-0 padding-left-15">
+                <div class="form-group {% if form_errors(edit_form.country) %} has-error {% endif %}">
+                    {{ form_errors(edit_form.country) }}
+                    {{ form_widget(edit_form.country, { 'attr': {'class': 'form-control', 'placeholder': 'Pays'} }) }}
+                </div>
+            </div>
+            <div class="form-group col-lg-6 padding-left-0 padding-right-15">
+                <div class="form-group {% if form_errors(edit_form.phone) %} has-error {% endif %}">
+                    {{ form_errors(edit_form.phone) }}
+                    {{ form_widget(edit_form.phone, { 'attr': {'class': 'form-control', 'placeholder': 'N° Domicile'} }) }}
+                </div>
+            </div>
+            <div class="form-group col-lg-6 padding-right-0 padding-left-15">
+                <div class="form-group {% if form_errors(edit_form.mobile) %} has-error {% endif %}">
+                    {{ form_errors(edit_form.mobile) }}
+                    {{ form_widget(edit_form.mobile, { 'attr': {'class': 'form-control', 'placeholder': 'N° Mobile'} }) }}
+                </div>
+            </div>
+            <div class="col-lg-12 padding-right-0 padding-left-0">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">Affichage de vos données personnelles</div>
+
+                    <!-- List group -->
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            N° Domicile public
+                            <div class="material-switch pull-right">
+                                {{ form_widget(edit_form.phonePublic) }}
+                                {{ form_label(edit_form.phonePublic, null,{ 'label_attr': {'class': 'label-success'} }) }}
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            N° Mobile public
+                            <div class="material-switch pull-right">
+                                {{ form_widget(edit_form.mobilePublic) }}
+                                {{ form_label(edit_form.mobilePublic, null,{ 'label_attr': {'class': 'label-success'} }) }}
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            Adresse public
+                            <div class="material-switch pull-right">
+                                {{ form_widget(edit_form.addressPublic) }}
+                                {{ form_label(edit_form.addressPublic, null,{ 'label_attr': {'class': 'label-success'} }) }}
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            Vérouiller ce compte
+                            <div class="material-switch pull-right">
+                                {{ form_widget(edit_form.locked) }}
+                                {{ form_label(edit_form.locked, null,{ 'label_attr': {'class': 'label-success'} }) }}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group col-lg-6 padding-left-0 padding-right-15">
+                <div class="form-group {% if form_errors(edit_form.longitude) %} has-error {% endif %}">
+                    {{ form_errors(edit_form.longitude) }}
+                    {{ form_widget(edit_form.longitude, { 'attr': {'class': 'form-control', 'placeholder': 'Longitude'} }) }}
+                </div>
+            </div>
+            <div class="form-group col-lg-6 padding-right-0 padding-left-15">
+                <div class="form-group {% if form_errors(edit_form.latitude) %} has-error {% endif %}">
+                    {{ form_errors(edit_form.latitude) }}
+                    {{ form_widget(edit_form.latitude, { 'attr': {'class': 'form-control', 'placeholder': 'Latitude'} }) }}
+                </div>
+            </div>
+
+            {#<div class="form-group">
+                {{ form_label(edit_form.file) }}
+                {{ form_errors(edit_form.file) }}
+                {{ form_widget(edit_form.file) }}
+            </div>#}
+            <div class="input-group">
+                {{ form_errors(edit_form.file) }}
+                <span class="input-group-btn">
+                    <button id="fake-file-button-browse" type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-file"></span>
+                    </button>
+                </span>
+                {#<input type="file" id="files-input-upload" style="display:none">#}
+                {{ form_widget(edit_form.file, { 'id': 'files-input-upload', 'attr': {'class': 'hidden'} }) }}
+                <input type="text" id="fake-file-input-name" disabled="disabled" placeholder="File not selected" class="form-control">
+                {#<span class="input-group-btn">
+                    <button type="button" class="btn btn-default" disabled="disabled" id="fake-file-button-upload">
+                        <span class="glyphicon glyphicon-upload"></span>
+                    </button>
+                </span>#}
+            </div>
+            {{ form_widget(edit_form) }}
+            <br />
+            <input type="submit" value="Edit" class="btn btn-success btn-lg" />
+            <a href="{{ path('back_user_index') }}" class="btn btn-default btn-lg">Back to the list</a>
+        {{ form_end(edit_form) }}
+    {{ form_start(delete_form) }}
+        <input type="submit" value="Delete" class="btn btn-danger btn-lg">
+    {{ form_end(delete_form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        // Fake file upload
+        document.getElementById('fake-file-button-browse').addEventListener('click', function() {
+            document.getElementById('files-input-upload').click();
+        });
+
+        document.getElementById('files-input-upload').addEventListener('change', function() {
+            document.getElementById('fake-file-input-name').value = this.value;
+
+            document.getElementById('fake-file-button-upload').removeAttribute('disabled');
+        });
+    </script>
+{% endblock %}

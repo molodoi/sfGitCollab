@@ -1,0 +1,24 @@
+back_profile_index:
+    path:     /
+    defaults: { _controller: "BackBundle:Profile:index" }
+    methods:  GET
+
+back_profile_show:
+    path:     /{id}/show
+    defaults: { _controller: "BackBundle:Profile:show" }
+    methods:  GET
+
+back_profile_new:
+    path:     /new
+    defaults: { _controller: "BackBundle:Profile:new" }
+    methods:  [GET, POST]
+
+back_profile_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BackBundle:Profile:edit" }
+    methods:  [GET, POST]
+
+back_profile_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BackBundle:Profile:delete" }
+    methods:  DELETE

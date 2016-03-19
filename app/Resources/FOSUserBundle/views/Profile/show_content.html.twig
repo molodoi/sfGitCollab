@@ -6,7 +6,15 @@
             <div class="profile-sidebar">
                 <!-- SIDEBAR USERPIC -->
                 <div class="profile-userpic">
-                    <img src="http://placehold.it/300x300" class="img-responsive img-rounded" alt="">
+                    {% if user.path is not null %}
+                        <a href="{{ path('back_user_edit', { 'id': user.id }) }}">
+                            <img src="{{ asset('/uploads/avatars/thumb-150-150-'~user.path) }}" class="img-responsive img-rounded text-center" />
+                        </a>
+                    {% else %}
+                        <a href="{{ path('back_user_edit', { 'id': user.id }) }}">
+                            <img src="http://placehold.it/50x50" class="img-responsive img-rounded text-center" alt="">
+                        </a>
+                    {% endif %}
                 </div>
                 <!-- END SIDEBAR USERPIC -->
                 <!-- SIDEBAR USER TITLE -->
@@ -15,19 +23,19 @@
                         Marcus Doe
                     </div>
                     <div class="profile-usertitle-job">
-                        <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
+                        <p>{{ 'show.username'|trans }}: {{ user.username }}</p>
                     </div>
                 </div>
                 <!-- END SIDEBAR USER TITLE -->
                 <!-- SIDEBAR BUTTONS -->
                 <div class="profile-userbuttons">
-                    <button type="button" class="btn btn-success btn-sm">Follow</button>
-                    <button type="button" class="btn btn-danger btn-sm">Message</button>
+                    <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-success btn-sm">Edit votre profil</a><br />
+                    {#<button type="button" class="btn btn-danger btn-sm">Message</button>#}
                 </div>
                 <!-- END SIDEBAR BUTTONS -->
                 <!-- SIDEBAR MENU -->
                 <div class="profile-usermenu">
-                    <ul class="nav">
+                    {#<ul class="nav">
                         <li class="active">
                             <a href="{{ path('fos_user_profile_show') }}">
                                 <i class="glyphicon glyphicon-home"></i>
@@ -48,7 +56,7 @@
                                 <i class="glyphicon glyphicon-flag"></i>
                                 Help </a>
                         </li>
-                    </ul>
+                    </ul>#}
                 </div>
                 <!-- END MENU -->
             </div>
@@ -57,7 +65,116 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="profile-content">
-                        <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+                        <div class="col-lg-12 padding-right-0 padding-left-0">
+                            <div class="panel panel-default">
+                                <!-- Default panel contents -->
+                                <div class="panel-heading">Informations personnelles</div>
+
+                                <!-- List group -->
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <strong>Utilisateur</strong>
+                                        <div class="material-switch pull-right">
+                                            {{ user.username }}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Nom</strong>
+                                        <div class="material-switch pull-right">
+                                            {{ user.firstname|capitalize }}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Prénom</strong>
+                                        <div class="material-switch pull-right">
+                                            {{ user.lastname|capitalize }}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Email</strong>
+                                        <div class="material-switch pull-right">
+                                            {{ user.email }}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Adresse</strong>
+                                        <div class="material-switch pull-right">
+                                            {{ user.address }}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Code Postale</strong>
+                                        <div class="material-switch pull-right">
+                                            {{ user.zipcode }}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Ville</strong>
+                                        <div class="material-switch pull-right">
+                                            {{ user.city }}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Pays</strong>
+                                        <div class="material-switch pull-right">
+                                            {{ user.country }}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Roles</strong>
+                                        <div class="material-switch pull-right">
+                                            {% for roles in user.roles %}
+                                                {% if roles is defined %}
+                                                    {{ roles }},
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        N° Domicile {{ user.phone }} publique
+                                        <div class="material-switch pull-right">
+                                            {% if user.phonePublic %}
+                                                <span class="label label-success">public</span>
+                                            {% else %}
+                                                <span class="label label-danger">privé</span>
+                                            {% endif %}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        N° Mobile {{ user.mobile }} publique
+                                        <div class="material-switch pull-right">
+                                            {% if user.mobilePublic %}
+                                                <span class="label label-success">public</span>
+                                            {% else %}
+                                                <span class="label label-danger">privé</span>
+                                            {% endif %}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        Adresse publique
+                                        <div class="material-switch pull-right">
+                                            {% if user.addressPublic %}
+                                                <span class="label label-success">public</span>
+                                            {% else %}
+                                                <span class="label label-danger">privé</span>
+                                            {% endif %}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Dernière connexion</strong>
+                                        <div class="material-switch pull-right">
+                                            {{ user.lastLogin|date }}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Statut</strong>
+                                        <div class="material-switch pull-right">
+                                            {{ user.locked }}
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

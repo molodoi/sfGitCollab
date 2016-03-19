@@ -1,0 +1,24 @@
+back_avatar_index:
+    path:     /
+    defaults: { _controller: "BackBundle:Avatar:index" }
+    methods:  GET
+
+back_avatar_show:
+    path:     /{id}/show
+    defaults: { _controller: "BackBundle:Avatar:show" }
+    methods:  GET
+
+back_avatar_new:
+    path:     /new
+    defaults: { _controller: "BackBundle:Avatar:new" }
+    methods:  [GET, POST]
+
+back_avatar_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BackBundle:Avatar:edit" }
+    methods:  [GET, POST]
+
+back_avatar_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BackBundle:Avatar:delete" }
+    methods:  DELETE

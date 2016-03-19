@@ -1,13 +1,15 @@
 {% trans_default_domain 'FOSUserBundle' %}
-
-
 <div class="fos_user_user_show">
     <div class="row profile">
         <div class="col-md-3">
             <div class="profile-sidebar">
                 <!-- SIDEBAR USERPIC -->
                 <div class="profile-userpic">
-                    <img src="http://placehold.it/180x180" class="img-responsive img-circle" alt="">
+                    {% if form.vars.value.path is not null %}
+                            <img src="{{ asset('/uploads/avatars/thumb-50-50-'~form.vars.value.path) }}" class="img-responsive img-rounded text-center" />
+                    {% else %}
+                            <img src="http://placehold.it/50x50" class="img-responsive img-rounded text-center" alt="">
+                    {% endif %}
                 </div>
                 <!-- END SIDEBAR USERPIC -->
                 <!-- SIDEBAR USER TITLE -->
@@ -28,7 +30,7 @@
                 <!-- END SIDEBAR BUTTONS -->
                 <!-- SIDEBAR MENU -->
                 <div class="profile-usermenu">
-                    <ul class="nav">
+                    {#<ul class="nav">
                         <li>
                             <a href="{{ path('fos_user_profile_show') }}">
                                 <i class="glyphicon glyphicon-home"></i>
@@ -49,7 +51,7 @@
                                 <i class="glyphicon glyphicon-flag"></i>
                                 Help </a>
                         </li>
-                    </ul>
+                    </ul>#}
                 </div>
                 <!-- END MENU -->
             </div>
@@ -59,21 +61,149 @@
                 <div class="panel-body">
                     <div class="profile-content">
                         {{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
-                        {{ form_label(form.username, 'Votre nom de l\'utilisateur') }}
-                        <div class="form-group {% if form_errors(form.username) %} has-error {% endif %}">
-                            {{ form_errors(form.username) }}
-                            {{ form_widget(form.username, { 'attr': {'class': 'form-control', 'placeholder': 'Titre'} }) }}
+                        <div class="form-group col-lg-6 padding-left-0 padding-right-15">
+                            {{ form_label(form.username, 'Nom d\'utilisateur (login)' ) }}
+                            <div class="form-group {% if form_errors(form.username) %} has-error {% endif %}">
+                                {{ form_errors(form.username) }}
+                                {{ form_widget(form.username, { 'attr': {'class': 'form-control', 'placeholder': 'Username'} }) }}
+                            </div>
                         </div>
-                        {{ form_label(form.email, 'Votre email') }}
-                        <div class="form-group {% if form_errors(form.email) %} has-error {% endif %}">
-                            {{ form_errors(form.email) }}
-                            {{ form_widget(form.email, { 'attr': {'class': 'form-control', 'placeholder': 'Titre'} }) }}
+                        <div class="form-group col-lg-6 padding-left-0 padding-right-0">
+                            {{ form_label(form.email, 'Email' ) }}
+                            <div class="form-group {% if form_errors(form.email) %} has-error {% endif %}">
+                                {{ form_errors(form.email) }}
+                                {{ form_widget(form.email, { 'attr': {'class': 'form-control', 'placeholder': 'Email'} }) }}
+                            </div>
                         </div>
-                        {{ form_label(form.current_password, 'Votre mot de passe courant') }}
-                        <div class="form-group {% if form_errors(form.current_password) %} has-error {% endif %}">
-                            {{ form_errors(form.current_password) }}
-                            {{ form_widget(form.current_password, { 'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'} }) }}
+                        <div class="form-group col-lg-6 padding-left-0 padding-right-15">
+                            {{ form_label(form.firstname, 'Nom' ) }}
+                            <div class="form-group {% if form_errors(form.firstname) %} has-error {% endif %}">
+                                {{ form_errors(form.firstname) }}
+                                {{ form_widget(form.firstname, { 'attr': {'class': 'form-control', 'placeholder': 'Nom'} }) }}
+                            </div>
                         </div>
+                        <div class="form-group col-lg-6 padding-right-0 padding-left-0">
+                            {{ form_label(form.firstname, 'Prénom' ) }}
+                            <div class="form-group {% if form_errors(form.lastname) %} has-error {% endif %}">
+                                {{ form_errors(form.lastname) }}
+                                {{ form_widget(form.lastname, { 'attr': {'class': 'form-control', 'placeholder': 'Prénom'} }) }}
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-12 padding-right-0 padding-left-0">
+                            {{ form_label(form.complement, 'Adresse (ex: 16 rue de Paris)' ) }}
+                            <div class="form-group {% if form_errors(form.address) %} has-error {% endif %}">
+                                {{ form_errors(form.address) }}
+                                {{ form_widget(form.address, { 'attr': {'class': 'form-control', 'placeholder': 'Adresse'} }) }}
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-12 padding-right-0 padding-left-0">
+                            {{ form_label(form.complement, 'Complément (ex: appart B,..)' ) }}
+                            <div class="form-group {% if form_errors(form.complement) %} has-error {% endif %}">
+                                {{ form_errors(form.complement) }}
+                                {{ form_widget(form.complement, { 'attr': {'class': 'form-control', 'placeholder': 'Complément'} }) }}
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4 padding-right-15 padding-left-0">
+                            {{ form_label(form.zipcode, 'Code postale' ) }}
+                            <div class="form-group {% if form_errors(form.zipcode) %} has-error {% endif %}">
+                                {{ form_errors(form.zipcode) }}
+                                {{ form_widget(form.zipcode, { 'attr': {'class': 'form-control', 'placeholder': 'Cp'} }) }}
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4 padding-right-0 padding-left-0">
+                            {{ form_label(form.country, 'Ville' ) }}
+                            <div class="form-group {% if form_errors(form.city) %} has-error {% endif %}">
+                                {{ form_errors(form.city) }}
+                                {{ form_widget(form.city, { 'attr': {'class': 'form-control', 'placeholder': 'Ville'} }) }}
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4 padding-right-0 padding-left-15">
+                            {{ form_label(form.country, 'Pays' ) }}
+                            <div class="form-group {% if form_errors(form.country) %} has-error {% endif %}">
+                                {{ form_errors(form.country) }}
+                                {{ form_widget(form.country, { 'attr': {'class': 'form-control', 'placeholder': 'Pays'} }) }}
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6 padding-left-0 padding-right-15">
+                            {{ form_label(form.phone, 'N° Téléphone Domicile' ) }}
+                            <div class="form-group {% if form_errors(form.phone) %} has-error {% endif %}">
+                                {{ form_errors(form.phone) }}
+                                {{ form_widget(form.phone, { 'attr': {'class': 'form-control', 'placeholder': 'N° Domicile'} }) }}
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6 padding-right-0 padding-left-15">
+                            {{ form_label(form.mobile, 'N° Téléphone Mobile' ) }}
+                            <div class="form-group {% if form_errors(form.mobile) %} has-error {% endif %}">
+                                {{ form_errors(form.mobile) }}
+                                {{ form_widget(form.mobile, { 'attr': {'class': 'form-control', 'placeholder': 'N° Mobile'} }) }}
+                            </div>
+                        </div>
+                        <div class="col-lg-12 padding-right-0 padding-left-0">
+                            <div class="panel panel-default">
+                                <!-- Default panel contents -->
+                                <div class="panel-heading">Affichage de vos données personnelles</div>
+                                <!-- List group -->
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        N° Domicile public
+                                        <div class="material-switch pull-right">
+                                            {{ form_widget(form.phonePublic) }}
+                                            {{ form_label(form.phonePublic, null,{ 'label_attr': {'class': 'label-success'} }) }}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        N° Mobile public
+                                        <div class="material-switch pull-right">
+                                            {{ form_widget(form.mobilePublic) }}
+                                            {{ form_label(form.mobilePublic, null,{ 'label_attr': {'class': 'label-success'} }) }}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        Adresse public
+                                        <div class="material-switch pull-right">
+                                            {{ form_widget(form.addressPublic) }}
+                                            {{ form_label(form.addressPublic, null,{ 'label_attr': {'class': 'label-success'} }) }}
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6 padding-left-0 padding-right-15">
+                            <div class="form-group {% if form_errors(form.longitude) %} has-error {% endif %}">
+                                {{ form_errors(form.longitude) }}
+                                {{ form_widget(form.longitude, { 'attr': {'class': 'form-control', 'placeholder': 'Longitude'} }) }}
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6 padding-right-0 padding-left-15">
+                            <div class="form-group {% if form_errors(form.latitude) %} has-error {% endif %}">
+                                {{ form_errors(form.latitude) }}
+                                {{ form_widget(form.latitude, { 'attr': {'class': 'form-control', 'placeholder': 'Latitude'} }) }}
+                            </div>
+                        </div>
+
+                        {#<div class="form-group">
+                            {{ form_label(form.file) }}
+                            {{ form_errors(form.file) }}
+                            {{ form_widget(form.file) }}
+                        </div>#}
+                        <div class="input-group">
+                            {{ form_errors(form.file) }}
+                            <span class="input-group-btn">
+                                <button id="fake-file-button-browse" type="button" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-file"></span>
+                                </button>
+                             </span>
+                            {#<input type="file" id="files-input-upload" style="display:none">#}
+                            {{ form_widget(form.file, { 'id': 'files-input-upload', 'attr': {'class': 'hidden'} }) }}
+                            <input type="text" id="fake-file-input-name" disabled="disabled" placeholder="File not selected" class="form-control">
+                            {#<span class="input-group-btn">
+                                <button type="button" class="btn btn-default" disabled="disabled" id="fake-file-button-upload">
+                                    <span class="glyphicon glyphicon-upload"></span>
+                                </button>
+                            </span>#}
+                        </div>
+
+                        <br />
                         <div>
                             <input type="submit" value="Mettre à jour votre profil" class="btn btn-primary btn-block btn-lg" />
                         </div>
