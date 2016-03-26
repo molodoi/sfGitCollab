@@ -1,7 +1,14 @@
 back_category_index:
-    path:     /
-    defaults: { _controller: "BackBundle:Category:index" }
+    path:     /{page}
+    defaults: { _controller: "BackBundle:Category:index", page: 1 }
     methods:  GET
+    requirements:
+        page: \d+
+
+#back_category_index:
+#    path:     /{page}
+#    defaults: { _controller: "BackBundle:Category:index", page: 1 }
+#    methods:  GET
 
 back_category_show:
     path:     /{id}/show

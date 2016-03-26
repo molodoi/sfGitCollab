@@ -3,6 +3,7 @@
 namespace MainBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * AdvertRepository
@@ -12,4 +13,183 @@ use Doctrine\ORM\EntityRepository;
  */
 class AdvertRepository extends EntityRepository
 {
+
+    /**
+     * FRONTEND METHODS
+     */
+
+    public function search($keyword, $category, $city){
+
+
+        $qb = $this->createQueryBuilder('a')
+            ->addSelect('category')
+            ->addSelect('files')
+            ->addSelect('user')
+            ->leftJoin('a.fileadverts', 'files')
+            ->leftJoin('a.category', 'category')
+            ->leftJoin('a.user', 'user')
+            ->where('a.isActivated = 1')
+            ->andWhere('a.isPublic = 1');
+            if(!empty($keyword)){
+                $qb->andWhere('a.title LIKE :title')
+                    ->setParameter('title', '%'.$keyword.'%')
+
+                    ->orWhere('a.content LIKE :content')
+                    ->setParameter('content', '%'.$keyword.'%');
+            }
+
+            if(!empty($city)){
+                $qb->andWhere('a.location = :city')
+                    ->setParameter('city', $city);
+            }
+
+            if(!empty($category)){
+                $qb->andWhere('a.category = :category')
+                    ->setParameter('category', $category);
+            }
+
+            $qb->orderBy('a.createdAt', 'DESC')
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findAdvertsByCategoryOnFrontend($category)
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->addSelect('category')
+            ->addSelect('files')
+            ->addSelect('user')
+            ->leftJoin('a.fileadverts', 'files')
+            ->leftJoin('a.category', 'category')
+            ->leftJoin('a.user', 'user')
+            ->where('a.category = :category')
+            ->andWhere('a.isActivated = 1')
+            ->andWhere('a.isPublic = 1')
+            ->orderBy('a.createdAt', 'DESC')
+            ->setParameter('category', $category)
+        ;
+        return $qb->getQuery()->getResult();
+    }
+    public function findAdvertBySlugOnFrontend($slug)
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->addSelect('category')
+            ->addSelect('files')
+            ->addSelect('user')
+            ->leftJoin('a.fileadverts', 'files')
+            ->leftJoin('a.category', 'category')
+            ->leftJoin('a.user', 'user')
+            ->where('a.slug = :slug')
+            ->andWhere('a.isActivated = 1')
+            ->andWhere('a.isPublic = 1')
+            ->orderBy('a.createdAt', 'DESC')
+            ->setParameter('slug',$slug)
+        ;
+        return $qb->getQuery()->getSingleResult();
+    }
+
+    public function findAllAdvertsFront()
+    {
+        $q = $this->createQueryBuilder('a')
+            ->where('a.isActivated = 1')
+            ->andWhere('a.isPublic = 1')
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+        ;
+
+        return $q->getResult();
+    }
+
+    public function getListPublicAdverts()
+    {
+        $q = $this->createQueryBuilder('a')
+            ->select('a, f ,  u')
+            ->leftJoin('a.fileadverts', 'f')
+            ->leftJoin('a.user', 'u')
+            ->where('a.isActivated = 1')
+            ->andWhere('a.isPublic = 1')
+            ->andWhere('a.expiredAt > :date')
+            ->orderBy('a.expiredAt', 'DESC')
+            ->setParameter('date', date('Y-m-d H:i:s', time()));
+        ;
+
+        return $q->getQuery()->getResult();
+    }
+
+    /**
+     * BACKEND METHODS
+     */
+
+    public function getAllAdvertsIndexBackend($page = 1, $maxperpage = 12)
+    {
+        $q = $this->createQueryBuilder('a')
+            ->addSelect('files')
+            ->leftJoin('a.fileadverts', 'files')
+            ->orderBy('a.createdAt', 'DESC')
+        ;
+
+        $q->setFirstResult(($page-1) * $maxperpage)
+            ->setMaxResults($maxperpage);
+
+        return new Paginator($q);
+    }
+
+    public function findAdvertsByUserOnFrontend($user)
+    {
+
+        $qb = $this->createQueryBuilder('a')
+            ->addSelect('category')
+            ->addSelect('files')
+            ->addSelect('user')
+            ->leftJoin('a.fileadverts', 'files')
+            ->leftJoin('a.category', 'category')
+            ->leftJoin('a.user', 'user')
+            ->where('a.user = :user')
+            ->orderBy('a.createdAt', 'DESC')
+            ->setParameter('user', $user)
+            ->orderBy('a.expiredAt', 'DESC')
+        ;
+        return $qb->getQuery()->getResult();
+    }
+    public function findOneAdvertByUserByIdOnFrontend($advert_id, $user)
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->addSelect('category')
+            ->addSelect('files')
+            ->addSelect('user')
+            ->leftJoin('a.fileadverts', 'files')
+            ->leftJoin('a.category', 'category')
+            ->leftJoin('a.user', 'user')
+            ->where('a.id = :advert_id')
+            ->andWhere('a.user = :user')
+            ->setParameter('advert_id', $advert_id)
+            ->setParameter('user', $user)
+        ;
+
+        return $qb->getQuery()->getSingleResult();
+    }
+
+    /*public function countFullPublicAdverts()
+    {
+        $q = $this->createQueryBuilder('a')
+            ->select('COUNT(a) as nbAdverts')
+            ->where('a.isActivated = 1')
+            ->andWhere('a.isPublic = 1')
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+        ;
+
+        return $q->getSingleScalarResult();
+    }*/
+
+    /*public function countFullAdverts()
+    {
+        $q = $this->createQueryBuilder('a')
+            ->select('COUNT(a) as nbAdverts')
+            ->getQuery()
+        ;
+
+        return $q->getSingleScalarResult();
+    }*/
 }

@@ -1,6 +1,8 @@
 /web/bundles/
 /web/uploads/
 /web/uploads/*
+/web/save/
+/web/save/*
 /src/MainBundle/Entity/*.php~
 /app/bootstrap.php.cache
 /app/cache/*

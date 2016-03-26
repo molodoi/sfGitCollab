@@ -2,10 +2,6 @@ back_whishlist:
     resource: "@BackBundle/Resources/config/routing/whishlist.yml"
     prefix:   /whishlist
 
-back_tag:
-    resource: "@BackBundle/Resources/config/routing/tag.yml"
-    prefix:   /tag
-
 back_profile:
     resource: "@BackBundle/Resources/config/routing/profile.yml"
     prefix:   /profile

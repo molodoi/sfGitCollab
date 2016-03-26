@@ -18,14 +18,31 @@ class CategoryController extends Controller
      * Lists all Category entities.
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request, $page)
     {
+
         $em = $this->getDoctrine()->getManager();
 
-        $categories = $em->getRepository('MainBundle:Category')->findAll();
+        $allCategories = $em->getRepository('MainBundle:Category')
+            ->findAll();
+
+        if (null === $allCategories) {
+            throw new NotFoundHttpException("Aucunes categories.");
+        }
+
+        if(empty($page)){
+            $page = $request->query->getInt('page', 1);
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $categories = $paginator->paginate(
+            $allCategories,
+            $page,
+            5
+        );
 
         return $this->render('BackBundle:Category:index.html.twig', array(
-            'categories' => $categories,
+            'categories' => $categories
         ));
     }
 

@@ -125,4 +125,25 @@ class AdvertFileController extends Controller
             ->getForm()
         ;
     }
+
+    /**
+     * Deletes a AdvertFile entity.
+     *
+     */
+    public function deleteOneFileAction(Request $request, AdvertFile $advertFile)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $file = $em->getRepository('MainBundle:AdvertFile')->find($advertFile);
+
+        $em->remove($file);
+        $em->flush();
+
+        if($request->isXmlHttpRequest()){
+            return new JsonResponse(array('success' => true));
+        }
+
+        $referer = $request->headers->get('referer');
+
+        return $this->redirect($referer);
+    }
 }

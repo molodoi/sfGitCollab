@@ -17,6 +17,8 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            //new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new MainBundle\MainBundle(),
             new BackBundle\BackBundle(),
             new FrontBundle\FrontBundle(),

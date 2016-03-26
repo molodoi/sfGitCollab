@@ -3,6 +3,7 @@
 namespace MainBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * CategoryRepository
@@ -12,4 +13,86 @@ use Doctrine\ORM\EntityRepository;
  */
 class CategoryRepository extends EntityRepository
 {
+
+    /**
+     * COMMUNS METHODS
+     */
+
+
+    public function countFullCategory()
+    {
+        $q = $this->createQueryBuilder('c')
+            ->select('COUNT(c) as nbCategories')
+            ->getQuery()
+        ;
+
+        return $q->getSingleScalarResult();
+    }
+
+    public function getListCategory($page = 1, $maxperpage = 12)
+    {
+        $q = $this->createQueryBuilder('c')
+            ->orderBy('c.createdAt', 'DESC')
+        ;
+
+        $q->setFirstResult(($page-1) * $maxperpage)
+            ->setMaxResults($maxperpage);
+
+        return new Paginator($q);
+    }
+
+    /**
+     * FRONTEND METHODS
+     */
+    public function countFullCategoryBySlugWithAdverts($slug){
+        $q = $this->createQueryBuilder('c')
+            ->select('COUNT(c) as nbCategories')
+            ->leftJoin('c.adverts','adverts')
+            ->leftJoin('adverts.fileadverts', 'files')
+            ->leftJoin('adverts.tags', 'tags')
+            ->where('c.slug = :slug')
+            ->andWhere('adverts.isPublic = 1')
+            ->andWhere('adverts.expiredAt > :date')
+            ->andWhere('adverts.isActivated = 1')
+            ->orderBy('adverts.expiredAt', 'DESC')
+            ->orderBy('c.createdAt', 'DESC')
+            ->setParameter('slug', $slug)
+            ->setParameter('date', date('Y-m-d H:i:s', time()))
+        ;
+
+        return $q->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * FRONTEND METHODS
+     */
+
+    public function getListCategoryBySlugWithAdvertsOnFrontend($slug)
+    {
+
+        $q = $this->createQueryBuilder('c')
+            ->select('c, a, f , t')
+            ->leftJoin('c.adverts','a')
+            ->leftJoin('a.fileadverts', 'f')
+            ->leftJoin('a.tags', 't')
+            ->where('c.slug = :slug')
+            ->andWhere('a.isPublic = 1')
+            ->andWhere('a.expiredAt > :date')
+            ->andWhere('a.isActivated = 1')
+            ->orderBy('a.expiredAt', 'DESC')
+            ->orderBy('c.createdAt', 'DESC')
+            ->setParameter('slug', $slug)
+            ->setParameter('date', date('Y-m-d H:i:s', time()))
+        ;
+
+        return $q->getQuery()->getResult();
+    }
+
+
+    /**
+     * BACKEND METHODS
+     */
+
+
+
 }

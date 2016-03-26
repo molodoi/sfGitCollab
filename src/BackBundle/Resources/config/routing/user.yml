@@ -1,6 +1,12 @@
+back_user_page:
+    path:     /{page}
+    defaults: { _controller: "BackBundle:User:index", page: 1 }
+    requirements:
+        page: \d+
+
 back_user_index:
     path:     /
-    defaults: { _controller: "BackBundle:User:index" }
+    defaults: { _controller: "BackBundle:User:index", page: 1 }
     methods:  GET
 
 back_user_show:

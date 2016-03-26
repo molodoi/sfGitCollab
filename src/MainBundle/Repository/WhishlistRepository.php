@@ -3,6 +3,7 @@
 namespace MainBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * WhishlistRepository
@@ -12,4 +13,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class WhishlistRepository extends EntityRepository
 {
+
+    public function countFullWhishlists()
+    {
+        $q = $this->createQueryBuilder('w')
+            ->select('COUNT(w) as nbWhishlist')
+            ->getQuery()
+        ;
+
+        return $q->getSingleScalarResult();
+    }
+    public function getListWhishlists($page = 1, $maxperpage = 12)
+    {
+        $q = $this->createQueryBuilder('w')
+            ->orderBy('w.createdAt', 'DESC')
+        ;
+
+        $q->setFirstResult(($page-1) * $maxperpage)
+            ->setMaxResults($maxperpage);
+
+        return new Paginator($q);
+    }
 }

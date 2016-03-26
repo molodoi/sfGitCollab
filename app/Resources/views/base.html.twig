@@ -24,7 +24,7 @@
     <![endif]-->
 </head>
 <body>
-    {% include "FrontBundle:Partials:nav-menu.html.twig" %}
+    {% include ":Slots:nav-menu.html.twig" %}
 
     <div class="container">
         <div class="navbar navbar-default navbar-fixed-top hidden-md hidden-lg">
@@ -35,18 +35,18 @@
             </button>
         </div>
         <!-- FLASHBAG MESSAGE -->
-        {% if app.session.started %}
-            {% for type, flashMessage in app.session.flashbag.all() %}
-                <br />
-                <div class="alert alert-{{ type }} fade in alert-fixed-top">
-                    <button class="close" data-dismiss="alert" type="button">×</button>
-                    {% if flashMessage.title is defined %}
-                        <strong>{{ flashMessage.title }}</strong>
-                        {{ flashMessage.message }}
-                    {% else %}
-                        {{ type }}
-                    {% endif %}
-                </div>
+        {% if app.request.hasPreviousSession %}
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-{{ type }} ">
+                                <button class="close" data-dismiss="alert" type="button">×</button>
+                                {{ message }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             {% endfor %}
         {% endif %}
         <!-- /FLASHBAG MESSAGE -->

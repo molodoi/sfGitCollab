@@ -6,6 +6,10 @@
 {% endblock %}
 
 {% block body %}
+    <div class="row">
+        {#{% include "FrontBundle:Slots:search-form-frontend.html.twig" %}#}
+        {% render(controller('FrontBundle:Advert:search')) %}
+    </div>
     {% block content %}
 
     {% endblock %}

@@ -21,7 +21,17 @@ body {
     padding-left: 15px;
 }
 
+.add_field_button{
+    margin-bottom: 12px;
+}
 
+.input-group{
+    margin-top: 12px;
+}
+
+.material-switch label:before{
+    color:red;
+}
 
 /*
  * Global add-ons
@@ -46,7 +56,7 @@ body {
 
 /* Hide for mobile, show later */
 .sidebar {
-  display: none;
+  /*display: none;*/
 }
 @media (min-width: 768px) {
   .sidebar {

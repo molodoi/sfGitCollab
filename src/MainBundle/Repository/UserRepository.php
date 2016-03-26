@@ -3,6 +3,7 @@
 namespace MainBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * ProfileRepository
@@ -26,5 +27,26 @@ class UserRepository extends EntityRepository
             ->getQuery();
 
         return $q->getResult();
+    }
+
+    public function countFullUsers()
+    {
+        $q = $this->createQueryBuilder('u')
+            ->select('COUNT(u) as nbUsers')
+            ->getQuery()
+        ;
+
+        return $q->getSingleScalarResult();
+    }
+    public function getListUsers($page = 1, $maxperpage = 12)
+    {
+        $q = $this->createQueryBuilder('u')
+            ->orderBy('u.createdAt', 'DESC')
+        ;
+
+        $q->setFirstResult(($page-1) * $maxperpage)
+            ->setMaxResults($maxperpage);
+
+        return new Paginator($q);
     }
 }

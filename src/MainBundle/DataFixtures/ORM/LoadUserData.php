@@ -24,7 +24,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, F
     public function load(ObjectManager $manager)
     {
 
-        $userManager = $this->container->get('fos_user.user_manager');
+        /*$userManager = $this->container->get('fos_user.user_manager');
         // Create our user and set details
         $user = $userManager->createUser();
         $user->setUsername('test');
@@ -51,13 +51,13 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, F
         $userManager->updateUser($user2, true);
         $this->addReference('user', $user);
         $this->addReference('user1', $user1);
-        $this->addReference('user2', $user2);
+        $this->addReference('user2', $user2);*/
     }
 
     public function getOrder()
     {
         // the order in which fixtures will be loaded
         // the lower the number, the sooner that this fixture is loaded
-        return 3;
+        return 1;
     }
 }

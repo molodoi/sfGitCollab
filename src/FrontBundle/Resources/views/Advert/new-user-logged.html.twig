@@ -1,0 +1,224 @@
+{% extends 'FrontBundle::layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/css/front/carouselbs.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+                    <div class="form-group col-lg-6 padding-left-0 padding-right-15">
+                        <div class="form-group {% if form_errors(form.type) %} has-error {% endif %}">
+                            {{ form_errors(form.type) }}
+                            {{ form_widget(form.type, { 'attr': {'class': 'form-control', 'placeholder': 'Type d\'offre'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6 padding-left-0 padding-right-0">
+                        <div class="form-group {% if form_errors(form.category) %} has-error {% endif %}">
+                            {{ form_errors(form.category) }}
+                            {{ form_widget(form.category, { 'attr': {'class': 'form-control', 'placeholder': 'Catégorie'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6 padding-left-0 padding-right-15">
+                        <div class="form-group {% if form_errors(form.title) %} has-error {% endif %}">
+                            {{ form_errors(form.title) }}
+                            {{ form_widget(form.title, { 'attr': {'class': 'form-control', 'placeholder': 'Titre de l\'annonce'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6 padding-left-0 padding-right-0">
+                        <div class="form-group {% if form_errors(form.price) %} has-error {% endif %}">
+                            {{ form_errors(form.price) }}
+                            {{ form_widget(form.price, { 'attr': {'class': 'form-control', 'placeholder': 'Prix'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 padding-left-0 padding-right-0">
+                        <div class="form-group {% if form_errors(form.content) %} has-error {% endif %}">
+                            {{ form_errors(form.content) }}
+                            {{ form_widget(form.content, { 'attr': {'class': 'form-control', 'placeholder': 'Contenu'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4 padding-left-0 padding-right-15">
+                        <div class="form-group {% if form_errors(form.location) %} has-error {% endif %}">
+                            {{ form_errors(form.location) }}
+                            {{ form_widget(form.location, { 'attr': {'class': 'form-control', 'placeholder': 'Location'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4 padding-left-0 padding-right-15">
+                        <div class="form-group {% if form_errors(form.longitude) %} has-error {% endif %}">
+                            {{ form_errors(form.longitude) }}
+                            {{ form_widget(form.longitude, { 'attr': {'class': 'form-control', 'placeholder': 'Longitude'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4 padding-right-0 padding-left-15">
+                        <div class="form-group {% if form_errors(form.latitude) %} has-error {% endif %}">
+                            {{ form_errors(form.latitude) }}
+                            {{ form_widget(form.latitude, { 'attr': {'class': 'form-control', 'placeholder': 'Latitude'} }) }}
+                        </div>
+                    </div>
+                    <div class="col-lg-12 padding-right-0 padding-left-0">
+                        <div class="panel panel-default">
+                            <!-- List group -->
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    L'annonce est-elle publique
+                                    <div class="material-switch pull-right">
+                                        {{ form_widget(form.isPublic) }}
+                                        {{ form_label(form.isPublic, null,{ 'label_attr': {'class': 'label-success'} }) }}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    {% if advert.fileadverts|length< 5  %}
+                        <div class="form-group col-lg-12 padding-left-0 padding-right-0">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    {{ form_errors(form.files) }}
+                                    {{ form_widget(form.files) }}
+                                    {#<div class="input_fields_wrap">
+                                        <button class="add_field_button">Add More Fields</button>
+                                        <div>
+                                            &#123;&#35;{{ form_widget(form.files, { 'full_name': 'advert[files][0][file]', 'id': 'advert[files][0][file]',  'attr': {'class': 'form-control'} }) }}&#35;&#125;
+                                            {{ form_widget(form.files, { 'attr': {'class': 'form-control'} }) }}
+                                        </div>
+                                    </div>#}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12">
+                            {% if advert.fileadverts|length != 0 %}
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        {% for image in advert.fileadverts %}
+                                            <div class="col-sm-6 col-md-4">
+                                                <div class="thumbnail">
+                                                    <img src="{{ asset(image.webPath('400_')) }}" class="img-responsive"/>
+                                                    <h3>{{ image.alt }}</h3>
+                                                    <p>
+                                                        <a href="{{ path('back_advert_file_delete', {'id': image.id}) }}" class="btn btn-danger" role="button">Supprimer {{ image.alt }}</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {{ form_rest(form) }}
+                    <input type="submit" value="Edit" class="btn btn-success btn-lg" />
+                    <a href="{{ path('front_logged_advert_index') }}" class="btn btn-default btn-lg">Back to the list</a>
+                    {{ form_end(form, {'render_rest': false}) }}
+                    <span class="clearfix"></span>
+                </div>
+            </div>
+        </div>
+        <!-- START SIDEBAR -->
+        <div class="col-md-4">
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Supprimer le text des label sur les checkbox public ect..
+            $('.material-switch label').text('');
+
+            // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
+            var $container = $('div#advert_files');
+            // On définit un compteur unique pour nommer les champs qu'on va ajouter dynamiquement
+            var index = $container.find(':input').length;
+
+            var $addLink = $('<a href="#" id="add_category" class="btn btn-default">Ajouter un fichier</a><hr class="clearfix" />');
+
+            // On ajoute un lien pour ajouter une nouvelle
+            $container.prepend($addLink);
+
+            // On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
+            $addLink.click(function(e) {
+                if(index <= 4) {
+                    addAdvertFile($container);
+                }
+                e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+                return false;
+            });
+
+            // On ajoute un premier champ automatiquement s'il n'en existe pas déjà un (cas d'une nouvelle annonce par exemple).
+            if (index == 0) {
+                addAdvertFile($container);
+            } else {
+                // Pour chaque catégorie déjà existante, on ajoute un lien de suppression
+                $container.children('div').each(function() {
+                    addDeleteLink($(this));
+                });
+            }
+
+            // La fonction qui ajoute un formulaire
+            function addAdvertFile($container) {
+                // Dans le contenu de l'attribut « data-prototype », on remplace :
+                // - le texte "__name__label__" qu'il contient par le label du champ
+                // - le texte "__name__" qu'il contient par le numéro du champ
+                var $prototype = $($container.attr('data-prototype').replace(/__name__label__/g, 'Fichier n°' + (index+1))
+                        .replace(/__name__/g, index));
+
+
+
+                // On ajoute au prototype un lien pour pouvoir supprimer la catégorie
+                addDeleteLink($prototype);
+
+                // On ajoute le prototype modifié à la fin de la balise <div>
+                $container.append($prototype);
+
+                // Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
+                $('label[for="advert_files_'+index+'_file"]').remove();
+                index++;
+            }
+
+            // La fonction qui ajoute un lien de suppression d'une catégorie
+            function addDeleteLink($prototype) {
+                // Création du lien
+                $deleteLink = $('<br /><a href="#" class="btn btn-danger">Supprimer le champ de téléchargement ci-dessus</a><hr class="clearfix" />');
+
+                // Ajout du lien
+                $prototype.append($deleteLink);
+
+                // Ajout du listener sur le clic du lien
+                $deleteLink.click(function(e) {
+                    $prototype.remove();
+                    e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+                    return false;
+                });
+            }
+
+            $('#thumbs-list').on('click', '.btn-danger', function(event) {
+                event.preventDefault();
+                if (confirm("Etes-vous sure?")) {
+                    currentLink = $(this);
+                    currentLinkHref = currentLink.attr('href');
+                    currentLink.closest('.fileproduct-thumb').fadeOut(600,function(){
+                        $(this).remove();
+                    });
+
+                    $.ajax({
+                        type:"GET",
+                        url: currentLinkHref
+                    }).done(function(){
+                        currentLink.parents('.fileproduct-thumb').fadeOut(600,function(){
+                            $(this).remove();
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}

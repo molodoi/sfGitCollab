@@ -1,7 +1,8 @@
 back_advert_index:
-    path:     /
-    defaults: { _controller: "BackBundle:Advert:index" }
-    methods:  GET
+    path:     /{page}
+    defaults: { _controller: "BackBundle:Advert:index", page: 1 }
+    requirements:
+        page: \d+
 
 back_advert_show:
     path:     /{id}/show

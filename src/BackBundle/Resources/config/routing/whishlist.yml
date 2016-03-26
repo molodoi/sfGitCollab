@@ -1,6 +1,12 @@
+back_whishlist_page:
+    path:     /{page}
+    defaults: { _controller: "BackBundle:Whishlist:index", page: 1 }
+    requirements:
+        page: \d+
+
 back_whishlist_index:
     path:     /
-    defaults: { _controller: "BackBundle:Whishlist:index" }
+    defaults: { _controller: "BackBundle:Whishlist:index", page: 1 }
     methods:  GET
 
 back_whishlist_show:

@@ -16,24 +16,28 @@ class AdvertType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('slug')
-            ->add('description')
             ->add('content')
             ->add('price')
-            ->add('type')
+            ->add('type', 'choice', array(
+                'choices'  => array(
+                    'offer' => 'Offre',
+                    'request' => 'Demande',
+                ),
+            ))
+            ->add('location')
             ->add('longitude')
             ->add('latitude')
-            ->add('token')
-            ->add('isAvailable')
             ->add('isPublic')
             ->add('isActivated')
-            ->add('deletedAt', 'datetime')
-            ->add('expiredAt', 'datetime')
-            ->add('createdAt', 'datetime')
-            ->add('updatedAt', 'datetime')
             ->add('category')
-            ->add('user')
-            ->add('tags')
+            ->add('files',  'collection', array(
+                'type'         => new AdvertFileType(),
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'options'  => array(
+                    'required'  => false,
+                ),
+            ))
         ;
     }
     

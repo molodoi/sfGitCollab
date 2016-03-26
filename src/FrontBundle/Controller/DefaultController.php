@@ -3,22 +3,34 @@
 namespace FrontBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
-    public function indexAction()
+    public function indexAction(Request $request, $page)
     {
-        /**
-         * Flash bag message type : success, info, warning, danger - BS3
-         */
-        /*$this->get('session')->getFlashBag()->set(
-            'success',
-            array(
-                'title' => 'Great!',
-                'message' => 'Test success message.'
-            )
-        );*/
+        $em = $this->getDoctrine()->getEntityManager();
 
-        return $this->render('FrontBundle:Default:index.html.twig');
+        $allAdverts = $em->getRepository('MainBundle:Advert')
+            ->getListPublicAdverts();
+
+        if (!$allAdverts) {
+            throw $this->createNotFoundException('Unable to find.');
+        }
+
+        if(empty($page)){
+            $page = $request->query->getInt('page', 1);
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $adverts = $paginator->paginate(
+            $allAdverts,
+            $page,
+            10
+        );
+
+        return $this->render('FrontBundle:Default:index.html.twig',array(
+            'adverts' => $adverts
+        ));
     }
 }

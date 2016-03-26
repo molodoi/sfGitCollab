@@ -1,0 +1,100 @@
+{% extends 'FrontBundle::layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/css/front/carouselbs.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h2>{{ advert.title|capitalize }}</h2>
+                    <hr />
+                    {% if advert.fileadverts|length != 0 %}
+                        <div class="carousel slide article-slide" id="advertPhotoCarousel">
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner cont-slider">
+                                {% for fa in advert.fileadverts %}
+                                    <div class="item {% if loop.first %}active{% endif %}">
+                                        <img alt="" title="" src="{{ asset(fa.webPath('800_')) }}" class="img-responsive img-rounded">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators">
+                                {% for fa in advert.fileadverts %}
+                                    <li {% if loop.first %}class="active"{% endif %} data-slide-to="{{ loop.index0 }}" data-target="#advertPhotoCarousel">
+                                        <img alt="" src="{{ asset(fa.webPath('150_')) }}" class="img-responsive">
+                                    </li>
+                                {% endfor %}
+                            </ol>
+                        </div>
+                    {% endif %}
+                    <br />
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">
+                            <strong>Description:</strong>
+                            <div class="material-switch pull-right">
+                                <strong>Prix: {{ advert.price }}€</strong>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            {{ advert.content }}
+                        </div>
+                        <!-- List group -->
+                        <ul class="list-group">
+                            {% if advert.user %}
+                            <li class="list-group-item">
+                                <strong>Annonce de:  {{ advert.user.username|capitalize }}</strong>
+                            </li>
+                            {% endif %}
+
+                            {% if advert.category %}
+                            <li class="list-group-item">
+                                <strong>Category:</strong>
+                                <a href="{{ path('front_advert_by_category', {'id': advert.category.id }) }}">{{ advert.category.title|capitalize }}</a>
+                            </li>
+                            {% endif %}
+
+                            <li class="list-group-item">
+                                <strong>Ville:</strong>
+                                    {{ advert.location|capitalize }}
+                            </li>
+                            <li class="list-group-item">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d62331.91847465962!2d2.348478333333333!3d48.85344166666667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sfr!4v1458484068844" width="100%" height="300" frameborder="0" style="border:0" allowfullscreen ></iframe>
+                            </li>
+                            <li class="list-group-item ">
+                                <span class="pull-right">Mise en ligne le {{ advert.createdAt|date }}</span>
+                                <span class="clearfix"></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <span class="clearfix"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Username</div>
+                <div class="panel-body">
+                    <p>
+                        <a href="#" class="btn btn-block btn-lg btn-info">
+                            <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Voir le numéro
+                        </a>
+                        <a href="#" class="btn btn-block btn-lg btn-primary">
+                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Envoyer un message
+                        </a>
+                    </p>
+                </div>
+            </div>
+            {% include "FrontBundle:Slots:manage-advert-sidebar.html.twig" %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

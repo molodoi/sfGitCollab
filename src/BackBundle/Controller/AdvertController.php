@@ -2,6 +2,8 @@
 
 namespace BackBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use MainBundle\Entity\AdvertFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -18,11 +20,27 @@ class AdvertController extends Controller
      * Lists all Advert entities.
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request, $page = null)
     {
+
         $em = $this->getDoctrine()->getManager();
 
-        $adverts = $em->getRepository('MainBundle:Advert')->findAll();
+        $allAdverts = $em->getRepository('MainBundle:Advert')->findBy(array(),array('createdAt' => 'DESC'));
+
+        if (null === $allAdverts) {
+            throw new NotFoundHttpException("Aucunes annonces.");
+        }
+
+        if(empty($page)){
+            $page = $request->query->getInt('page', 1);
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $adverts = $paginator->paginate(
+            $allAdverts,
+            $page,
+            4
+        );
 
         return $this->render('BackBundle:Advert:index.html.twig', array(
             'adverts' => $adverts,
@@ -76,13 +94,24 @@ class AdvertController extends Controller
         $deleteForm = $this->createDeleteForm($advert);
         $editForm = $this->createForm('BackBundle\Form\AdvertType', $advert);
         $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($advert);
-            $em->flush();
-
-            return $this->redirectToRoute('back_advert_edit', array('id' => $advert->getId()));
+        //Count Files
+        //Current files and tags stored with Advert
+        $currentFileAdvert = count($advert->getFileadverts());
+        //Files stored in request / Post
+        $advertsv = $request->files->get('advert') ? $request->files->get('advert'): null ;
+        //Total Files Count / Sum
+        $totalFiles = ($currentFileAdvert + count($advertsv['files']));
+        //Check files limit  to 5 files & tags
+        if($totalFiles <= 5 && count($advertsv['files']) <= 5 ){
+            if ($editForm->isSubmitted() && $editForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($advert);
+                $em->flush();
+                return $this->redirectToRoute('back_advert_edit', array('id' => $advert->getId()));
+            }
+        }else{
+            $session = $request->getSession();
+            $session->getFlashBag()->add('warning', 'Vous avez atteind la limite d\'upload de 5 fichiers');
         }
 
         return $this->render('BackBundle:Advert:edit.html.twig', array(

@@ -5,73 +5,63 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="dark-grey">Recherche</h3>
-            <hr />
-            <form>
-                <div class="form-group col-lg-6 padding-left-0 padding-right-15">
-                    <label class="sr-only" for="exampleInputEmail3">Mots clés</label>
-                    <input type="text" class="form-control input-lg" placeholder="Mots clés">
-                </div>
-
-                <div class="form-group col-lg-6 padding-right-0 padding-left-15">
-                    <div id="custom-geo-input">
-                        <div class="input-group col-md-12">
-                            <input type="text" class="form-control input-lg" placeholder="Ville/Cp" />
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-info btn-lg" type="button">
-                                            <i class="glyphicon glyphicon-map-marker"></i>
-                                        </button>
-                                    </span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group col-lg-6 padding-left-0 padding-right-15">
-                    <select class="form-control input-lg">
-                        <option>Catégories</option>
-                        {% for i in 1..8 %}
-                            <option>Catégorie 0{{ i }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="form-group col-lg-6 padding-right-0 padding-left-15 ">
-                    <select class="form-control input-lg">
-                        <option> < 10km</option>
-                        <option> < 50km</option>
-                        <option> < 100km</option>
-                        <option> < 200km</option>
-                        <option> Partout</option>
-                    </select>
-                </div>
-                <div class="clearfix"></div>
-                <button type="submit" class="btn btn-success btn-lg btn-block"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Rechercher</button>
-            </form>
-        </div>
-    </div>
 
     <hr />
     <div class="row">
-        {% for i in 1..6 %}
-            <div class="col-md-12">
-                <h2>Catégorie {{ i }}</h2>
+        <div class="col-md-8">
+            <div class="list-group">
+                {% if adverts|length != 0 %}
+                {% for advert in adverts %}
+                    <a href="{{ path('front_advert_show', { 'slug': advert.slug, 'location': advert.location} ) }}" class="list-group-item">
+                        {% if advert.fileadverts|length != 0 %}
+                            <span class="col-md-3">
+                            {% set firstimg = advert.fileadverts|first %}
+                                <img src="{{ asset(firstimg.webPath('150_')) }}" alt="{{ firstimg.alt }}" class="img-responsive img-rounded">
+                                <span class="nbimage img-rounded" >
+                                    <span><strong>{{ advert.fileadverts|length }}</strong></span>
+                                </span>
+                            </span>
+                        {% else %}
+                            <span class="col-md-3">
+                                <img src="http://placehold.it/250x250" alt="..." class="img-responsive img-rounded">
+                            </span>
+                        {% endif %}
+
+                        <span class="col-md-9">
+                            {% if advert.title is defined %}
+                                <h3 class="advertTitle">{{ advert.title|capitalize }}</h3>
+                            {% endif %}
+                            {% if advert.category.title is defined %}
+                                <p class="list-group-item-text">{{ advert.category.title|capitalize }}</p>
+                            {% endif %}
+                            {% if advert.location is defined %}
+                                <p class="list-group-item-text">{{ advert.location|capitalize }}</p>
+                            {% endif %}
+                            {% if advert.price is defined %}
+                                <p class="list-group-item-heading price">{{ advert.price }}€</p>
+                            {% endif %}
+                            {% if advert.user is defined %}
+                                <p class="list-group-item-heading price">
+                                    <strong>{{ advert.user|e|capitalize }}</strong>
+                                </p>
+                            {% endif %}
+                            <p>
+                                Mise en ligne le {{ advert.createdAt|date("d/m/Y") }}
+                                <span class="pull-right">Expirera le {{ advert.expiredAt|date("d/m/Y") }}</span>
+                            </p>
+                        </span>
+                        <span class="clearfix"></span>
+                    </a>
+                {% endfor %}
             </div>
-            {% for i in 1..8 %}
-                <div class="col-sm-6 col-md-3">
-                    <div class="thumbnail">
-                        <img src="http://placehold.it/250x250" alt="...">
-                        <div class="caption">
-                            <h3>Produit {{ i }}</h3>
-                            <h4>{{ i * 2 }}€</h4>
-                            <p>Quam ob rem cave Catoni anteponas ne istum quidem ipsum, quem Apollo,...</p>
-                            <p><a href="#" class="btn btn-primary" role="button">Ajouter à la whihlsist</a> <a href="#" class="btn btn-default" role="button">Infos</a></p>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        {% endfor %}
+            {{ knp_pagination_render(adverts) }}
+            {% else %}
+                Aucune annonce
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <h2>Catégorie</h2>
+        </div>
     </div>
 {% endblock %}
 

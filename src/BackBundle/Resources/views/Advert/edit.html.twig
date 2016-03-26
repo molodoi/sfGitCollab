@@ -1,21 +1,195 @@
 {% extends 'BackBundle::layout.html.twig' %}
 
+
 {% block content %}
-    <h1>Advert edit</h1>
-
+    <h1>Annonce - Edit</h1>
     {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+        {{ form_errors(edit_form) }}
+        <div class="form-group col-lg-6 padding-left-0 padding-right-15">
+            <div class="form-group {% if form_errors(edit_form.type) %} has-error {% endif %}">
+                {{ form_errors(edit_form.type) }}
+                {{ form_widget(edit_form.type, { 'attr': {'class': 'form-control', 'placeholder': 'Type d\'offre'} }) }}
+            </div>
+        </div>
+        <div class="form-group col-lg-6 padding-left-0 padding-right-0">
+            <div class="form-group {% if form_errors(edit_form.category) %} has-error {% endif %}">
+                {{ form_errors(edit_form.category) }}
+                {{ form_widget(edit_form.category, { 'attr': {'class': 'form-control', 'placeholder': 'Catégorie'} }) }}
+            </div>
+        </div>
+        <div class="form-group col-lg-6 padding-left-0 padding-right-15">
+            <div class="form-group {% if form_errors(edit_form.title) %} has-error {% endif %}">
+                {{ form_errors(edit_form.title) }}
+                {{ form_widget(edit_form.title, { 'attr': {'class': 'form-control', 'placeholder': 'Username'} }) }}
+            </div>
+        </div>
+        <div class="form-group col-lg-6 padding-left-0 padding-right-0">
+            <div class="form-group {% if form_errors(edit_form.price) %} has-error {% endif %}">
+                {{ form_errors(edit_form.price) }}
+                {{ form_widget(edit_form.price, { 'attr': {'class': 'form-control', 'placeholder': 'Prix'} }) }}
+            </div>
+        </div>
+        <div class="form-group col-lg-12 padding-left-0 padding-right-0">
+            <div class="form-group {% if form_errors(edit_form.content) %} has-error {% endif %}">
+                {{ form_errors(edit_form.content) }}
+                {{ form_widget(edit_form.content, { 'attr': {'class': 'form-control', 'placeholder': 'Contenu'} }) }}
+            </div>
+        </div>
+        <div class="form-group col-lg-4 padding-left-0 padding-right-15">
+            <div class="form-group {% if form_errors(edit_form.location) %} has-error {% endif %}">
+                {{ form_errors(edit_form.location) }}
+                {{ form_widget(edit_form.location, { 'attr': {'class': 'form-control', 'placeholder': 'Location'} }) }}
+            </div>
+        </div>
+        <div class="form-group col-lg-4 padding-left-0 padding-right-15">
+            <div class="form-group {% if form_errors(edit_form.longitude) %} has-error {% endif %}">
+                {{ form_errors(edit_form.longitude) }}
+                {{ form_widget(edit_form.longitude, { 'attr': {'class': 'form-control', 'placeholder': 'Longitude'} }) }}
+            </div>
+        </div>
+        <div class="form-group col-lg-4 padding-right-0 padding-left-15">
+            <div class="form-group {% if form_errors(edit_form.latitude) %} has-error {% endif %}">
+                {{ form_errors(edit_form.latitude) }}
+                {{ form_widget(edit_form.latitude, { 'attr': {'class': 'form-control', 'placeholder': 'Latitude'} }) }}
+            </div>
+        </div>
+        <div class="col-lg-12 padding-right-0 padding-left-0">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Affichage de vos données personnelles</div>
+                <!-- List group -->
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        L'annonce est-elle publique
+                        <div class="material-switch pull-right">
+                            {{ form_widget(edit_form.isPublic) }}
+                            {{ form_label(edit_form.isPublic, null,{ 'label_attr': {'class': 'label-success'} }) }}
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        L'annonce est-elle active
+                        <div class="material-switch pull-right">
+                            {{ form_widget(edit_form.isActivated) }}
+                            {{ form_label(edit_form.isActivated, null,{ 'label_attr': {'class': 'label-success'} }) }}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group col-lg-12 padding-left-0 padding-right-0">
+            {% if advert.tags|length <= 4  %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ form_errors(edit_form.tags) }}
+                    {#{{ form_widget(edit_form.tags) }}#}
+                    {#{% if advert.tags|length <= 4  %}
+                        <ul class="list-unstyled tags" data-prototype="{{ form_widget(edit_form.tags.vars.prototype)|e }}">
 
-    <ul>
-        <li>
-            <a href="{{ path('back_advert_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                        </ul>
+                    {% endif %}#}
+                    <a href="#" id="add-tag" class="btn btn-default">Ajouter un tag</a>
+                    <hr />
+                    <div id="container-tag">
+                        <div id="prototype-tag" class="prototype-tag">
+                            {% set prototype_tag = edit_form.tags.vars.prototype %}
+                            <div class="form-group {% if form_errors(prototype_tag.title) %} has-error {% endif %}">
+                                {{ form_widget(prototype_tag.title, { 'attr': {'class': 'form-control tag', 'placeholder': 'Tag'} }) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if advert.tags|length != 0 %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">Mots clés liés à l'annonce :</div>
+                    <ul id="tags-list" class="list-group">
+                        {% for tag in advert.tags %}
+                            <li class="list-group-item list-tag">
+                                {{ tag.title }}
+                                <div class="material-switch pull-right">
+                                        <a href="{{ path('back_advert_tag_delete', {'id': tag.id, 'advert': advert.id }) }}" class="btn btn-danger btn-sm" role="button">
+                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        </a>
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+        <hr />
+        {% if advert.fileadverts|length <= 4  %}
+            <div class="form-group col-lg-12 padding-left-0 padding-right-0">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {#{{ form_errors(edit_form.files) }}
+                        {{ form_widget(edit_form.files) }}#}
+                        <a href="#" id="add-file" class="btn btn-default">Ajouter un fichier</a>
+                        <hr />
+                        <div id="container-file">
+                            <div id="prototype-file" class="prototype-file">
+                                {% set prototype_file = edit_form.files.vars.prototype %}
+                                <div class="form-group {% if form_errors(prototype_file.file) %} has-error {% endif %}">
+                                    {{ form_widget(prototype_file.file, { 'attr': {'class': 'form-control file'} }) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="row">
+        <div class="col-sm-12 col-md-12">
+            {% if advert.fileadverts|length != 0 %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <ul id="files-list" class="list-unstyled">
+                            {% for image in advert.fileadverts %}
+                                <li>
+                                    <div class="col-sm-6 col-md-4 file">
+                                        <div class="thumbnail">
+                                            <img src="{{ asset(image.webPath('400_')) }}" class="advertfile img-responsive"/>
+                                            <h3>{{ image.alt }}</h3>
+                                            <p>
+                                                <a href="{{ path('back_advert_file_delete', {'id': image.id}) }}" class="btn btn-danger" role="button">Supprimer {{ image.alt }}</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        </div>
+        {{ form_widget(edit_form._token) }}
+        <input type="submit" value="Edit" class="btn btn-success btn-lg" />
+        <a href="{{ path('back_advert_index') }}" class="btn btn-default btn-lg">Back to the list</a>
+        {{ form_end(edit_form, {'render_rest': false}) }}
+    <br />
+    <br />
+    {{ form_start(delete_form) }}
+       <input type="submit" value="Delete" class="btn btn-danger">
+    {{ form_end(delete_form) }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.material-switch label').text('');
+
+        });
+    </script>
+    {% if advert.tags|length <= 4  %}
+        <script src="{{ asset('/js/prototype-tag.js') }}"></script>
+    {% endif %}
+    {% if advert.fileadverts|length <= 4  %}
+        <script src="{{ asset('/js/prototype-file.js') }}"></script>
+        {#<script src="{{ asset('/js/prototype-advertfile-field.js') }}"></script>#}
+    {% endif %}
 {% endblock %}

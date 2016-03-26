@@ -3,47 +3,37 @@
 {% block content %}
     <h1>Category list</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Slug</th>
-                <th>Position</th>
-                <th>Createdat</th>
-                <th>Updatedat</th>
-                <th>Description</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for category in categories %}
-            <tr>
-                <td><a href="{{ path('category_show', { 'id': category.id }) }}">{{ category.id }}</a></td>
-                <td>{{ category.title }}</td>
-                <td>{{ category.slug }}</td>
-                <td>{{ category.position }}</td>
-                <td>{% if category.createdAt %}{{ category.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if category.updatedAt %}{{ category.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ category.description }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('back_category_show', { 'id': category.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('back_category_edit', { 'id': category.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('back_category_new') }}">Create a new entry</a>
-        </li>
-    </ul>
+    <a href="{{ path('back_category_new') }}" class="btn btn-info btn-flat pull-left">Create a new entry</a>
+    <br />
+    <br />
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Position</th>
+                    <th>Createdat</th>
+                    <th>Updatedat</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td><a href="{{ path('back_category_show', { 'id': category.id }) }}">{{ category.id }}</a></td>
+                    <td>{{ category.title }}</td>
+                    <td>{{ category.position }}</td>
+                    <td>{% if category.createdAt %}{{ category.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if category.updatedAt %}{{ category.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>
+                        <a href="{{ path('back_category_show', { 'id': category.id }) }}" class="label label-success"><i class="fa fa-eye"></i> show</a>
+                        <a href="{{ path('back_category_edit', { 'id': category.id }) }}" class="label label-primary"><i class="fa fa-edit"></i> edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {{ knp_pagination_render(categories) }}
+    </div>
 {% endblock %}

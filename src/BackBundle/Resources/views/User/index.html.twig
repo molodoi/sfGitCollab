@@ -2,69 +2,71 @@
 
 {% block content %}
     <h1>User list</h1>
-<div class="table-responsive">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                {#<th>Photo</th>#}
-                <th>Username</th>
-                <th>Roles</th>
-                <th>Enabled</th>
-                <th>Locked</th>
-                <th>Dernière connexion</th>
-                <th>Créé le</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <a href="{{ path('back_user_new') }}" class="btn btn-info btn-flat pull-left">Create new</a>
+    <br />
+    <br />
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    {#<th>Photo</th>#}
+                    <th>Username</th>
+                    <th>Roles</th>
+                    <th>Enabled</th>
+                    <th>Locked</th>
+                    <th>Dernière connexion</th>
+                    <th>Créé le</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
 
-        {% for user in users %}
-            <tr>
-                <td>
-                    {% if user.path is not null %}
-                        <a href="{{ path('back_user_edit', { 'id': user.id }) }}">
-                            <img src="{{ asset('/uploads/avatars/thumb-50-50-'~user.path) }}" class="img-responsive img-rounded text-center" />
-                        </a>
-                    {% else %}
-                        <a href="{{ path('back_user_edit', { 'id': user.id }) }}">
-                            <img src="http://placehold.it/50x50" class="img-responsive img-rounded text-center" alt="">
-                        </a>
-                    {% endif %}
-                </td>
-                <td>{{ user.username }}</td>
-                <td>
-                    {% for roles in user.roles %}
-                        {% if roles is defined %}
-                            {{ roles }},
+            {% for user in users %}
+                <tr>
+                    <td>
+                        {% if user.path is not null %}
+                            <a href="{{ path('back_user_edit', { 'id': user.id }) }}">
+                                <img src="{{ asset('/uploads/avatars/thumb-50-50-'~user.path) }}" class="img-responsive img-rounded text-center" />
+                            </a>
+                        {% else %}
+                            <a href="{{ path('back_user_edit', { 'id': user.id }) }}">
+                                <img src="http://placehold.it/50x50" class="img-responsive img-rounded text-center" alt="">
+                            </a>
                         {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {% if user.enabled is defined %}
-                        <span class="label label-success">vérifié</span>
-                    {% else %}
-                        <span class="label label-danger">non vérifié</span>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if user.locked is defined %}
-                        <span class="label label-success">actif</span>
-                    {% else %}
-                        <span class="label label-danger">locked</span>
-                    {% endif %}
-                </td>
-                <td>{{ user.lastLogin|date("d/m/Y", "Europe/Paris") }}</td>
-                <td>{{ user.lastLogin|date("d/m/Y", "Europe/Paris") }}</td>
+                    </td>
+                    <td>{{ user.username }}</td>
+                    <td>
+                        {% for roles in user.roles %}
+                            {% if roles is defined %}
+                                {{ roles }},
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% if user.enabled is defined %}
+                            <span class="label label-success">vérifié</span>
+                        {% else %}
+                            <span class="label label-danger">non vérifié</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if user.locked is defined %}
+                            <span class="label label-success">actif</span>
+                        {% else %}
+                            <span class="label label-danger">locked</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ user.lastLogin|date("d/m/Y", "Europe/Paris") }}</td>
+                    <td>{{ user.lastLogin|date("d/m/Y", "Europe/Paris") }}</td>
 
-                <td>
-                    <a href="{{ path('back_user_show', { 'id': user.id }) }}" class="label label-success"><i class="fa fa-eye"></i> show</a>
-                    <a href="{{ path('back_user_edit', { 'id': user.id }) }}" class="label label-primary"><i class="fa fa-edit"></i> edit</a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <a href="{{ path('back_user_new') }}" class="btn btn-sm btn-info btn-flat pull-left">Create new</a>
-</div>
-
+                    <td>
+                        <a href="{{ path('back_user_show', { 'id': user.id }) }}" class="label label-success"><i class="fa fa-eye"></i> show</a>
+                        <a href="{{ path('back_user_edit', { 'id': user.id }) }}" class="label label-primary"><i class="fa fa-edit"></i> edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {{ knp_pagination_render(users) }}
+    </div>
 {% endblock %}

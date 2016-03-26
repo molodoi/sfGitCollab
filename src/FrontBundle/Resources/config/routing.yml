@@ -1,3 +1,18 @@
+front_category:
+    resource: "@FrontBundle/Resources/config/routing/category.yml"
+    prefix:   /category
+
+front_advert:
+    resource: "@FrontBundle/Resources/config/routing/advert.yml"
+    prefix:   /annonce
+
+front_homepage_page:
+    path:     /{page}
+    defaults: { _controller: FrontBundle:Default:index, page: 1 }
+    requirements:
+        page: \d+
+
 front_homepage:
     path:     /
     defaults: { _controller: FrontBundle:Default:index }
+

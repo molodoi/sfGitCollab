@@ -1,0 +1,70 @@
+{% extends 'FrontBundle::layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ render(controller('FrontBundle:Advert:search')) }}
+        {% include "FrontBundle:Slots:search-form-frontend.html.twig" %}
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <div class="list-group">
+                {% for advert in adverts %}
+                    <a href="{{ path('front_logged_advert_show', { 'id': advert.id } ) }}" class="list-group-item">
+                        {% if advert.fileadverts|length != 0 %}
+                            <span class="col-md-3">
+                            {% set firstimg = advert.fileadverts|first %}
+                                <img src="{{ asset(firstimg.webPath('150_')) }}" alt="{{ firstimg.alt }}" class="img-responsive img-rounded">
+                                <span class="nbimage img-rounded" >
+                                    <span><strong>{{ advert.fileadverts|length }}</strong></span>
+                                </span>
+                            </span>
+                        {% else %}
+                            <span class="col-md-3">
+                                <img src="http://placehold.it/250x250" alt="..." class="img-responsive img-rounded">
+                            </span>
+                        {% endif %}
+
+                        <span class="col-md-9">
+                            {% if advert.title is defined %}
+                                <h3 class="advertTitle">{{ advert.title|capitalize }}</h3>
+                            {% endif %}
+                            {% if advert.category.title is defined %}
+                                <p class="list-group-item-text">{{ advert.category.title|capitalize }}</p>
+                            {% endif %}
+                            {% if advert.location is defined %}
+                                <p class="list-group-item-text">{{ advert.location|capitalize }}</p>
+                            {% endif %}
+                            {% if advert.price is defined %}
+                                <p class="list-group-item-heading price">{{ advert.price }}€</p>
+                            {% endif %}
+                            {% if advert.user is defined %}
+                                <p class="list-group-item-heading price">
+                                    <strong>{{ advert.user|e|capitalize }}</strong>
+                                </p>
+                            {% endif %}
+                            <p>
+                                Mise en ligne le {{ advert.createdAt|date("d/m/Y") }}
+                                <span class="pull-right">Expirera le {{ advert.expiredAt|date("d/m/Y") }}</span>
+                            </p>
+                        </span>
+                        <span class="clearfix"></span>
+                    </a>
+                {% endfor %}
+            </div>
+            {{ knp_pagination_render(adverts) }}
+        </div>
+        <div class="col-md-4">
+            <h2>Catégorie</h2>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

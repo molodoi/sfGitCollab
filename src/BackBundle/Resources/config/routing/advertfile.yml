@@ -18,6 +18,12 @@ back_advertfile_edit:
     defaults: { _controller: "BackBundle:AdvertFile:edit" }
     methods:  [GET, POST]
 
+back_advert_file_delete:
+    path: /delete/file/{id}
+    defaults: { _controller: "BackBundle:AdvertFile:deleteOneFile" }
+    requirements:
+        page: \d+
+
 back_advertfile_delete:
     path:     /{id}/delete
     defaults: { _controller: "BackBundle:AdvertFile:delete" }

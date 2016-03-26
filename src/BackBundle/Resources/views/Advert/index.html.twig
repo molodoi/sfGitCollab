@@ -2,68 +2,68 @@
 
 {% block content %}
     <h1>Advert list</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Slug</th>
-                <th>Description</th>
-                <th>Content</th>
-                <th>Price</th>
-                <th>Type</th>
-                <th>Longitude</th>
-                <th>Latitude</th>
-                <th>Token</th>
-                <th>Isavailable</th>
-                <th>Ispublic</th>
-                <th>Isactivated</th>
-                <th>Deletedat</th>
-                <th>Expiredat</th>
-                <th>Createdat</th>
-                <th>Updatedat</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for advert in adverts %}
-            <tr>
-                <td><a href="{{ path('back_advert_show', { 'id': advert.id }) }}">{{ advert.id }}</a></td>
-                <td>{{ advert.title }}</td>
-                <td>{{ advert.slug }}</td>
-                <td>{{ advert.description }}</td>
-                <td>{{ advert.content }}</td>
-                <td>{{ advert.price }}</td>
-                <td>{{ advert.type }}</td>
-                <td>{{ advert.longitude }}</td>
-                <td>{{ advert.latitude }}</td>
-                <td>{{ advert.token }}</td>
-                <td>{% if advert.isAvailable %}Yes{% else %}No{% endif %}</td>
-                <td>{% if advert.isPublic %}Yes{% else %}No{% endif %}</td>
-                <td>{% if advert.isActivated %}Yes{% else %}No{% endif %}</td>
-                <td>{% if advert.deletedAt %}{{ advert.deletedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if advert.expiredAt %}{{ advert.expiredAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if advert.createdAt %}{{ advert.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if advert.updatedAt %}{{ advert.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('back_advert_show', { 'id': advert.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('back_advert_edit', { 'id': advert.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('back_advert_new') }}">Create a new entry</a>
-        </li>
-    </ul>
+    <a href="{{ path('back_advert_new') }}" class="btn btn-info btn-flat pull-left">Create a new entry</a>
+    <br />
+    <br />
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>Price</th>
+                    <th>Type</th>
+                    <th>Ispublic</th>
+                    <th>Isactivated</th>
+                    <th>Deletedat</th>
+                    <th>Expiredat</th>
+                    <th>Createdat</th>
+                    <th>Updatedat</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for advert in adverts %}
+                <tr>
+                    <td>
+                    {% if advert.fileadverts|length != 0 %}
+                        {% set firstimg = advert.fileadverts|first %}
+                        <a href="{{ path('back_advert_edit', { 'id': advert.id }) }}"><img src="{{ asset(firstimg.webPath('150_')) }}" alt="{{ firstimg.alt }}" class="img-responsive img-rounded"></a>
+                    {% else %}
+                        <a href="{{ path('back_advert_edit', { 'id': advert.id }) }}"><img src="http://placehold.it/150x150" alt="{{ advert.title|capitalize }}" class="img-responsive img-rounded"></a>
+                    {% endif %}
+                    </td>
+                    <td><a href="{{ path('back_advert_edit', { 'id': advert.id }) }}">{{ advert.title|capitalize }}</a></td>
+                    <td>{{ advert.content|slice(1, 20)|capitalize }}</td>
+                    <td>{{ advert.price }}€</td>
+                    <td>{{ advert.type|capitalize }}</td>
+                    <td>
+                        {% if advert.isPublic %}
+                            <span class="label label-success">public</span>
+                        {% else %}
+                            <span class="label label-danger">privé</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if advert.isActivated %}
+                            <span class="label label-success">actif</span>
+                        {% else %}
+                            <span class="label label-danger">inactif</span>
+                        {% endif %}
+                    </td>
+                    <td>{% if advert.deletedAt %}{{ advert.deletedAt|date('d-m-Y') }}{% endif %}</td>
+                    <td>{% if advert.expiredAt %}{{ advert.expiredAt|date('d-m-Y H:i:s') }}{% endif %}</td>
+                    <td>{% if advert.createdAt %}{{ advert.createdAt|date('d-m-Y') }}{% endif %}</td>
+                    <td>{% if advert.updatedAt %}{{ advert.updatedAt|date('d-m-Y H:i:s') }}{% endif %}</td>
+                    <td>
+                        <a href="{{ path('back_advert_show', { 'id': advert.id }) }}" class="label label-success"><i class="fa fa-eye"></i> show</a>
+                        <a href="{{ path('back_advert_edit', { 'id': advert.id }) }}" class="label label-primary"><i class="fa fa-edit"></i> edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {{ knp_pagination_render(adverts) }}
+    </div>
 {% endblock %}

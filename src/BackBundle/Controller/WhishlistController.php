@@ -18,14 +18,29 @@ class WhishlistController extends Controller
      * Lists all Whishlist entities.
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request, $page)
     {
+
         $em = $this->getDoctrine()->getManager();
 
-        $whishlists = $em->getRepository('MainBundle:Whishlist')->findAll();
+        $allWhishlists = $em->getRepository('MainBundle:Whishlist')
+            ->findAll();
+
+
+        if(empty($page)){
+            $page = $request->query->getInt('page', 1);
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $whishlists = $paginator->paginate(
+            $allWhishlists,
+            $page,
+            5
+        );
 
         return $this->render('BackBundle:Whishlist:index.html.twig', array(
             'whishlists' => $whishlists,
+            'page' => $page
         ));
     }
 

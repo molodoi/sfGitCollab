@@ -15,10 +15,7 @@ class AdvertFileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('alt')
-            ->add('path')
-            ->add('createdAt', 'datetime')
-            ->add('advert')
+            ->add('file', 'file')
         ;
     }
     

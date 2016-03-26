@@ -9,11 +9,11 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+    locale: fr
 
 framework:
     #esi:             ~
-    translator:      ~
+    translator:      { fallback: %locale% }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -98,6 +98,17 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
+knp_paginator:
+    page_range: 10                      # default page range used in pagination control
+    default_options:
+        page_name: page                # page query parameter name
+        sort_field_name: sort          # sort field query parameter name
+        sort_direction_name: direction # sort direction query parameter name
+        distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
+    template:
+        pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig     # sliding pagination controls template
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
@@ -107,3 +118,30 @@ fos_user:
             type: FrontBundle\Form\ProfileFormType # or 'fos_user_profile' on Symfony < 2.8
             name: fos_user_profile_form
 
+#hwi_oauth:
+#    connect:
+#        confirmation: true
+#        registration_form: fos_user.registration.form
+#    firewall_name: main
+#    fosub:
+#        username_iterations: 30
+#        properties:
+#            facebook: facebook_id
+#            google: google_id
+#    resource_owners:
+#        # Facebook Access
+#        facebook:
+#            type:                facebook
+#            client_id:           "%facebook_app_id%"
+#            client_secret:       "%facebook_app_secret%"
+#            scope:               "email"
+#            options:
+#                display: popup
+#        # Google Access
+#        google:
+#            type:                google
+#            client_id:           "%google_app_id%"
+#            client_secret:       "%google_app_secret%"
+#            scope:               "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
+#            options:
+#                display: popup

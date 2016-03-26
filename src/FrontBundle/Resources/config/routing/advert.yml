@@ -1,0 +1,58 @@
+front_advert_by_category:
+    path: /category/{id}/{page}
+    defaults: { _controller: FrontBundle:Advert:showAdvertsByCategorySlug, page: 1 }
+    requirements:
+#        slug: "[a-zA-Z0-9-_/]+"
+        id: "\d+"
+        page: "\d+"
+
+front_advert_show:
+    path:  /show/{location}/{slug}
+    defaults: { _controller: FrontBundle:Advert:show }
+    requirements:
+        slug: "[a-zA-Z0-9-_/]+"
+
+front_advert_search:
+    path:  /search
+    defaults: { _controller: FrontBundle:Advert:searchPost, page: 1 }
+
+#--------------------
+# PRIVATE
+#--------------------
+front_logged_advert_index:
+    path:  /logged-list/{page}
+    defaults: { _controller: FrontBundle:Advert:indexAdvertUserLogged, page: 1 }
+    requirements:
+        page: "\d+"
+
+front_logged_advert_show:
+    path:  /logged-show/{id}
+    defaults: { _controller: FrontBundle:Advert:showAdvertUserLogged }
+    requirements:
+        id: "\d+"
+
+front_logged_advert_update:
+    path:     /logged-update/{id}
+    defaults: { _controller: "FrontBundle:Advert:update" }
+    methods:  [GET]
+    requirements:
+        id: "\d+"
+
+front_logged_advert_new:
+    path:     /logged-new
+    defaults: { _controller: "FrontBundle:Advert:newAdvertUserLogged" }
+    methods:  [GET, POST]
+
+front_logged_advert_edit:
+    path:     /logged-edit/{id}
+    defaults: { _controller: "FrontBundle:Advert:editAdvertUserLogged" }
+    methods:  [GET, POST]
+    requirements:
+        id: "\d+"
+
+front_logged_advert_delete:
+    path:     /logged-delete/{id}
+    defaults: { _controller: "FrontBundle:Advert:delete" }
+    methods:  DELETE
+    requirements:
+        id: "\d+"

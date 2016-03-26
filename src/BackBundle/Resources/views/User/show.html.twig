@@ -10,25 +10,18 @@
             <div class="profile-sidebar">
                 <!-- SIDEBAR USERPIC -->
                 <div class="profile-userpic">
-                    {% if user.path is defined %}
+                    {% if user.path is not null %}
                         <img src="{{ asset(user.webPath('thumb-300-300-')) }}" class="img-responsive img-rounded text-center" />
                     {% else %}
                         <img src="http://placehold.it/300x300" class="img-responsive img-rounded text-center" alt="">
                     {% endif %}
                 </div>
                 <!-- END SIDEBAR USERPIC -->
-                <!-- SIDEBAR USER TITLE -->
-                <div class="profile-usertitle">
-                    <div class="profile-usertitle-name">
-                    </div>
-                    <div class="profile-usertitle-job">
-                        <p>Username: {{ user.username }}</p>
-                        <p>Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
-                    </div>
-                </div>
+
+                <br />
                 <!-- SIDEBAR BUTTONS -->
                 <div class="profile-userbuttons">
-                    <a href="{{ path('back_user_edit', { 'id': user.id }) }}" class="btn btn-success btn-sm">Edit {{ user.username }}</a>
+                    <a href="{{ path('back_user_edit', { 'id': user.id }) }}" class="btn btn-success btn-flat btn-lg">Edit {{ user.username }}</a>
                     <br />
                     <br />
                     {{ form_start(delete_form) }}
@@ -43,7 +36,6 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="profile-content">
-
                         <div class="col-lg-12 padding-right-0 padding-left-0">
                             <div class="panel panel-default">
                                 <!-- Default panel contents -->
@@ -72,7 +64,7 @@
                                     <li class="list-group-item">
                                         <strong>Email</strong>
                                         <div class="material-switch pull-right">
-                                            {{ user.email }}
+                                            <a href="mailto:{{ user.email }}">{{ user.email }}</a>
                                         </div>
                                     </li>
                                     <li class="list-group-item">

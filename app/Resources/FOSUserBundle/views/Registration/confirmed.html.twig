@@ -10,9 +10,7 @@
                 <h1 class="text-center">Success!</h1>
                 <span class="alerticon"><img src="http://s22.postimg.org/i5iji9hv1/check.png" alt="checkmark" class="center-block" /></span>
                 <p class="text-center">{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
-                {% if targetUrl %}
-                    <p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
-                {% endif %}
+                <p><a href="{{ path('front_homepage') }}">Accueil</a></p>
             </div>
         </div>
     </div>

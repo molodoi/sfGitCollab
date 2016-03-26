@@ -256,4 +256,8 @@ class Category
     {
         return $this->adverts;
     }
+
+    public function __toString(){
+        return $this->title;
+    }
 }

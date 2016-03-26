@@ -4,12 +4,14 @@ namespace MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Advert
  *
  * @ORM\Table(name="advert_sfgitcollab")
  * @ORM\Entity(repositoryClass="MainBundle\Repository\AdvertRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Advert
 {
@@ -25,21 +27,15 @@ class Advert
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=165, unique=true)
+     * @ORM\Column(name="title", type="string", length=165)
      */
     private $title;
 
     /**
+     * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(length=128, unique=true)
      */
     private $slug;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
-     */
-    private $description;
 
     /**
      * @var string
@@ -59,17 +55,22 @@ class Advert
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", length=20, unique=true)
+     * @ORM\Column(name="type", type="string", length=20)
      */
     private $type;
 
     /**
-     * @ORM\Column(name="longitude", type="decimal", precision=11, scale=8)
+     * @ORM\Column(name="location", type="string", length=20)
+     */
+    private $location;
+
+    /**
+     * @ORM\Column(name="longitude", type="decimal", precision=11, scale=8, nullable=true)
      */
     private $longitude;
 
     /**
-     * @ORM\Column(name="latitude", type="decimal", precision=11, scale=8)
+     * @ORM\Column(name="latitude", type="decimal", precision=11, scale=8, nullable=true)
      */
     private $latitude;
 
@@ -79,13 +80,6 @@ class Advert
      * @ORM\Column(name="token", type="string", length=255, unique=true)
      */
     private $token;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="is_available", type="boolean", nullable=true)
-     */
-    private $isAvailable;
 
     /**
      * @var string
@@ -116,13 +110,14 @@ class Advert
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var \DateTime
-     *
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
@@ -139,27 +134,24 @@ class Advert
      */
     private $user;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="MainBundle\Entity\Tag", mappedBy="adverts")
-     * @ORM\JoinTable(name="tags_adverts_sfgitcollab")
-     */
-    private $tags;
 
     /**
      * @var File
      *
-     * @ORM\OneToMany(targetEntity="AdvertFile", mappedBy="advert", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="MainBundle\Entity\AdvertFile", mappedBy="advert", cascade={"persist", "remove"})
      *
      */
     private $fileadverts;
+
+    private $files;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->tags = new ArrayCollection();
         $this->fileadverts = new ArrayCollection();
+        $this->files = array();
     }
 
     /**
@@ -216,29 +208,6 @@ class Advert
     public function getSlug()
     {
         return $this->slug;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return Advert
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
     }
 
     /**
@@ -564,38 +533,6 @@ class Advert
         return $this->price;
     }
 
-    /**
-     * Add tags
-     *
-     * @param \MainBundle\Entity\Tag $tags
-     * @return Advert
-     */
-    public function addTag(\MainBundle\Entity\Tag $tag)
-    {
-        $this->tags[] = $tag;
-
-        return $this;
-    }
-
-    /**
-     * Remove tags
-     *
-     * @param \MainBundle\Entity\Tag $tags
-     */
-    public function removeTag(\MainBundle\Entity\Tag $tags)
-    {
-        $this->tags->removeElement($tags);
-    }
-
-    /**
-     * Get tags
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getTags()
-    {
-        return $this->tags;
-    }
 
     /**
      * Set type
@@ -620,15 +557,62 @@ class Advert
         return $this->type;
     }
 
+
+    /**
+     * Set location
+     *
+     * @param string $location
+     * @return Advert
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get location
+     *
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
+     * @param mixed $files
+     */
+    public function setFiles($files)
+    {
+        $this->files = $files;
+    }
+
+
     /**
      * Add fileadverts
      *
      * @param \MainBundle\Entity\AdvertFile $fileadverts
      * @return Advert
      */
-    public function addFileadvert(\MainBundle\Entity\AdvertFile $fileadverts)
+    public function addFileadvert(\MainBundle\Entity\AdvertFile $fileadverts = null)
     {
+        if($fileadverts == null)
+        {
+            return;
+        }
+
         $this->fileadverts[] = $fileadverts;
+
         $fileadverts->setAdvert($this);
 
         return $this;
@@ -642,6 +626,7 @@ class Advert
     public function removeFileadvert(\MainBundle\Entity\AdvertFile $fileadverts)
     {
         $this->fileadverts->removeElement($fileadverts);
+        $fileadverts->setAdvert(null);
     }
 
     /**
@@ -652,5 +637,37 @@ class Advert
     public function getFileadverts()
     {
         return $this->fileadverts;
+    }
+
+    /**
+     * @ORM\PreFlush()
+     */
+    public function preFlushUpload()
+    {
+        if (null === $this->files) {
+            return;
+        }
+        foreach($this->files as $file)
+        {
+            $this->addFileadvert($file);
+            unset($file);
+        }
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function setTokenValue()
+    {
+        if(!$this->getToken())
+        {
+            $this->token = sha1(uniqid(mt_rand(), true));
+            $now = $this->getCreatedAt() ? $this->getCreatedAt()->format('U') : time();
+            $this->expiredAt = new \DateTime(date('Y-m-d H:i:s', $now + 86400 * 30));
+        }
+    }
+
+    public function __toString(){
+        return $this->title;
     }
 }
