@@ -28,14 +28,24 @@ class AdvertType extends AbstractType
             ->add('longitude')
             ->add('latitude')
             ->add('isPublic')
-            ->add('category')
+            ->add('category'
+                , 'entity',
+                array(
+                    'class' => 'MainBundle\Entity\Category',
+                    'choice_label' => 'title',
+                    'multiple' => false,
+                    'expanded' => false,
+                    'read_only' => true,
+                    'empty_value' => 'Catégorie de votre annonce'
+                )
+            )
             ->add('files',  'collection', array(
                 'type'         => new AdvertFileType(),
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'options'  => array(
                     'required'  => false,
-                ),
+                )
             ))
         ;
     }

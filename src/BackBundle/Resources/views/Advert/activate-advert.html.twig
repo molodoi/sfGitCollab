@@ -1,21 +1,9 @@
 {% extends 'BackBundle::layout.html.twig' %}
 
 {% block content %}
-    <h1>Advert</h1>
+    <h1>Validate Advert</h1>
     <div class="row profile">
-        <div class="col-md-3">
-            <div class="profile-sidebar">
-                <div class="profile-userbuttons">
-                    <br />
-                    <a href="{{ path('back_advert_edit', { 'id': advert.id }) }}" class="btn btn-success btn-lg btn-block btn-flat">Edit {{ advert.title|capitalize }}</a>
-                    <br />
-                    {{ form_start(delete_form) }}
-                    <input type="submit" value="Delete {{ advert.title|capitalize }}" class="btn btn-danger btn-lg btn-block btn-flat">
-                    {{ form_end(delete_form) }}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-9">
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="profile-content">
@@ -93,13 +81,16 @@
                                         </div>
                                     </li>
                                 </ul>
+
                             </div>
+                            {{ form_start(activate_form) }}
+                            <input type="submit" value="Activate" class="btn btn-success btn-lg btn-block btn-flat">
+                            {{ form_end(activate_form) }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <a href="{{ path('back_advert_index') }}" class="btn btn-default">Back to the list</a>
     <br />
 {% endblock %}

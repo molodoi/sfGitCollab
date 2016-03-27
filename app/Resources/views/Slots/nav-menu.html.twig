@@ -2,9 +2,6 @@
     <a class="navmenu-brand" href="{{ path('front_homepage') }}" {% if app.request.attributes.get('_route') == 'front_homepage' %} class="active" {% endif %}>Annonces</a>
     <ul class="nav navmenu-nav">
         <li><a href="{{ path('front_logged_advert_new') }}">Déposer une annonce</a></li>
-        <li class="active"><a href="#">Offres</a></li>
-        <li><a href="#">Demandes</a></li>
-        <li><a href="#">Blog</a></li>
     </ul>
     <ul class="nav navmenu-nav">
         <li class="dropdown">
@@ -57,17 +54,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="{{ path('front_homepage') }}">Annonces <span class="sr-only">(current)</span></a></li>
                 <li class="active"><a href="{{ path('front_logged_advert_new') }}">Déposer une annonce</a></li>
-                <li><a href="#">Offres</a></li>
-                <li><a href="#">Demandes</a></li>
-                <li><a href="#">Blog</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Catégories <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        {% for i in 1..8 %}
-                            <li><a href="#">Catégorie 0{{ i }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </li>
+                {{ render(controller('FrontBundle:Category:renderListCategoryMenu')) }}
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">

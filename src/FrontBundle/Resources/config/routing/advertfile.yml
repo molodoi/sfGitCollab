@@ -1,0 +1,5 @@
+front_advert_file_delete:
+    path: /delete/file/{id}
+    defaults: { _controller: "FrontBundle:AdvertFile:deleteOneFile" }
+    requirements:
+        page: \d+

@@ -2,9 +2,21 @@ front_category:
     resource: "@FrontBundle/Resources/config/routing/category.yml"
     prefix:   /category
 
+front_advertfile:
+    resource: "@FrontBundle/Resources/config/routing/advertfile.yml"
+    prefix:   /advertfile
+
 front_advert:
     resource: "@FrontBundle/Resources/config/routing/advert.yml"
     prefix:   /annonce
+
+front_whishlist:
+    resource: "@FrontBundle/Resources/config/routing/whishlist.yml"
+    prefix:   /whishlist
+
+front_user:
+    resource: "@FrontBundle/Resources/config/routing/user.yml"
+    prefix:   /user
 
 front_homepage_page:
     path:     /{page}

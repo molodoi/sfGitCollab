@@ -1,10 +1,15 @@
 <?php
 namespace MainBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class AdvertSearch
 {
+
     public $keyword;
+
     public $city;
+
     public $category;
 
     public function __construct($keyword = null, $city = null, $category = null){

@@ -3,3 +3,13 @@ services:
         class: FrontBundle\Form\ProfileFormType
         tags:
             - { name: form.type, alias: front_user_profile }
+
+    advert.form.search.type:
+        class: FrontBundle\Form\AdvertSearchType
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
+            - { name: form.type, alias: search_form }
+
+    whishlist.manager:
+        class: FrontBundle\Services\WhishlistManager
+        arguments: [@doctrine.orm.entity_manager]

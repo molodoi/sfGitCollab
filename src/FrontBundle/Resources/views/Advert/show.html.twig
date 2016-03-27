@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+    <br />
     <div class="row">
         <div class="col-md-8">
             <div class="panel panel-default">
@@ -48,7 +49,7 @@
                         <ul class="list-group">
                             {% if advert.user %}
                             <li class="list-group-item">
-                                <strong>Annonce de:  {{ advert.user.username|capitalize }}</strong>
+                                <strong>Annonce de:  <a href="{{ path('front_user_show', {'id': advert.user.id }) }}"> {{ advert.user.username|capitalize }}</a></strong>
                             </li>
                             {% endif %}
 
@@ -77,23 +78,21 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">Username</div>
-                <div class="panel-body">
-                    <p>
-                        <a href="#" class="btn btn-block btn-lg btn-info">
-                            <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Voir le numéro
-                        </a>
-                        <a href="#" class="btn btn-block btn-lg btn-primary">
-                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Envoyer un message
-                        </a>
-                    </p>
-                </div>
-            </div>
+            {% include "FrontBundle:Slots:phone-and-message-sidebar.html.twig" %}
         </div>
     </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            /*-----------------------------------------------------
+             :: HIDE FLASHMESSAGE
+             -----------------------------------------------------*/
+            $('.alert').fadeOut(3000, function(){
+                $(this).remove();
+            });
+        });
+    </script>
 {% endblock %}

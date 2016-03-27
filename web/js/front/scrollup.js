@@ -1,4 +1,4 @@
-jQuery(document).ready(function($){
+$(document).ready(function() {
 
     /*-----------------------------------------------------
     :: SCROLLUP
@@ -18,4 +18,4 @@ jQuery(document).ready(function($){
         return false;
     });
 
-})();
+});

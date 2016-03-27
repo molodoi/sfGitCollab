@@ -29,7 +29,9 @@ class AdvertController extends Controller
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw $this->createAccessDeniedException();
         }
+
         $user = $this->get('security.context')->getToken()->getUser();
+        $form = $this->createForm(new AdvertSearchType());
 
         $em = $this->getDoctrine()->getManager();
         $allAdverts = $em->getRepository('MainBundle:Advert')->findAdvertsByUserOnFrontend($user);
@@ -47,6 +49,7 @@ class AdvertController extends Controller
 
         return $this->render('FrontBundle:Advert:index-user-logged.html.twig', array(
             'adverts' => $adverts,
+            'search_form' => $form->createView()
         ));
     }
 
@@ -57,6 +60,7 @@ class AdvertController extends Controller
     public function showAdvertsByCategorySlugAction(Category $category, Request $request, $page){
 
         $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new AdvertSearchType());
 
         $allAdverts = $em->getRepository('MainBundle:Advert')->findAdvertsByCategoryOnFrontend($category);
 
@@ -73,7 +77,8 @@ class AdvertController extends Controller
 
         return $this->render('FrontBundle:Default:index.html.twig',
             array(
-                'adverts' => $adverts
+                'adverts' => $adverts,
+                'search_form' => $form->createView()
             )
         );
 
@@ -110,6 +115,10 @@ class AdvertController extends Controller
 
         $user = $this->get('security.context')->getToken()->getUser();
 
+        if (!$user) {
+            throw $this->createNotFoundException('Unable to find User.');
+        }
+
         $advert = new Advert();
         $form = $this->createForm('FrontBundle\Form\AdvertType', $advert);
         $form->handleRequest($request);
@@ -130,12 +139,11 @@ class AdvertController extends Controller
                 ->setTo(array('contact@ticme.fr' => "Ticme"))
                 ->setCharset('utf-8')
                 ->setContentType('text/html')
-                ->setBody($this->renderView('FrontBundle:Mail:validation.html.twig',array('user' => $user)));
+                ->setBody($this->renderView('FrontBundle:Mail:validation.html.twig',array('user' => $user, 'token' => $advert->getToken() ,'advert' => $advert)));
 
             $this->get('mailer')->send($message);
 
             return $this->redirectToRoute('front_logged_advert_show', array('id' => $advert->getId()));
-            //return $this->redirectToRoute('front_logged_advert_index');
         }
 
         return $this->render('FrontBundle:Advert:new-user-logged.html.twig', array(
@@ -157,6 +165,7 @@ class AdvertController extends Controller
         if (!$advert) {
             throw $this->createNotFoundException('Unable to find Advert entity.');
         }
+
         return $this->render('FrontBundle:Advert:show.html.twig', array(
             'advert' => $advert,
         ));
@@ -172,7 +181,7 @@ class AdvertController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $deleteForm = $this->createDeleteForm($advert);
+        //$deleteForm = $this->createDeleteForm($advert);
         $editForm = $this->createForm('FrontBundle\Form\AdvertType', $advert);
         $editForm->handleRequest($request);
 
@@ -243,30 +252,44 @@ class AdvertController extends Controller
 
     public function searchAction()
     {
-        $form = $this->createForm(new AdvertSearchType());
+        $advertSearch = new AdvertSearch();
+        $form = $this->createForm(new AdvertSearchType(),$advertSearch);
 
-        return $this->render('FrontBundle:Slots:search-form-frontend.html.twig', array('search_form' => $form->createView()));
+        return $this->render('FrontBundle:Search:search-form-frontend.html.twig', array('search_form' => $form->createView()));
     }
 
 
-    public function searchPostAction(Request $request)
+
+    public function searchFormGetAction()
     {
-        $advertSearch = new AdvertSearch();
-        $form = $this->createForm(new AdvertSearchType(),$advertSearch);
-        $form->handleRequest($this->get('request'));
-        if ($this->get('request')->getMethod() == 'POST')
+        $form = $this->createForm(new AdvertSearchType());
+        return $this->render('FrontBundle:Search:search-form-get-frontend.html.twig', array('search_form' => $form->createView()));
+    }
+
+    public function searchGetAction(Request $request)
+    {
+        if ($this->get('request')->getMethod() == 'GET')
         {
 
-            $keyword = $form->get('keyword')->getData() ? $form->get('keyword')->getData() : null;
-            $category = $form->get('category')->getData() ? $form->get('category')->getData()->getId() : null;
-            $city = $form->get('city')->getData() ? $form->get('city')->getData() : null;
             $em = $this->getDoctrine()->getManager();
-
-            $allAdverts = $em->getRepository('MainBundle:Advert')->search($keyword, $category, $city);
+            $keyword = $request->query->get('keyword') ? $request->query->get('keyword') : null;
+            $category = $request->query->get('category') ? $request->query->get('category') : null;
+            $city = $request->query->get('city') ? $request->query->get('city') : null;
 
             if(empty($page)){
                 $page = $request->query->getInt('page', 1);
             }
+
+            $advertSearch = new AdvertSearch();
+            $advertSearch->setKeyword($keyword);
+            $advertSearch->setCategory($category);
+            $advertSearch->setCity($city);
+
+            //$form = $this->createForm(new AdvertSearchType($em, $keyword, $category, $city),$advertSearch);
+            $form = $this->createForm(new AdvertSearchType($em, $keyword, $category, $city),$advertSearch);
+            $form->handleRequest($request);
+
+            $allAdverts = $em->getRepository('MainBundle:Advert')->search($keyword, $category, $city);
 
             $paginator = $this->get('knp_paginator');
             $adverts = $paginator->paginate(
@@ -274,12 +297,23 @@ class AdvertController extends Controller
                 $page,
                 5
             );
+            $adverts->setParam('keyword', $keyword);
+            $adverts->setParam('category', $category);
+            $adverts->setParam('city', $city);
 
         } else {
             throw $this->createNotFoundException('La page n\'existe pas.');
         }
 
-        return $this->render('FrontBundle:Default:index.html.twig', array('adverts' => $adverts, 'search_form' => $form));
+        return $this->render('FrontBundle:Search:search-result.html.twig',
+            array(
+                'adverts' => $adverts,
+                'keyword' => $keyword,
+                'category' => $category,
+                'city' => $city,
+                'search_form' => $form->createView()
+            )
+        );
     }
 
 }

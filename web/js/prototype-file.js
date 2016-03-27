@@ -48,9 +48,9 @@ $(document).ready(function() {
             currentLinkHref = currentLink.attr('href');
             currentLink.closest('li').fadeOut(600,function(){
                 $(this).remove();
-                nbTag++;
-                $('#add-tag').text('Ajouter '+nbTag+' tags');
-                indexT--;
+                nbFile++;
+                $('#add-file').text('Ajouter '+nbFile+' tags');
+                index--;
             });
             $.ajax({
                 type:"GET",
@@ -58,7 +58,6 @@ $(document).ready(function() {
             }).done(function(){
                 currentLink.parents('li').fadeOut(600,function(){
                     $(this).remove();
-
                 });
             });
         }

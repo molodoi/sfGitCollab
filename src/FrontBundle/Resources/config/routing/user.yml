@@ -1,0 +1,5 @@
+front_user_show:
+    path:  /show/{id}
+    defaults: { _controller: FrontBundle:User:show }
+    requirements:
+        id: "\d+"

@@ -44,7 +44,7 @@
                             {% endif %}
                             {% if advert.user is defined %}
                                 <p class="list-group-item-heading price">
-                                    <strong>{{ advert.user.username|e|capitalize }}</strong>
+                                    <strong>{{ advert.user|e|capitalize }}</strong>
                                 </p>
                             {% endif %}
                             <p>
@@ -56,11 +56,11 @@
                     </a>
                 {% endfor %}
             </div>
-            {{ knp_pagination_render(adverts) }}
-            {% else %}
-                <h2>Aucunes annonces</h2>
-                <span class="clearfix"></span>
 
+            {{ knp_pagination_render(adverts) }}
+            {#{{ knp_pagination_render(adverts, 'FrontBundle:Search:twitter_bootstrap_v3_pagination.html.twig', { 'page': adverts.params.page, 'keyword': adverts.params.keyword, 'category': adverts.params.category, 'city': adverts.params.city } ) }}#}
+            {% else %}
+                Aucune annonce
             {% endif %}
         </div>
         <div class="col-md-4">

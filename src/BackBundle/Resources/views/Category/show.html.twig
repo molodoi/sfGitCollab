@@ -2,51 +2,54 @@
 
 {% block content %}
     <h1>Category</h1>
+    <div class="row profile">
+        <div class="col-md-3">
+            <div class="profile-sidebar">
+                <div class="profile-userbuttons">
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ category.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ category.title }}</td>
-            </tr>
-            <tr>
-                <th>Slug</th>
-                <td>{{ category.slug }}</td>
-            </tr>
-            <tr>
-                <th>Position</th>
-                <td>{{ category.position }}</td>
-            </tr>
-            <tr>
-                <th>Createdat</th>
-                <td>{% if category.createdAt %}{{ category.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Updatedat</th>
-                <td>{% if category.updatedAt %}{{ category.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ category.description }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('back_category_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('back_category_edit', { 'id': category.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                    <br />
+                    <a href="{{ path('back_category_edit', { 'id': category.id }) }}" class="btn btn-success btn-lg btn-block btn-flat">Edit</a>
+                    <br />
+                    {{ form_start(delete_form) }}
+                        <input type="submit" value="Delete" class="btn btn-danger btn-lg btn-block btn-flat">
+                    {{ form_end(delete_form) }}
+                    <br />
+                    <a href="{{ path('back_category_index') }}" class="btn btn-default btn-lg btn-block btn-flat">Back to the list</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="profile-content">
+                        <div class="col-lg-12 padding-right-0 padding-left-0">
+                            <div class="panel panel-default">
+                                <!-- Default panel contents -->
+                                <div class="panel-heading"><strong>Titre:</strong> {{ category.title }}</div>
+                                <!-- List group -->
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <strong>Description:</strong><br />
+                                        {{ category.description }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Crée:</strong>
+                                        <div class="material-switch pull-right">
+                                            {% if category.createdAt %}{{ category.createdAt|date('Y-m-d H:i:s') }}{% endif %}
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Maj:</strong>
+                                        <div class="material-switch pull-right">
+                                            {% if category.updatedAt %}{{ category.updatedAt|date('Y-m-d H:i:s') }}{% endif %}
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

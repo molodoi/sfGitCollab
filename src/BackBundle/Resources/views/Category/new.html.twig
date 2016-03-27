@@ -2,15 +2,26 @@
 
 {% block content %}
     <h1>Category creation</h1>
-
+    <hr />
     {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
+        {{ form_errors(form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('back_category_index') }}">Back to the list</a>
-        </li>
-    </ul>
+        <div class="form-group">
+            <div class="form-group {% if form_errors(form.title) %} has-error {% endif %}">
+                {{ form_errors(form.title) }}
+                {{ form_widget(form.title, { 'attr': {'class': 'form-control', 'placeholder': 'Titre de la catégorie'} }) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-group {% if form_errors(form.description) %} has-error {% endif %}">
+                {{ form_errors(form.description) }}
+                {{ form_widget(form.description, { 'attr': {'class': 'form-control', 'placeholder': 'Contenu de la catégorie'} }) }}
+            </div>
+        </div>
+
+        {{ form_rest(form) }}
+        <input type="submit" value="Create" class="btn btn-success btn-lg" />
+        <a href="{{ path('back_category_index') }}" class="btn btn-default btn-lg">Back to the list</a>
+    {{ form_end(form, {'render_rest': false}) }}
+    <br />
 {% endblock %}

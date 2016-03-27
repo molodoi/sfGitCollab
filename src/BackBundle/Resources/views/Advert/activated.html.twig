@@ -1,0 +1,29 @@
+{% extends 'BackBundle::layout.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/css/front/css') }}">
+{% endblock %}
+{% block content %}
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="notify successbox">
+                <h1 class="text-center">Success!</h1>
+                <span class="alerticon"><img src="http://s22.postimg.org/i5iji9hv1/check.png" alt="checkmark" class="center-block" /></span>
+                <p class="text-center">
+                    {{ advert.title|e|capitalize }} Validé
+                    <br />
+                    <br />
+                    <a href="{{ path('front_homepage') }}" class="btn btn-default">Retour Accueil</a>
+                    {% if is_granted("IS_AUTHENTICATED_ANONYMOUSLY ") %}
+                        <a href="{{ path('fos_user_registration_register') }}" class="btn btn-default">Se connecter</a>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

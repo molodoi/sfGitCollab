@@ -19,8 +19,6 @@ class CategoryController extends Controller
             throw $this->createNotFoundException('Unable to find.');
         }
 
-
-
         $paginator = $this->get('knp_paginator');
         $categories = $paginator->paginate(
             $allcategories,
@@ -28,10 +26,18 @@ class CategoryController extends Controller
             10
         );
 
-
-
         return $this->render('FrontBundle:Category:index.html.twig',array(
             'category' => $categories
+        ));
+    }
+
+    public function renderListCategoryMenuAction(){
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $categories = $em->getRepository('MainBundle:Category')->findAll();
+
+        return $this->render('FrontBundle:Category:_list-category-menu.html.twig',array(
+            'categories' => $categories
         ));
     }
 }

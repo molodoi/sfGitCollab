@@ -1,0 +1,5 @@
+front_whishlist_add:
+    path: /add/{id}
+    defaults: { _controller: FrontBundle:Whishlist:addAdvertToWhislist }
+    requirements:
+        id: "\d+"

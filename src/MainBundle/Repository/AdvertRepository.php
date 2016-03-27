@@ -19,8 +19,6 @@ class AdvertRepository extends EntityRepository
      */
 
     public function search($keyword, $category, $city){
-
-
         $qb = $this->createQueryBuilder('a')
             ->addSelect('category')
             ->addSelect('files')
@@ -32,10 +30,9 @@ class AdvertRepository extends EntityRepository
             ->andWhere('a.isPublic = 1');
             if(!empty($keyword)){
                 $qb->andWhere('a.title LIKE :title')
-                    ->setParameter('title', '%'.$keyword.'%')
-
-                    ->orWhere('a.content LIKE :content')
-                    ->setParameter('content', '%'.$keyword.'%');
+                    ->setParameter('title', '%'.$keyword.'%');
+                    /*->orWhere('a.content LIKE :content')
+                    ->setParameter('content', '%'.$keyword.'%');*/
             }
 
             if(!empty($city)){
@@ -71,6 +68,7 @@ class AdvertRepository extends EntityRepository
         ;
         return $qb->getQuery()->getResult();
     }
+
     public function findAdvertBySlugOnFrontend($slug)
     {
         $qb = $this->createQueryBuilder('a')
@@ -137,7 +135,6 @@ class AdvertRepository extends EntityRepository
 
     public function findAdvertsByUserOnFrontend($user)
     {
-
         $qb = $this->createQueryBuilder('a')
             ->addSelect('category')
             ->addSelect('files')
@@ -168,6 +165,20 @@ class AdvertRepository extends EntityRepository
         ;
 
         return $qb->getQuery()->getSingleResult();
+    }
+
+
+    public function getAdvertById($id)
+    {
+        $q = $this->createQueryBuilder('a')
+            ->select('a, f ,  u')
+            ->leftJoin('a.fileadverts', 'f')
+            ->leftJoin('a.user', 'u')
+            ->where('a.id = :id')
+            ->setParameter('id', $id)
+        ;
+
+        return $q->getQuery()->getResult();
     }
 
     /*public function countFullPublicAdverts()

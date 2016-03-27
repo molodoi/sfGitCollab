@@ -12,7 +12,7 @@ use BackBundle\Form\AdvertFileType;
  * AdvertFile controller.
  *
  */
-class AdvertFileController extends Controller
+class AdvertFileController extends BaseController
 {
     /**
      * Lists all AdvertFile entities.
@@ -20,6 +20,8 @@ class AdvertFileController extends Controller
      */
     public function indexAction()
     {
+        $this->grantAccessUserSecurity();
+
         $em = $this->getDoctrine()->getManager();
 
         $advertFiles = $em->getRepository('MainBundle:AdvertFile')->findAll();
@@ -35,6 +37,8 @@ class AdvertFileController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->grantAccessUserSecurity();
+
         $advertFile = new AdvertFile();
         $form = $this->createForm('BackBundle\Form\AdvertFileType', $advertFile);
         $form->handleRequest($request);
@@ -59,6 +63,8 @@ class AdvertFileController extends Controller
      */
     public function showAction(AdvertFile $advertFile)
     {
+        $this->grantAccessUserSecurity();
+
         $deleteForm = $this->createDeleteForm($advertFile);
 
         return $this->render('BackBundle:AdvertFile:show.html.twig', array(
@@ -73,6 +79,8 @@ class AdvertFileController extends Controller
      */
     public function editAction(Request $request, AdvertFile $advertFile)
     {
+        $this->grantAccessUserSecurity();
+
         $deleteForm = $this->createDeleteForm($advertFile);
         $editForm = $this->createForm('BackBundle\Form\AdvertFileType', $advertFile);
         $editForm->handleRequest($request);
@@ -98,6 +106,8 @@ class AdvertFileController extends Controller
      */
     public function deleteAction(Request $request, AdvertFile $advertFile)
     {
+        $this->grantAccessUserSecurity();
+
         $form = $this->createDeleteForm($advertFile);
         $form->handleRequest($request);
 
@@ -132,6 +142,8 @@ class AdvertFileController extends Controller
      */
     public function deleteOneFileAction(Request $request, AdvertFile $advertFile)
     {
+        $this->grantAccessUserSecurity();
+
         $em = $this->getDoctrine()->getManager();
         $file = $em->getRepository('MainBundle:AdvertFile')->find($advertFile);
 

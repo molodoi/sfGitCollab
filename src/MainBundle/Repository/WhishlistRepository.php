@@ -14,6 +14,20 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 class WhishlistRepository extends EntityRepository
 {
 
+    public function checkWhislistExist($user, $advert){
+        $qb = $this->createQueryBuilder('w')
+            ->addSelect('user')
+            ->addSelect('advert')
+            ->leftJoin('w.user', 'user')
+            ->leftJoin('w.advert', 'advert')
+            ->where('w.user = :user')
+            ->andWhere('w.advert = :advert')
+            ->setParameter('user', $user)
+            ->setParameter('advert', $advert)
+        ;
+        return $qb->getQuery()->getResult();
+    }
+
     public function countFullWhishlists()
     {
         $q = $this->createQueryBuilder('w')

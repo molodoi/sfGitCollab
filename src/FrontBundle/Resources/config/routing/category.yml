@@ -1,0 +1,5 @@
+front_category_list:
+    path:  /show/{slug}
+    defaults: { _controller: FrontBundle:Advert:show }
+    requirements:
+        slug: "[a-zA-Z0-9-_/]+"

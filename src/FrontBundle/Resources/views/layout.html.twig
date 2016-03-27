@@ -7,8 +7,8 @@
 
 {% block body %}
     <div class="row">
-        {#{% include "FrontBundle:Slots:search-form-frontend.html.twig" %}#}
-        {% render(controller('FrontBundle:Advert:search')) %}
+        {#{% include "FrontBundle:Search:search-form-frontend.html.twig" %}#}
+        {#{% render(controller('FrontBundle:Advert:searchFormGet')) %}#}
     </div>
     {% block content %}
 
@@ -18,4 +18,14 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('/js/front/scrollup.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            /*-----------------------------------------------------
+             :: HIDE FLASHMESSAGE
+             -----------------------------------------------------*/
+            $('.alert').fadeOut(3000, function(){
+                $(this).remove();
+            });
+        });
+    </script>
 {% endblock %}

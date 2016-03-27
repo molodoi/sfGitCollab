@@ -1,13 +1,41 @@
-<div class="panel panel-default">
-    <div class="panel-heading">Username</div>
-    <div class="panel-body">
-        <p>
-            <a href="#" class="btn btn-block btn-lg btn-info">
-                <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Voir le numéro
-            </a>
-            <a href="#" class="btn btn-block btn-lg btn-primary">
-                <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Envoyer un message
-            </a>
-        </p>
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+    <div class="panel panel-default">
+        <div class="panel-heading">Communiquer</div>
+        <div class="panel-body">
+            <p>
+                {% if advert.phone is defined and advert.phone_public %}
+                    <a href="#" class="btn btn-block btn-lg btn-info">
+                        <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> {{ advert.phone }}
+                    </a>
+                {% endif %}
+                {% if advert.mobile is defined and advert.mobile_public %}
+                    <a href="#" class="btn btn-block btn-lg btn-info">
+                        <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> {{ advert.mobile }}
+                    </a>
+                {% endif %}
+                <a href="#" class="btn btn-block btn-lg btn-primary">
+                    <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Envoyer un message
+                </a>
+
+                    <a href="{{ path('front_whishlist_add', { 'id': advert.id}) }}" class="btn btn-block btn-lg btn-warning">
+                        <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Ajouter à ma whislist
+                    </a>
+
+            </p>
+        </div>
     </div>
-</div>
+{% else %}
+    <div class="panel panel-default">
+        <div class="panel-heading">Plus de fonctionnalités</div>
+        <div class="panel-body">
+            <p>
+                <a href="{{ path('fos_user_registration_register') }}" class="btn btn-block btn-lg btn-info">
+                    <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Inscrivez-vous
+                </a>
+                <a href="{{ path('fos_user_security_login') }}" class="btn btn-block btn-lg btn-primary">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Identifiez-vous
+                </a>
+            </p>
+        </div>
+    </div>
+{% endif %}

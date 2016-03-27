@@ -3,12 +3,14 @@
 namespace MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Whishlist
  *
  * @ORM\Table(name="whishlist_sfgitcollab")
  * @ORM\Entity(repositoryClass="MainBundle\Repository\WhishlistRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Whishlist
 {
@@ -23,7 +25,7 @@ class Whishlist
 
     /**
      * @var \DateTime
-     *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
@@ -38,7 +40,7 @@ class Whishlist
      * @ORM\ManyToOne(targetEntity="Advert")
      * @ORM\JoinColumn(name="advert_id", referencedColumnName="id")
      */
-    private $avert;
+    private $advert;
 
     /**
      * Get id
@@ -102,9 +104,9 @@ class Whishlist
      * @param \MainBundle\Entity\Advert $avert
      * @return Whishlist
      */
-    public function setAvert(\MainBundle\Entity\Advert $avert = null)
+    public function setAdvert(\MainBundle\Entity\Advert $advert = null)
     {
-        $this->avert = $avert;
+        $this->advert = $advert;
 
         return $this;
     }
@@ -114,7 +116,7 @@ class Whishlist
      *
      * @return \MainBundle\Entity\Advert 
      */
-    public function getAvert()
+    public function getAdvert()
     {
         return $this->avert;
     }

@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+    <br/>
     <div class="row">
         <div class="col-md-8">
             <div class="panel panel-default">
@@ -27,7 +28,7 @@
                     <div class="form-group col-lg-6 padding-left-0 padding-right-15">
                         <div class="form-group {% if form_errors(form.title) %} has-error {% endif %}">
                             {{ form_errors(form.title) }}
-                            {{ form_widget(form.title, { 'attr': {'class': 'form-control', 'placeholder': 'Titre de l\'annonce'} }) }}
+                            {{ form_widget(form.title, { 'attr': {'class': 'form-control', 'placeholder': 'Titre'} }) }}
                         </div>
                     </div>
                     <div class="form-group col-lg-6 padding-left-0 padding-right-0">
@@ -62,6 +63,8 @@
                     </div>
                     <div class="col-lg-12 padding-right-0 padding-left-0">
                         <div class="panel panel-default">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">Affichage de vos données personnelles</div>
                             <!-- List group -->
                             <ul class="list-group">
                                 <li class="list-group-item">
@@ -74,19 +77,24 @@
                             </ul>
                         </div>
                     </div>
-                    {% if advert.fileadverts|length< 5  %}
+
+                    <hr />
+                    {% if advert.fileadverts|length <= 4  %}
                         <div class="form-group col-lg-12 padding-left-0 padding-right-0">
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    {{ form_errors(form.files) }}
-                                    {{ form_widget(form.files) }}
-                                    {#<div class="input_fields_wrap">
-                                        <button class="add_field_button">Add More Fields</button>
-                                        <div>
-                                            &#123;&#35;{{ form_widget(form.files, { 'full_name': 'advert[files][0][file]', 'id': 'advert[files][0][file]',  'attr': {'class': 'form-control'} }) }}&#35;&#125;
-                                            {{ form_widget(form.files, { 'attr': {'class': 'form-control'} }) }}
+                                    {#{{ form_errors(form.files) }}
+                                    {{ form_widget(form.files) }}#}
+                                    <a href="#" id="add-file" class="btn btn-default">Ajouter un fichier</a>
+                                    <hr />
+                                    <div id="container-file">
+                                        <div id="prototype-file" class="prototype-file">
+                                            {% set prototype_file = form.files.vars.prototype %}
+                                            <div class="form-group {% if form_errors(prototype_file.file) %} has-error {% endif %}">
+                                                {{ form_widget(prototype_file.file, { 'attr': {'class': 'form-control file'} }) }}
+                                            </div>
                                         </div>
-                                    </div>#}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -96,23 +104,28 @@
                             {% if advert.fileadverts|length != 0 %}
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        {% for image in advert.fileadverts %}
-                                            <div class="col-sm-6 col-md-4">
-                                                <div class="thumbnail">
-                                                    <img src="{{ asset(image.webPath('400_')) }}" class="img-responsive"/>
-                                                    <h3>{{ image.alt }}</h3>
-                                                    <p>
-                                                        <a href="{{ path('back_advert_file_delete', {'id': image.id}) }}" class="btn btn-danger" role="button">Supprimer {{ image.alt }}</a>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        {% endfor %}
+                                        <ul id="files-list" class="list-unstyled">
+                                            {% for image in advert.fileadverts %}
+                                                <li>
+                                                    <div class="col-sm-6 col-md-4 file">
+                                                        <div class="thumbnail">
+                                                            <img src="{{ asset(image.webPath('400_')) }}" class="advertfile img-responsive"/>
+                                                            <h3>{{ image.alt }}</h3>
+                                                            <p>
+                                                                <a href="{{ path('back_advert_file_delete', {'id': image.id}) }}" class="btn btn-danger" role="button">Supprimer {{ image.alt }}</a>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+
+                                        </ul>
                                     </div>
                                 </div>
                             {% endif %}
                         </div>
                     </div>
-                    {{ form_rest(form) }}
+                    {{ form_widget(form._token) }}
                     <input type="submit" value="Edit" class="btn btn-success btn-lg" />
                     <a href="{{ path('front_logged_advert_index') }}" class="btn btn-default btn-lg">Back to the list</a>
                     {{ form_end(form, {'render_rest': false}) }}
@@ -125,8 +138,8 @@
 
         </div>
     </div>
-{% endblock %}
 
+{% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
@@ -134,91 +147,9 @@
             // Supprimer le text des label sur les checkbox public ect..
             $('.material-switch label').text('');
 
-            // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
-            var $container = $('div#advert_files');
-            // On définit un compteur unique pour nommer les champs qu'on va ajouter dynamiquement
-            var index = $container.find(':input').length;
-
-            var $addLink = $('<a href="#" id="add_category" class="btn btn-default">Ajouter un fichier</a><hr class="clearfix" />');
-
-            // On ajoute un lien pour ajouter une nouvelle
-            $container.prepend($addLink);
-
-            // On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
-            $addLink.click(function(e) {
-                if(index <= 4) {
-                    addAdvertFile($container);
-                }
-                e.preventDefault(); // évite qu'un # apparaisse dans l'URL
-                return false;
-            });
-
-            // On ajoute un premier champ automatiquement s'il n'en existe pas déjà un (cas d'une nouvelle annonce par exemple).
-            if (index == 0) {
-                addAdvertFile($container);
-            } else {
-                // Pour chaque catégorie déjà existante, on ajoute un lien de suppression
-                $container.children('div').each(function() {
-                    addDeleteLink($(this));
-                });
-            }
-
-            // La fonction qui ajoute un formulaire
-            function addAdvertFile($container) {
-                // Dans le contenu de l'attribut « data-prototype », on remplace :
-                // - le texte "__name__label__" qu'il contient par le label du champ
-                // - le texte "__name__" qu'il contient par le numéro du champ
-                var $prototype = $($container.attr('data-prototype').replace(/__name__label__/g, 'Fichier n°' + (index+1))
-                        .replace(/__name__/g, index));
-
-
-
-                // On ajoute au prototype un lien pour pouvoir supprimer la catégorie
-                addDeleteLink($prototype);
-
-                // On ajoute le prototype modifié à la fin de la balise <div>
-                $container.append($prototype);
-
-                // Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
-                $('label[for="advert_files_'+index+'_file"]').remove();
-                index++;
-            }
-
-            // La fonction qui ajoute un lien de suppression d'une catégorie
-            function addDeleteLink($prototype) {
-                // Création du lien
-                $deleteLink = $('<br /><a href="#" class="btn btn-danger">Supprimer le champ de téléchargement ci-dessus</a><hr class="clearfix" />');
-
-                // Ajout du lien
-                $prototype.append($deleteLink);
-
-                // Ajout du listener sur le clic du lien
-                $deleteLink.click(function(e) {
-                    $prototype.remove();
-                    e.preventDefault(); // évite qu'un # apparaisse dans l'URL
-                    return false;
-                });
-            }
-
-            $('#thumbs-list').on('click', '.btn-danger', function(event) {
-                event.preventDefault();
-                if (confirm("Etes-vous sure?")) {
-                    currentLink = $(this);
-                    currentLinkHref = currentLink.attr('href');
-                    currentLink.closest('.fileproduct-thumb').fadeOut(600,function(){
-                        $(this).remove();
-                    });
-
-                    $.ajax({
-                        type:"GET",
-                        url: currentLinkHref
-                    }).done(function(){
-                        currentLink.parents('.fileproduct-thumb').fadeOut(600,function(){
-                            $(this).remove();
-                        });
-                    });
-                }
-            });
         });
     </script>
+    {% if advert.fileadverts|length <= 4  %}
+        <script src="{{ asset('/js/prototype-file.js') }}"></script>
+    {% endif %}
 {% endblock %}

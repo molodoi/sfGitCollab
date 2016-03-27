@@ -14,6 +14,20 @@ back_advert_new:
     defaults: { _controller: "BackBundle:Advert:new" }
     methods:  [GET, POST]
 
+back_advert_activated:
+    path:     /activated/{id}
+    defaults: { _controller: "BackBundle:Advert:activated" }
+    methods:  [GET]
+    requirements:
+        id: \d+
+
+back_advert_activate_token:
+    path:     /activate-token/{token}
+    defaults: { _controller: "BackBundle:Advert:activateAdvertByToken" }
+    methods:  [GET, POST]
+    requirements:
+        token: "[a-zA-Z0-9-_/]+"
+
 back_advert_edit:
     path:     /{id}/edit
     defaults: { _controller: "BackBundle:Advert:edit" }

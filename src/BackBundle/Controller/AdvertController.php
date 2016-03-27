@@ -9,12 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use MainBundle\Entity\Advert;
 use BackBundle\Form\AdvertType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Advert controller.
  *
  */
-class AdvertController extends Controller
+class AdvertController extends BaseController
 {
     /**
      * Lists all Advert entities.
@@ -22,6 +23,7 @@ class AdvertController extends Controller
      */
     public function indexAction(Request $request, $page = null)
     {
+        $this->grantAccessUserSecurity();
 
         $em = $this->getDoctrine()->getManager();
 
@@ -53,6 +55,8 @@ class AdvertController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->grantAccessUserSecurity();
+
         $advert = new Advert();
         $form = $this->createForm('BackBundle\Form\AdvertType', $advert);
         $form->handleRequest($request);
@@ -77,6 +81,8 @@ class AdvertController extends Controller
      */
     public function showAction(Advert $advert)
     {
+        $this->grantAccessUserSecurity();
+
         $deleteForm = $this->createDeleteForm($advert);
 
         return $this->render('BackBundle:Advert:show.html.twig', array(
@@ -91,6 +97,8 @@ class AdvertController extends Controller
      */
     public function editAction(Request $request, Advert $advert)
     {
+        $this->grantAccessUserSecurity();
+
         $deleteForm = $this->createDeleteForm($advert);
         $editForm = $this->createForm('BackBundle\Form\AdvertType', $advert);
         $editForm->handleRequest($request);
@@ -127,6 +135,8 @@ class AdvertController extends Controller
      */
     public function deleteAction(Request $request, Advert $advert)
     {
+        $this->grantAccessUserSecurity();
+
         $form = $this->createDeleteForm($advert);
         $form->handleRequest($request);
 
@@ -153,5 +163,59 @@ class AdvertController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    public function activateAdvertByTokenAction(Request $request, $token)
+    {
+        $this->grantAccessUserSecurity();
+
+        if (null === $token) {
+            throw $this->createNotFoundException('Unable to find Advert entity.');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $advert = $em->getRepository('MainBundle:Advert')->findOneBy(array('token' => $token));
+
+        if (!$advert) {
+            throw $this->createNotFoundException('Unable to find Advert entity.');
+        }
+
+        $activateForm = $this->createActivateForm($advert);
+        $activateForm->handleRequest($request);
+
+        if ($request->getMethod() == 'POST') {
+
+            $advert->setIsActivated(1);
+            $em->persist($advert);
+            $em->flush();
+            return $this->redirectToRoute('back_advert_activated', array('id' => $advert->getId()));
+        }
+
+        return $this->render('BackBundle:Advert:activate-advert.html.twig', array(
+            'advert' => $advert,
+            'activate_form' => $activateForm->createView(),
+        ));
+    }
+
+    private function createActivateForm(Advert $advert)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('back_advert_activate_token', array('token' => $advert->getToken())))
+            ->setMethod('POST')
+            ->getForm()
+            ;
+    }
+
+    public function activatedAction(Advert $advert)
+    {
+        $this->grantAccessUserSecurity();
+        if (!$advert) {
+            throw $this->createNotFoundException('Unable to find Advert entity.');
+        }
+
+        return $this->render('BackBundle:Advert:activated.html.twig', array(
+            'advert' => $advert
+        ));
+
     }
 }

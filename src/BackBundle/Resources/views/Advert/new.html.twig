@@ -80,110 +80,43 @@
             </div>
         </div>
 
-        <div class="form-group col-lg-12 padding-left-0 padding-right-0">
-            {{ form_errors(form.fileadverts) }}
-            {{ form_errors(form.fileadverts) }}
-            <div class="input_fields_wrap">
-                <button class="btn btn-default btn-flat add_field_button">Add More Fields</button>
-                <div>
-                    {{ form_widget(form.fileadverts.vars.prototype.file, {  'attr': {'class': 'form-control'} }) }}
-                    {{ form_widget(form.fileadverts, {  'attr': {'class': 'form-control hidden'} }) }}
-                </div>
-            </div>
-            {#<div class="input_fields_wrap">
-                <div class="input-group">
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default add_file_browser">
-                            <span class="glyphicon glyphicon-file"></span>
-                        </button>
-                    </span>
-
-                    {{ form_widget(form.fileadverts.vars.prototype.file, {  'id': 'advert[fileadverts][__name__][file]0', 'attr': {'class': 'form-control hidden' ,'placeholder': 'Fichiers'} }) }}
-                    <input type="text" id="fake-file-input-name" disabled="disabled" placeholder="File not selected" class="form-control">
-
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default add_field_button" >
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </button>
-                    </span>
-                </div>
-            </div>#}
-        </div>
-
-        <div class="row" id="thumbs-list">
-            {% for image in advert.fileadverts %}
-                <div class="col-sm-6 col-md-4 fileproduct-thumb">
-                    <div class="thumbnail">
-                        <img src="{{ asset(image.webPath('thumb-100-100-')) }}" alt="{{ image.name }}" class="img-responsive img-thumbnail"/>
-                        <div class="caption">
-                            <h3>{{ image.name }}</h3>
-                            <p>
-                                <a href="{{ path('file_product_delete', {'id': image.id}) }}" class="btn btn-danger" role="button">Supprimer</a>
-                            </p>
+        {% if advert.fileadverts|length <= 4  %}
+            <div class="form-group col-lg-12 padding-left-0 padding-right-0">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {#{{ form_errors(form.files) }}
+                        {{ form_widget(form.files) }}#}
+                        <a href="#" id="add-file" class="btn btn-default">Ajouter un fichier</a>
+                        <hr />
+                        <div id="container-file">
+                            <div id="prototype-file" class="prototype-file">
+                                {% set prototype_file = form.files.vars.prototype %}
+                                <div class="form-group {% if form_errors(prototype_file.file) %} has-error {% endif %}">
+                                    {{ form_widget(prototype_file.file, { 'attr': {'class': 'form-control file'} }) }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
-        {{ form_rest(form) }}
+            </div>
+        {% endif %}
+        {{ form_widget(form._token) }}
 
         <input type="submit" value="Create" class="btn btn-success btn-lg" />
         <a href="{{ path('back_advert_index') }}" class="btn btn-default btn-lg">Back to the list</a>
     {{ form_end(form, {'render_rest': false}) }}
     <br />
-
-    <ul>
-        <li>
-            <a href="{{ path('back_advert_index') }}">Back to the list</a>
-        </li>
-    </ul>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-
-
         $(document).ready(function() {
-            var max_fields      = 5; //maximum input boxes allowed
-            var wrapper         = $(".input_fields_wrap"); //Fields wrapper
-            var add_button      = $(".add_field_button"); //Add button ID
-            var add_file        = $(".add_file_browser"); //Add button ID
+            // Supprimer le text des label sur les checkbox public ect..
+            $('.material-switch label').text('');
 
-            //initlal text box count
-            var x = 1;
-            $(add_button).click(function(e){ //on add input button click
-                e.preventDefault();
-                if(x < max_fields){ //max input box allowed
-                    x++; //text box increment
-                    $(wrapper).append(
-                            '<div class="input-group">' +
-                            '<input type="file" name="advert[fileadverts][__name__][file]" class="form-control"/>' +
-                            '<span class="input-group-btn">'+
-                            '<button type="button" class="btn btn-default remove_field" >'+
-                            '<span class="glyphicon glyphicon-minus"></span>'+
-                            '</button>'+
-                            '</div>');
-                }
-            });
-
-            $(wrapper).on("click",".add_file_browser", function(e){
-                e.preventDefault();
-                var inputfile = $(this).parent().next();
-                inputfile.click();
-                inputfile.on('change',function(){
-                    console.log($(this).next().context.value);
-                    $('#fake-file-input-name'+x).val($(this).next().context.value);
-                });
-                //$('#advert[fileadverts][__name__][file]'+x).click();
-            });
-
-            $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-                e.preventDefault();
-                $(this).parent().parent('div').remove();
-                x--;
-                //console.log($(this).parent('div.input-group-btn').parent('div.input-group'));
-                //$(this).parent('div.input-group-btn').parent('div.input-group').remove(); x--;
-            })
         });
     </script>
+    {% if advert.fileadverts|length <= 4  %}
+        <script src="{{ asset('/js/prototype-file.js') }}"></script>
+    {% endif %}
 {% endblock %}

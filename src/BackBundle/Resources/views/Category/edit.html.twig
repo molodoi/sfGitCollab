@@ -3,19 +3,43 @@
 {% block content %}
     <h1>Category edit</h1>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+<div class="row profile">
+    <div class="col-md-3">
+        <div class="profile-sidebar">
+            <div class="profile-userbuttons">
+                <br />
 
-    <ul>
-        <li>
-            <a href="{{ path('back_category_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="profile-content">
+                    {{ form_errors(edit_form) }}
+                    <div class="form-group">
+                        <div class="form-group {% if form_errors(edit_form.title) %} has-error {% endif %}">
+                            {{ form_errors(edit_form.title) }}
+                            {{ form_widget(edit_form.title, { 'attr': {'class': 'form-control', 'placeholder': 'Titre de la catégorie'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group {% if form_errors(edit_form.description) %} has-error {% endif %}">
+                            {{ form_errors(edit_form.description) }}
+                            {{ form_widget(edit_form.description, { 'attr': {'class': 'form-control', 'placeholder': 'Contenu de la catégorie'} }) }}
+                        </div>
+                    </div>
+
+                    {{ form_rest(edit_form) }}
+                    <input type="submit" value="Edit" class="btn btn-success btn-lg"  />
+                    <a href="{{ path('back_category_index') }}" class="btn btn-default btn-lg">Back to the list</a>
+                    {{ form_start(delete_form) }}
+                        <input type="submit" value="Delete" class="btn btn-danger btn-lg btn-flat pull-right">
+                    {{ form_end(delete_form) }}
+                    {{ form_end(edit_form, {'render_rest': false}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

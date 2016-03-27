@@ -12,7 +12,7 @@ use MainBundle\Form\UserType;
  * User controller.
  *
  */
-class UserController extends Controller
+class UserController extends BaseController
 {
     /**
      * Lists all User entities.
@@ -20,6 +20,7 @@ class UserController extends Controller
      */
     public function indexAction(Request $request, $page)
     {
+        $this->grantAccessUserSecurity();
 
         $em = $this->getDoctrine()->getManager();
 
@@ -49,6 +50,8 @@ class UserController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->grantAccessUserSecurity();
+
         $user = new User();
         $form = $this->createForm('BackBundle\Form\UserType', $user);
         $form->handleRequest($request);
@@ -73,6 +76,7 @@ class UserController extends Controller
      */
     public function showAction(User $user)
     {
+        $this->grantAccessUserSecurity();
 
         $deleteForm = $this->createDeleteForm($user);
 
@@ -88,6 +92,8 @@ class UserController extends Controller
      */
     public function editAction(Request $request, User $user)
     {
+        $this->grantAccessUserSecurity();
+
         $deleteForm = $this->createDeleteForm($user);
         $editForm = $this->createForm('BackBundle\Form\UserType', $user, array(
             'passwordRequired' => false,
@@ -138,6 +144,7 @@ class UserController extends Controller
      */
     public function updateAction(User $user, Request $request)
     {
+        $this->grantAccessUserSecurity();
 
         $editForm = $this->createForm('BackBundle\Form\UserType', $user, array(
             'action' => $this->generateUrl('back_user_update', array('id' => $user->getId())),
@@ -169,6 +176,8 @@ class UserController extends Controller
      */
     public function deleteAction(Request $request, User $user)
     {
+        $this->grantAccessUserSecurity();
+
         $form = $this->createDeleteForm($user);
         $form->handleRequest($request);
 

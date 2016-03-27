@@ -12,7 +12,7 @@ use BackBundle\Form\CategoryType;
  * Category controller.
  *
  */
-class CategoryController extends Controller
+class CategoryController extends BaseController
 {
     /**
      * Lists all Category entities.
@@ -20,6 +20,7 @@ class CategoryController extends Controller
      */
     public function indexAction(Request $request, $page)
     {
+        $this->grantAccessUserSecurity();
 
         $em = $this->getDoctrine()->getManager();
 
@@ -52,6 +53,8 @@ class CategoryController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->grantAccessUserSecurity();
+
         $category = new Category();
         $form = $this->createForm('BackBundle\Form\CategoryType', $category);
         $form->handleRequest($request);
@@ -76,6 +79,8 @@ class CategoryController extends Controller
      */
     public function showAction(Category $category)
     {
+        $this->grantAccessUserSecurity();
+
         $deleteForm = $this->createDeleteForm($category);
 
         return $this->render('BackBundle:Category:show.html.twig', array(
@@ -90,6 +95,8 @@ class CategoryController extends Controller
      */
     public function editAction(Request $request, Category $category)
     {
+        $this->grantAccessUserSecurity();
+
         $deleteForm = $this->createDeleteForm($category);
         $editForm = $this->createForm('BackBundle\Form\CategoryType', $category);
         $editForm->handleRequest($request);
@@ -115,6 +122,8 @@ class CategoryController extends Controller
      */
     public function deleteAction(Request $request, Category $category)
     {
+        $this->grantAccessUserSecurity();
+
         $form = $this->createDeleteForm($category);
         $form->handleRequest($request);
 

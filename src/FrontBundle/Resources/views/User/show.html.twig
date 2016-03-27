@@ -1,0 +1,74 @@
+{% extends 'FrontBundle::layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/css/front/carouselbs.css') }}">
+{% endblock %}
+
+{% block content %}
+    <br />
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ dump(user) }}
+                    <hr />
+                    {#{% if user.path is not null %}
+                        <div class="carousel slide article-slide" id="advertPhotoCarousel">
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner cont-slider">
+                                    <div class="item {% if loop.first %}active{% endif %}">
+                                        <img alt="" title="" src="{{ asset('web/uploads/avatars/'~user.path) }}" class="img-responsive img-rounded">
+                                    </div>
+                            </div>
+                        </div>
+                    {% endif %}#}
+                    <br />
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        {#{% if user.username %}
+                            <div class="panel-heading">
+                                <strong>Description:</strong>
+                                <div class="material-switch pull-right">
+                                    <strong>Pseudo: {{ user.username|capitalize }}</strong>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <!-- List group -->
+                        <ul class="list-group">
+                            {% if user.username %}
+                                <li class="list-group-item">
+                                    <strong>Pseudo:  </strong>
+                                </li>
+                            {% endif %}
+                        </ul>#}
+                    </div>
+                    <span class="clearfix"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Username</div>
+                <div class="panel-body">
+                    <p>
+                        {% if user.email is defined %}
+                            <a href="mailto:{{ user.email }}" class="btn btn-block btn-lg btn-primary">
+                                <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Envoyer un message
+                            </a>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+        });
+    </script>
+{% endblock %}

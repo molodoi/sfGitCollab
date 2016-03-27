@@ -6,11 +6,9 @@
 
 {% block content %}
     <div class="row">
-        {{ render(controller('FrontBundle:Advert:search')) }}
-        {% include "FrontBundle:Slots:search-form-frontend.html.twig" %}
+        {% include "FrontBundle:Search:search-form-get-frontend.html.twig" %}
     </div>
-
-    <hr />
+    <br />
     <div class="row">
         <div class="col-md-8">
             <div class="list-group">
@@ -45,7 +43,7 @@
                             {% endif %}
                             {% if advert.user is defined %}
                                 <p class="list-group-item-heading price">
-                                    <strong>{{ advert.user|e|capitalize }}</strong>
+                                    <strong>{{ advert.user.username|e|capitalize }}</strong>
                                 </p>
                             {% endif %}
                             <p>

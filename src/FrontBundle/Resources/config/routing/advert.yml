@@ -2,7 +2,6 @@ front_advert_by_category:
     path: /category/{id}/{page}
     defaults: { _controller: FrontBundle:Advert:showAdvertsByCategorySlug, page: 1 }
     requirements:
-#        slug: "[a-zA-Z0-9-_/]+"
         id: "\d+"
         page: "\d+"
 
@@ -12,9 +11,15 @@ front_advert_show:
     requirements:
         slug: "[a-zA-Z0-9-_/]+"
 
+front_advert_get_search:
+    path:  /getsearch/{page}
+    defaults: { _controller: FrontBundle:Advert:searchGet, page: 1 }
+    methods:  [GET]
+
 front_advert_search:
-    path:  /search
+    path:  /search/
     defaults: { _controller: FrontBundle:Advert:searchPost, page: 1 }
+    methods:  [GET, POST]
 
 #--------------------
 # PRIVATE

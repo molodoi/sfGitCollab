@@ -16,8 +16,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Controller\ProfileController as BaseController;
 
-
-
 /**
  * Controller managing the user profile
  *

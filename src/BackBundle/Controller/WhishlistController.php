@@ -12,7 +12,7 @@ use BackBundle\Form\WhishlistType;
  * Whishlist controller.
  *
  */
-class WhishlistController extends Controller
+class WhishlistController extends BaseController
 {
     /**
      * Lists all Whishlist entities.
@@ -20,7 +20,7 @@ class WhishlistController extends Controller
      */
     public function indexAction(Request $request, $page)
     {
-
+        $this->grantAccessUserSecurity();
         $em = $this->getDoctrine()->getManager();
 
         $allWhishlists = $em->getRepository('MainBundle:Whishlist')
@@ -50,6 +50,7 @@ class WhishlistController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->grantAccessUserSecurity();
         $whishlist = new Whishlist();
         $form = $this->createForm('BackBundle\Form\WhishlistType', $whishlist);
         $form->handleRequest($request);
@@ -74,6 +75,7 @@ class WhishlistController extends Controller
      */
     public function showAction(Whishlist $whishlist)
     {
+        $this->grantAccessUserSecurity();
         $deleteForm = $this->createDeleteForm($whishlist);
 
         return $this->render('BackBundle:Whishlist:show.html.twig', array(
@@ -88,6 +90,7 @@ class WhishlistController extends Controller
      */
     public function editAction(Request $request, Whishlist $whishlist)
     {
+        $this->grantAccessUserSecurity();
         $deleteForm = $this->createDeleteForm($whishlist);
         $editForm = $this->createForm('BackBundle\Form\WhishlistType', $whishlist);
         $editForm->handleRequest($request);
@@ -113,6 +116,7 @@ class WhishlistController extends Controller
      */
     public function deleteAction(Request $request, Whishlist $whishlist)
     {
+        $this->grantAccessUserSecurity();
         $form = $this->createDeleteForm($whishlist);
         $form->handleRequest($request);
 

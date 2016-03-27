@@ -9,14 +9,12 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request, $page)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm('search_form');
 
         $allAdverts = $em->getRepository('MainBundle:Advert')
             ->getListPublicAdverts();
-
-        if (!$allAdverts) {
-            throw $this->createNotFoundException('Unable to find.');
-        }
 
         if(empty($page)){
             $page = $request->query->getInt('page', 1);
@@ -30,7 +28,8 @@ class DefaultController extends Controller
         );
 
         return $this->render('FrontBundle:Default:index.html.twig',array(
-            'adverts' => $adverts
+            'adverts' => $adverts,
+            'search_form' => $form->createView()
         ));
     }
 }
