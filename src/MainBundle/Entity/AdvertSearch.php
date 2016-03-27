@@ -1,11 +1,17 @@
 <?php
 namespace MainBundle\Entity;
 
-class PonySearch
+class AdvertSearch
 {
     public $keyword;
     public $city;
     public $category;
+
+    public function __construct($keyword = null, $city = null, $category = null){
+        $this->keyword = $keyword;
+        $this->city = $city;
+        $this->category = $category;
+    }
 
     /**
      * @return mixed

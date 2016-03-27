@@ -3,6 +3,7 @@
 namespace FrontBundle\Controller;
 
 use FrontBundle\Form\AdvertSearchType;
+use MainBundle\Entity\AdvertSearch;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -250,16 +251,17 @@ class AdvertController extends Controller
 
     public function searchPostAction(Request $request)
     {
-
-        $form = $this->createForm(new AdvertSearchType());
-
+        $advertSearch = new AdvertSearch();
+        $form = $this->createForm(new AdvertSearchType(),$advertSearch);
+        $form->handleRequest($this->get('request'));
         if ($this->get('request')->getMethod() == 'POST')
         {
-            $form->handleRequest($this->get('request'));
+
             $keyword = $form->get('keyword')->getData() ? $form->get('keyword')->getData() : null;
             $category = $form->get('category')->getData() ? $form->get('category')->getData()->getId() : null;
             $city = $form->get('city')->getData() ? $form->get('city')->getData() : null;
             $em = $this->getDoctrine()->getManager();
+
             $allAdverts = $em->getRepository('MainBundle:Advert')->search($keyword, $category, $city);
 
             if(empty($page)){
