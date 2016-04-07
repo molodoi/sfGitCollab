@@ -6,6 +6,8 @@ back:
     resource: "@BackBundle/Resources/config/routing.yml"
     prefix:   /back
 
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 # HWIOAuthBundle
 #hwi_oauth_security:
 #    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"

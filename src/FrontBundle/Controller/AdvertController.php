@@ -4,6 +4,7 @@ namespace FrontBundle\Controller;
 
 use FrontBundle\Form\AdvertSearchType;
 use MainBundle\Entity\AdvertSearch;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -119,12 +120,30 @@ class AdvertController extends Controller
             throw $this->createNotFoundException('Unable to find User.');
         }
 
+        $session = $request->getSession();
+
         $advert = new Advert();
         $form = $this->createForm('FrontBundle\Form\AdvertType', $advert);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $city_name = $form->get('location')->getData()? preg_replace('#[^a-z]#i','', $form->get('location')->getData()) : null;
+            $zipcode = $form->get('zipcode')->getData()? $form->get('zipcode')->getData() : null;
+            if($city_name!= null && $zipcode != null){
+                $city = $em->getRepository('MainBundle:City')->findOneCityByNameOrZipcode($city_name, $zipcode);
+                if(!$city){
+                    $session->getFlashBag()->add('warning', 'Impossible de trouver votre ville');
+                    return $this->render('FrontBundle:Advert:new-user-logged.html.twig', array(
+                        'advert' => $advert,
+                        'form' => $form->createView(),
+                    ));
+                }
+            }
+            $advert->setLocation($city->getCityNameReal());
+            $advert->setZipcode($city->getCityZipcode());
+            $advert->setLongitude($city->getCityLongitudeDeg());
+            $advert->setLatitude($city->getCityLatitudeDeg());
             $advert->setUser($user);
             $em->persist($advert);
             $em->flush();
@@ -144,6 +163,7 @@ class AdvertController extends Controller
             $this->get('mailer')->send($message);
 
             return $this->redirectToRoute('front_logged_advert_show', array('id' => $advert->getId()));
+
         }
 
         return $this->render('FrontBundle:Advert:new-user-logged.html.twig', array(
@@ -180,7 +200,7 @@ class AdvertController extends Controller
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw $this->createAccessDeniedException();
         }
-
+        $session = $request->getSession();
         //$deleteForm = $this->createDeleteForm($advert);
         $editForm = $this->createForm('FrontBundle\Form\AdvertType', $advert);
         $editForm->handleRequest($request);
@@ -195,13 +215,32 @@ class AdvertController extends Controller
         if($totalFiles <= 5 && count($advertsv['files']) <= 5 ){
             if ($editForm->isSubmitted() && $editForm->isValid()) {
                 $em = $this->getDoctrine()->getManager();
+                $city_name = $editForm->get('location')->getData()? preg_replace('#[^a-z]#i','', $editForm->get('location')->getData()) : null;
+                $zipcode = $editForm->get('zipcode')->getData()? $editForm->get('zipcode')->getData() : null;
+                if($city_name!= null && $zipcode != null){
+                    $city = $em->getRepository('MainBundle:City')->findOneCityByNameOrZipcode($city_name, $zipcode);
+                    if(!$city){
+                        $error = 'Impossible de trouver votre ville';
+                        $session->getFlashBag()->add('warning', $error);
+                        $formerr = new FormError($error);
+                        $editForm->get('location')->addError($formerr);
+                        return $this->render('FrontBundle:Advert:new-user-logged.html.twig', array(
+                            'advert' => $advert,
+                            'form' => $editForm->createView(),
+                        ));
+                    }
+                }
+                $advert->setLocation($city->getCityNameReal());
+                $advert->setZipcode($city->getCityZipcode());
+                $advert->setLongitude($city->getCityLongitudeDeg());
+                $advert->setLatitude($city->getCityLatitudeDeg());
                 $em->persist($advert);
                 $em->flush();
 
                 return $this->redirectToRoute('front_logged_advert_edit', array('id' => $advert->getId()));
             }
         }else{
-            $session = $request->getSession();
+
             $session->getFlashBag()->add('warning', 'Vous avez atteind la limite d\'upload de 5 fichiers');
         }
 
@@ -255,7 +294,15 @@ class AdvertController extends Controller
         $advertSearch = new AdvertSearch();
         $form = $this->createForm(new AdvertSearchType(),$advertSearch);
 
-        return $this->render('FrontBundle:Search:search-form-frontend.html.twig', array('search_form' => $form->createView()));
+        return $this->render('FrontBundle:Search:search-form-frontend.html.twig',
+            array(
+                'page' => '',
+                'keyword' => '',
+                'category' => '',
+                'city' => '',
+                'search_form' => $form->createView()
+            )
+        );
     }
 
 
@@ -263,7 +310,9 @@ class AdvertController extends Controller
     public function searchFormGetAction()
     {
         $form = $this->createForm(new AdvertSearchType());
-        return $this->render('FrontBundle:Search:search-form-get-frontend.html.twig', array('search_form' => $form->createView()));
+        return $this->render('FrontBundle:Search:search-form-get-frontend.html.twig', array(
+            'search_form' => $form->createView()
+        ));
     }
 
     public function searchGetAction(Request $request)
@@ -295,7 +344,7 @@ class AdvertController extends Controller
             $adverts = $paginator->paginate(
                 $allAdverts,
                 $page,
-                5
+                2
             );
             $adverts->setParam('keyword', $keyword);
             $adverts->setParam('category', $category);
@@ -308,6 +357,7 @@ class AdvertController extends Controller
         return $this->render('FrontBundle:Search:search-result.html.twig',
             array(
                 'adverts' => $adverts,
+                'page' => $page,
                 'keyword' => $keyword,
                 'category' => $category,
                 'city' => $city,
@@ -315,5 +365,6 @@ class AdvertController extends Controller
             )
         );
     }
+
 
 }

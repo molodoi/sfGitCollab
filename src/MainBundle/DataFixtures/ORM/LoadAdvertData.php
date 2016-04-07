@@ -25,19 +25,41 @@ class LoadAdvertData extends AbstractFixture implements OrderedFixtureInterface
                 $ad->setIsPublic(0);
                 $ad->setType('offer');
                 $ad->setLocation('Lille');
-                $ad->setCategory($manager->merge($this->getReference('category1')));
+                $ad->setCategory($manager->merge($this->getReference('legumes_cat')));
+                $ad->setUser($manager->merge($this->getReference('user3')));
+                $ad->setCreatedAt(new \DateTime());
+                $ad->setExpiredAt($datetime);
             }else{
                 $ad->setIsActivated(1);
                 $ad->setIsPublic(1);
                 $ad->setType('offer');
-                $ad->setLocation('Paris');
-                $ad->setCategory($manager->merge($this->getReference('category2')));
+
+                if($i <= 10) {
+                    $ad->setCategory($manager->merge($this->getReference('fruits_cat')));
+                }else{
+                    $ad->setCategory($manager->merge($this->getReference('legumes_cat')));
+                }
+                if($i <= 10){
+                    $ad->setUser($manager->merge($this->getReference('user2')));
+                    $ad->setCreatedAt(new \DateTime());
+                    $ad->setExpiredAt($datetime);
+                    $ad->setLocation('Lille');
+                }else if($i > 10 && $i <= 20){
+                    $ad->setUser($manager->merge($this->getReference('user3')));
+                    $ad->setCreatedAt(new \DateTime());
+                    $ad->setExpiredAt($datetime);
+                    $ad->setLocation('Paris');
+                }else{
+                    $ad->setUser($manager->merge($this->getReference('user4')));
+                    $ad->setCreatedAt(new \DateTime());
+                    $ad->setExpiredAt($datetime);
+                    $ad->setLocation('Lyon');
+                }
             }
 
             $ad->setToken(uniqid());
-            $ad->setCreatedAt(new \DateTime());
 
-            $ad->setExpiredAt($datetime);
+
             $manager->persist($ad);
         }
 
@@ -53,13 +75,15 @@ class LoadAdvertData extends AbstractFixture implements OrderedFixtureInterface
                 $ad2->setIsPublic(0);
                 $ad2->setType('offer');
                 $ad2->setLocation('Lyon');
-                $ad2->setCategory($manager->merge($this->getReference('category3')));
+                $ad2->setCategory($manager->merge($this->getReference('fruits_cat')));
+                $ad2->setUser($manager->merge($this->getReference('user2')));
             }else{
                 $ad2->setIsActivated(1);
                 $ad2->setIsPublic(0);
                 $ad2->setType('request');
                 $ad2->setLocation('Paris');
-                $ad2->setCategory($manager->merge($this->getReference('category4')));
+                $ad2->setCategory($manager->merge($this->getReference('legumes_cat')));
+                $ad2->setUser($manager->merge($this->getReference('user4')));
             }
             $ad2->setToken(uniqid());
             $ad2->setCreatedAt(new \DateTime());
@@ -75,6 +99,6 @@ class LoadAdvertData extends AbstractFixture implements OrderedFixtureInterface
     {
         // the order in which fixtures will be loaded
         // the lower the number, the sooner that this fixture is loaded
-        return 2;
+        return 3;
     }
 }

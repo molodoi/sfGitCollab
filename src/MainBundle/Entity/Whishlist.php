@@ -99,9 +99,9 @@ class Whishlist
     }
 
     /**
-     * Set avert
+     * Set $advert
      *
-     * @param \MainBundle\Entity\Advert $avert
+     * @param \MainBundle\Entity\Advert $advert
      * @return Whishlist
      */
     public function setAdvert(\MainBundle\Entity\Advert $advert = null)
@@ -112,12 +112,12 @@ class Whishlist
     }
 
     /**
-     * Get avert
+     * Get $advert
      *
      * @return \MainBundle\Entity\Advert 
      */
     public function getAdvert()
     {
-        return $this->avert;
+        return $this->advert;
     }
 }

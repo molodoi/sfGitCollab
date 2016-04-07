@@ -59,14 +59,20 @@
                                 <a href="{{ path('front_advert_by_category', {'id': advert.category.id }) }}">{{ advert.category.title|capitalize }}</a>
                             </li>
                             {% endif %}
-
-                            <li class="list-group-item">
-                                <strong>Ville:</strong>
+                            {% if advert.location %}
+                                <li class="list-group-item">
+                                    <strong>Ville:</strong>
                                     {{ advert.location|capitalize }}
-                            </li>
-                            <li class="list-group-item">
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d62331.91847465962!2d2.348478333333333!3d48.85344166666667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sfr!4v1458484068844" width="100%" height="300" frameborder="0" style="border:0" allowfullscreen ></iframe>
-                            </li>
+                                    {% if advert.zipcode %}
+                                        {{ advert.zipcode|capitalize }}
+                                    {% endif %}
+                                </li>
+                            {% endif %}
+                            {% if advert.longitude and advert.latitude %}
+                                <li class="list-group-item">
+                                    <script type="text/javascript" src="http://www.supportduweb.com/google_map_gen.js?lati={{ advert.latitude }}&long={{ advert.longitude }}&zoom=10&width=675&height=400&mapType=normal&marqueur=yes&info_bulle="></script>
+                                </li>
+                            {% endif %}
                             <li class="list-group-item ">
                                 <span class="pull-right">Mise en ligne le {{ advert.createdAt|date }}</span>
                                 <span class="clearfix"></span>

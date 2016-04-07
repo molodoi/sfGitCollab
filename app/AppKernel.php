@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             //new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new MainBundle\MainBundle(),
             new BackBundle\BackBundle(),
             new FrontBundle\FrontBundle(),

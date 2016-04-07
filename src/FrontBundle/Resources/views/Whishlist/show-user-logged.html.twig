@@ -1,0 +1,71 @@
+{% extends 'FrontBundle::layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+
+<br />
+<div class="row">
+    <div class="col-md-8">
+        <h2>Votre whishlist</h2>
+        <div class="list-group">
+            {% if whislists|length != 0 %}
+                {% for whislist in whislists %}
+                    <a href="{{ path('front_advert_show', { 'slug': whislist.advert.slug, 'location': whislist.advert.location} ) }}" class="list-group-item">
+                        {% if whislist.advert.fileadverts|length != 0 %}
+                            <span class="col-md-3">
+                            {% set firstimg =  whislist.advert.fileadverts|first %}
+                                <img src="{{ asset(firstimg.webPath('150_')) }}" alt="{{ firstimg.alt }}" class="img-responsive img-rounded">
+                                <span class="nbimage img-rounded" >
+                                    <span><strong>{{  whislist.advert.fileadverts|length }}</strong></span>
+                                </span>
+                            </span>
+                        {% else %}
+                            <span class="col-md-3">
+                                <img src="http://placehold.it/250x250" alt="..." class="img-responsive img-rounded">
+                            </span>
+                        {% endif %}
+                        <span class="col-md-9">
+                            {% if  whislist.advert.title is defined %}
+                                <h3 class="advertTitle">{{  whislist.advert.title|capitalize }}</h3>
+                            {% endif %}
+                            {% if  whislist.advert.category.title is defined %}
+                                <p class="list-group-item-text">{{  whislist.advert.category.title|capitalize }}</p>
+                            {% endif %}
+                            {% if whislist.advert.location is defined %}
+                                <p class="list-group-item-text">{{  whislist.advert.location|capitalize }}</p>
+                            {% endif %}
+                            {% if whislist.advert.price is defined %}
+                                <p class="list-group-item-heading price">{{  whislist.advert.price }}€</p>
+                            {% endif %}
+                            {% if whislist.user is defined %}
+                                <p class="list-group-item-heading price">
+                                    <strong>{{ whislist.user.username|e|capitalize }}</strong>
+                                </p>
+                            {% endif %}
+                            <p>
+                                Mise en ligne le {{ whislist.advert.createdAt|date("d/m/Y") }}
+                                <span class="pull-right">Expirera le {{ whislist.advert.expiredAt|date("d/m/Y") }}</span>
+                            </p>
+                        </span>
+                        <span class="clearfix"></span>
+                    </a>
+                {% endfor %}
+            {% else %}
+                <h2>Aucunes annonces</h2>
+                <span class="clearfix"></span>
+
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h2>Catégorie</h2>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

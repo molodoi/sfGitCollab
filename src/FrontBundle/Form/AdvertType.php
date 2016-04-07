@@ -24,7 +24,9 @@ class AdvertType extends AbstractType
                     'request' => 'Demande',
                 ),
             ))
+            //->add('city', 'text', array('mapped' => false,))
             ->add('location')
+            ->add('zipcode')
             ->add('longitude')
             ->add('latitude')
             ->add('isPublic')

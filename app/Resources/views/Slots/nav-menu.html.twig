@@ -28,7 +28,7 @@
                         <a href="{{ path('front_logged_advert_index') }}">Vos annonces</a>
                     </li>
                     <li>
-                        <a href="#">Votre whislist</a>
+                        <a href="{{ path('front_whishlist_show') }}">Votre whislist</a>
                     </li>
                     <li>
                         <a href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a>
@@ -81,7 +81,7 @@
                                 <a href="{{ path('front_logged_advert_index') }}">Vos annonces</a>
                             </li>
                             <li>
-                                <a href="#">Votre whislist</a>
+                                <a href="{{ path('front_whishlist_show') }}">Votre whislist</a>
                             </li>
                             <li>
                                 <a href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a>

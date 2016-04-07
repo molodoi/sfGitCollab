@@ -115,6 +115,8 @@
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <script src="{{ asset('/js/back/ie8-responsive-file-warning.js') }}"></script>
     <script src="{{ asset('/js/back/ie-emulation-modes-warning.js') }}"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
 {% endblock %}
 </body>
 </html>

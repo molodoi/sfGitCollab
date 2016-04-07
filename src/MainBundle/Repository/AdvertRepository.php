@@ -26,13 +26,11 @@ class AdvertRepository extends EntityRepository
             ->leftJoin('a.fileadverts', 'files')
             ->leftJoin('a.category', 'category')
             ->leftJoin('a.user', 'user')
-            ->where('a.isActivated = 1')
-            ->andWhere('a.isPublic = 1');
+            ->where('a.isActivated = 1');
             if(!empty($keyword)){
-                $qb->andWhere('a.title LIKE :title')
-                    ->setParameter('title', '%'.$keyword.'%');
-                    /*->orWhere('a.content LIKE :content')
-                    ->setParameter('content', '%'.$keyword.'%');*/
+                $qb->andWhere('a.title LIKE :keyword')
+                    ->orWhere('a.content LIKE :keyword')
+                    ->setParameter('keyword', '%'.$keyword.'%');
             }
 
             if(!empty($city)){
@@ -45,7 +43,9 @@ class AdvertRepository extends EntityRepository
                     ->setParameter('category', $category);
             }
 
-            $qb->orderBy('a.createdAt', 'DESC')
+            $qb
+                ->andWhere('a.isPublic = 1')
+                ->orderBy('a.createdAt', 'DESC');
         ;
 
         return $qb->getQuery()->getResult();

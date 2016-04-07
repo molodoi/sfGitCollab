@@ -65,6 +65,11 @@ class Advert
     private $location;
 
     /**
+     * @ORM\Column(name="zipcode", type="string", length=50)
+     */
+    private $zipcode;
+
+    /**
      * @ORM\Column(name="longitude", type="decimal", precision=11, scale=8, nullable=true)
      */
     private $longitude;
@@ -669,5 +674,28 @@ class Advert
 
     public function __toString(){
         return $this->title;
+    }
+
+    /**
+     * Set zipcode
+     *
+     * @param string $zipcode
+     * @return Advert
+     */
+    public function setZipcode($zipcode)
+    {
+        $this->zipcode = $zipcode;
+
+        return $this;
+    }
+
+    /**
+     * Get zipcode
+     *
+     * @return string 
+     */
+    public function getZipcode()
+    {
+        return $this->zipcode;
     }
 }

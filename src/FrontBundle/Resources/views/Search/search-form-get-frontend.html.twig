@@ -15,13 +15,16 @@
                 <div class="input-group col-md-12">
                     {{ form_widget(search_form.city, { 'full_name': 'city',  'attr': { 'name': 'city', 'class': 'form-control input-lg', 'placeholder': 'Ville/Cp'} }) }}
                     <span class="input-group-btn">
-                            <button class="btn btn-info btn-lg" type="button">
-                                <i class="glyphicon glyphicon-map-marker"></i>
-                            </button>
-                        </span>
+                        <button class="btn btn-info btn-lg" type="button">
+                            <i class="glyphicon glyphicon-map-marker"></i>
+                        </button>
+                    </span>
                 </div>
             </div>
         </div>
+        {% if page is defined %}
+            <input type="hidden" name="page" value="{{ page }}"/>
+        {% endif %}
         <div class="clearfix"></div>
         <button type="submit" class="btn btn-default btn-lg btn-block"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Rechercher</button>
         {{ form_widget(search_form) }}

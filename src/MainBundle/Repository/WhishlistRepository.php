@@ -14,6 +14,24 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 class WhishlistRepository extends EntityRepository
 {
 
+    public function findWhishlistAdvertByUserOnFrontend($user)
+    {
+        $qb = $this->createQueryBuilder('w')
+            ->addSelect('advert')
+            ->addSelect('files')
+            ->addSelect('category')
+            ->leftJoin('w.advert', 'advert')
+            ->leftJoin('advert.fileadverts', 'files')
+            ->leftJoin('advert.category', 'category')
+            ->where('w.user = :user')
+            ->orderBy('w.createdAt', 'DESC')
+            ->setParameter('user', $user)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+
     public function checkWhislistExist($user, $advert){
         $qb = $this->createQueryBuilder('w')
             ->addSelect('user')

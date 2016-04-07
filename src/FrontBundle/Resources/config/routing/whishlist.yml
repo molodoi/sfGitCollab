@@ -1,3 +1,7 @@
+front_whishlist_show:
+    path: /show
+    defaults: { _controller: FrontBundle:Whishlist:userWhishlist }
+
 front_whishlist_add:
     path: /add/{id}
     defaults: { _controller: FrontBundle:Whishlist:addAdvertToWhislist }

@@ -1,0 +1,5 @@
+front_city_show:
+    path:  /
+    defaults: { _controller: FrontBundle:City:cities }
+    options:
+        expose: true
