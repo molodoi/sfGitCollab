@@ -34,8 +34,9 @@ class AdvertRepository extends EntityRepository
             }
 
             if(!empty($city)){
-                $qb->andWhere('a.location = :city')
-                    ->setParameter('city', $city);
+                $qb->andWhere('a.location LIKE :city')
+                    ->orWhere('a.zipcode LIKE :city')
+                    ->setParameter('city', '%'.$city.'%');
             }
 
             if(!empty($category)){

@@ -1,3 +1,9 @@
+back_user_file_delete:
+    path:     /deleteavatar/{id}/
+    defaults: { _controller: "BackBundle:User:deleteAvatar" }
+    requirements:
+        id: \d+
+
 back_user_page:
     path:     /{page}
     defaults: { _controller: "BackBundle:User:index", page: 1 }

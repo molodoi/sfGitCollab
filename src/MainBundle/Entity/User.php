@@ -31,10 +31,19 @@ class User extends BaseUser
     protected $facebook_id;
 
     /**
+     * @ORM\Column(name="facebook_access_token", type="string", length=255, nullable=true)
+     */
+    protected $facebook_access_token;
+
+    /**
      * @ORM\Column(name="google_id", type="string", length=255, nullable=true)
      */
     protected $google_id;
 
+    /**
+     * @ORM\Column(name="google_access_token", type="string", length=255, nullable=true)
+     */
+    protected $google_access_token;
 
     /**
      * @var string
@@ -157,14 +166,6 @@ class User extends BaseUser
     protected $oldFile;
 
     private $resized_thumbnails;
-
-    protected $thumbnails = array(
-        'thumb-50-50-' => array(50,50),
-        'thumb-150-150-' => array(150,150),
-        'thumb-300-300-' => array(300,300),
-        'thumb-320-150-' => array(320,150),
-        'thumb-800-500-' => array(800,500),
-    );
 
     /**
      * @var \DateTime
@@ -305,7 +306,7 @@ class User extends BaseUser
                 return $this->getUploadDir().$thumb.$this->path;
             }
         }
-        return null === $this->path ? null : $this->getUploadDir().'/'.$this->path;
+        return null === $this->path ? null : $this->getUploadDir().$this->path;
     }
 
     protected function getUploadRootDir()
@@ -320,16 +321,24 @@ class User extends BaseUser
         return 'uploads/avatars/';
     }
 
+    protected $thumbnails = array(
+        '50_' => array(50,50),
+        '150_' => array(150,150),
+        '300_' => array(300,300),
+        '320150_' => array(320,150),
+        '800500_' => array(800,500),
+    );
+
     /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
     public function preUpload()
     {
+
         $this->oldFile = $this->getPath();
         if (null !== $this->file) {
             // génération d'un un nom unique pour l'image
-
             $this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
         }
     }
@@ -416,7 +425,6 @@ class User extends BaseUser
         }
 
     }
-
 
     /**
      * Set firstname
@@ -791,6 +799,7 @@ class User extends BaseUser
         return 'user';
     }
 
+
     /**
      * Set facebook_id
      *
@@ -815,6 +824,29 @@ class User extends BaseUser
     }
 
     /**
+     * Set facebook_access_token
+     *
+     * @param string $facebookAccessToken
+     * @return User
+     */
+    public function setFacebookAccessToken($facebookAccessToken)
+    {
+        $this->facebook_access_token = $facebookAccessToken;
+
+        return $this;
+    }
+
+    /**
+     * Get facebook_access_token
+     *
+     * @return string 
+     */
+    public function getFacebookAccessToken()
+    {
+        return $this->facebook_access_token;
+    }
+
+    /**
      * Set google_id
      *
      * @param string $googleId
@@ -835,5 +867,28 @@ class User extends BaseUser
     public function getGoogleId()
     {
         return $this->google_id;
+    }
+
+    /**
+     * Set google_access_token
+     *
+     * @param string $googleAccessToken
+     * @return User
+     */
+    public function setGoogleAccessToken($googleAccessToken)
+    {
+        $this->google_access_token = $googleAccessToken;
+
+        return $this;
+    }
+
+    /**
+     * Get google_access_token
+     *
+     * @return string 
+     */
+    public function getGoogleAccessToken()
+    {
+        return $this->google_access_token;
     }
 }

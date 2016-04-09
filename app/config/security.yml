@@ -46,6 +46,16 @@ security:
                 check_path:     fos_user_security_check
                 #failure_path:   null
                 default_target_path: front_homepage
+            oauth:
+                resource_owners:
+                    facebook: "/login/check-facebook"
+                    google: "/login/check-google"
+                login_path: /login
+                use_forward: false
+                failure_path: /login
+                default_target_path: front_homepage
+                oauth_user_provider:
+                    service: my_user_provider
 #            oauth:
 #                resource_owners:
 #                    facebook:           "/connect/check-facebook"

@@ -10,6 +10,51 @@
 {% endblock %}
 {% block content %}
     {% block fos_user_content %}
+        <div id="fb-root"></div><script>
+        window.fbAsyncInit = function() {
+            // init the FB JS SDK
+            FB.init({
+                appId      : '483006711910679',
+                xfbml      : true,
+                version    : 'v2.5',
+                status     : true
+            });
+        };
+
+        // Load the SDK asynchronously
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+        function fb_login() {
+            FB.getLoginStatus(function(response) {
+                if (response.status === 'connected') {
+                    // connected
+                    alert('Already connected, redirect to login page to create token.');
+                    document.location = "{{ url("hwi_oauth_service_redirect", {service: "facebook"}) }}";
+                } else {
+                    // not_authorized
+                    FB.login(function(response) {
+                        if (response.authResponse) {
+                            document.location = "{{ url("hwi_oauth_service_redirect", {service: "facebook"}) }}";
+                        } else {
+                            alert('Cancelled.');
+                        }
+                    }, {scope: 'email'});
+                }
+            });
+        }
+    </script>
+        {#<div
+                class="fb-like"
+                data-share="true"
+                data-width="450"
+                data-show-faces="true">
+        </div>#}
         {% if error %}
             <div>{{ error }}</div>
         {% endif %}
@@ -19,10 +64,10 @@
                 <h3>S'identifier, ou <a href="{{ path("fos_user_registration_register") }}">S'enregistrer</a></h3>
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-6">
-                        <a href="#" class="btn btn-lg btn-primary btn-block">Facebook</a>
+                        <a href="#" onclick="fb_login();" class="btn btn-lg btn-primary btn-block">Facebook</a>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-6">
-                        <a href="#" class="btn btn-lg btn-info btn-block">Google</a>
+                        <a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}" class="btn btn-lg btn-info btn-block">Google</a>
                     </div>
                 </div>
                 <div class="login-or">
@@ -76,4 +121,5 @@
     {{ parent() }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js"></script>
     <script src="{{ asset('/js/front/fos_log_reg_pass.js') }}"></script>
+
 {% endblock %}

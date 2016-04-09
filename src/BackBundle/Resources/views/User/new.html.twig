@@ -165,6 +165,12 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
+        $(document).ready(function() {
+            // Supprimer le text des label sur les checkbox public ect..
+            $('.material-switch label').text('');
+        });
+    </script>
+    <script type="text/javascript">
         // Fake file upload
         document.getElementById('fake-file-button-browse').addEventListener('click', function() {
             document.getElementById('files-input-upload').click();

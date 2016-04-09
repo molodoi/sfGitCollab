@@ -3,7 +3,9 @@
 namespace FrontBundle\Controller;
 
 use FrontBundle\Form\AdvertSearchType;
+use FrontBundle\Form\SearchType;
 use MainBundle\Entity\AdvertSearch;
+use MainBundle\Entity\Search;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -58,7 +60,7 @@ class AdvertController extends Controller
      * List adverts par category slug
      * @return Adverts
      */
-    public function showAdvertsByCategorySlugAction(Category $category, Request $request, $page){
+    public function showAdvertsByCategorySlugAction(Request $request, Category $category, $page){
 
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(new AdvertSearchType());
@@ -289,24 +291,6 @@ class AdvertController extends Controller
         ;
     }
 
-    public function searchAction()
-    {
-        $advertSearch = new AdvertSearch();
-        $form = $this->createForm(new AdvertSearchType(),$advertSearch);
-
-        return $this->render('FrontBundle:Search:search-form-frontend.html.twig',
-            array(
-                'page' => '',
-                'keyword' => '',
-                'category' => '',
-                'city' => '',
-                'search_form' => $form->createView()
-            )
-        );
-    }
-
-
-
     public function searchFormGetAction()
     {
         $form = $this->createForm(new AdvertSearchType());
@@ -338,9 +322,10 @@ class AdvertController extends Controller
             $form = $this->createForm(new AdvertSearchType($em, $keyword, $category, $city),$advertSearch);
             $form->handleRequest($request);
 
-            $allAdverts = $em->getRepository('MainBundle:Advert')->search($keyword, $category, $city);
+            //$allAdverts = $em->getRepository('MainBundle:Advert')->search($keyword, $category, $city);
+            $adverts = $em->getRepository('MainBundle:Advert')->search($keyword, $category, $city);
 
-            $paginator = $this->get('knp_paginator');
+            /*$paginator = $this->get('knp_paginator');
             $adverts = $paginator->paginate(
                 $allAdverts,
                 $page,
@@ -348,7 +333,7 @@ class AdvertController extends Controller
             );
             $adverts->setParam('keyword', $keyword);
             $adverts->setParam('category', $category);
-            $adverts->setParam('city', $city);
+            $adverts->setParam('city', $city);*/
 
         } else {
             throw $this->createNotFoundException('La page n\'existe pas.');
@@ -365,6 +350,7 @@ class AdvertController extends Controller
             )
         );
     }
+
 
 
 }

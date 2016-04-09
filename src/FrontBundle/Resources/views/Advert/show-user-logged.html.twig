@@ -44,7 +44,7 @@
                         </div>
                         {% if advert.content %}
                             <div class="panel-body">
-                                {{ advert.content }}
+                                {{ advert.content|raw }}
                             </div>
                         {% endif %}
                         <!-- List group -->

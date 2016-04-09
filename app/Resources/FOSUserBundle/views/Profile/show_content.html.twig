@@ -8,7 +8,7 @@
                 <div class="profile-userpic">
                     {% if user.path is not null %}
                         <a href="{{ path('back_user_edit', { 'id': user.id }) }}">
-                            <img src="{{ asset('/uploads/avatars/thumb-150-150-'~user.path) }}" class="img-responsive img-rounded text-center" />
+                            <img src="{{ asset('/uploads/avatars/150_'~user.path) }}" class="img-responsive img-rounded text-center" />
                         </a>
                     {% else %}
                         <a href="{{ path('back_user_edit', { 'id': user.id }) }}">
@@ -29,7 +29,7 @@
                 <!-- END SIDEBAR USER TITLE -->
                 <!-- SIDEBAR BUTTONS -->
                 <div class="profile-userbuttons">
-                    <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-success btn-sm">Edit votre profil</a><br />
+                    <a href="{{ path('front_profile_edit') }}" class="btn btn-success btn-sm">Edit votre profil</a><br />
                     {#<button type="button" class="btn btn-danger btn-sm">Message</button>#}
                 </div>
                 <!-- END SIDEBAR BUTTONS -->

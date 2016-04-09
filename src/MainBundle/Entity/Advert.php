@@ -5,6 +5,7 @@ namespace MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Advert
@@ -26,7 +27,13 @@ class Advert
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message = "This value should not be blank")
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 125,
+     *      minMessage = "This value should be {{ limit }} or more",
+     *      maxMessage = "This value should be {{ limit }} or less"
+     * )
      * @ORM\Column(name="title", type="string", length=165)
      */
     private $title;
@@ -39,22 +46,21 @@ class Advert
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message = "This value should not be blank")
      * @ORM\Column(name="content", type="text", length=180)
      */
     private $content;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message = "This value should not be blank")
      * @ORM\Column(name="price", type="float")
      */
     private $price;
 
-
     /**
      * @var string
-     *
+     * @Assert\Choice(choices = {"offer", "request"}, message = "Choose a valid Type.")
      * @ORM\Column(name="type", type="string", length=20)
      */
     private $type;

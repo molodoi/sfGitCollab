@@ -281,7 +281,6 @@ class AdvertFile
         // S'il y a une erreur lors du déplacement du fichier, une exception va automatiquement être lancée par la méthode move().
         //Cela va empêcher proprement l'entité d'être persistée dans la base de données si erreur il y a
         $this->file->move($this->getUploadRootDir(), $this->path);
-
         // Creation des thumbnails
         $imagine = new \Imagine\Gd\Imagine();
         $imagineOpen = $imagine->open($this->getUploadRootDir().$this->path);

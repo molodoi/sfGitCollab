@@ -3,3 +3,9 @@ front_user_show:
     defaults: { _controller: FrontBundle:User:show }
     requirements:
         id: "\d+"
+
+front_user_file_delete:
+    path:     /deleteavatar/{id}/
+    defaults: { _controller: "FrontBundle:User:deleteAvatar" }
+    requirements:
+        id: \d+

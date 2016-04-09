@@ -1,3 +1,11 @@
+front_search:
+    resource: "@FrontBundle/Resources/config/routing/search.yml"
+    prefix:   /search
+
+front_profile:
+    resource: "@FrontBundle/Resources/config/routing/profile.yml"
+    prefix:   /profile
+
 front_city:
     resource: "@FrontBundle/Resources/config/routing/city.yml"
     prefix:   /city

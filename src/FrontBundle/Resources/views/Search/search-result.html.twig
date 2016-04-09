@@ -11,7 +11,13 @@
     <br />
     <div class="row">
         <div class="col-md-8">
-            <h2>{{ adverts.getTotalItemCount }} Résultats</h2>
+            {#<h2>{{ adverts.getTotalItemCount }} Résultats</h2>#}
+            <h2>
+                {% if adverts|length != 0 %}
+                    {{ adverts|length }}
+                {% endif %}
+                Résultats
+            </h2>
             <div class="list-group">
                 {% if adverts|length != 0 %}
                 {% for advert in adverts %}
@@ -58,8 +64,8 @@
                 {% endfor %}
             </div>
 
-            {{ knp_pagination_render(adverts) }}
-            {#{{ knp_pagination_render(adverts, 'FrontBundle:Search:twitter_bootstrap_v3_pagination.html.twig', { 'page': adverts.params.page, 'keyword': adverts.params.keyword, 'category': adverts.params.category, 'city': adverts.params.city } ) }}#}
+           {# {{ knp_pagination_render(adverts) }}#}
+
             {% else %}
                 Aucune annonce
             {% endif %}
@@ -72,4 +78,5 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('/js/ip-api-geolocalisation.js') }}"></script>
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace BackBundle\Controller;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -102,12 +103,10 @@ class UserController extends BaseController
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $userManager = $this->get('fos_user.user_manager');
             $user->setUpdatedAt(new \DateTime());
-            $em->persist($user);
-            $em->flush();
-
-            return $this->redirectToRoute('back_user_edit', array('id' => $user->getId()));
+            $userManager->updateUser($user);
+            return $this->redirect($this->generateUrl('back_user_edit', array('id' => $user->getId())));
         }
 
         return $this->render('BackBundle:User:edit.html.twig', array(
@@ -204,5 +203,37 @@ class UserController extends BaseController
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    public function deleteAvatarAction(Request $request,User $user){
+        $this->grantAccessUserSecurity();
+        $userManager = $this->get('fos_user.user_manager');
+        $path = $user->getPath();
+
+        $thumbnails = array('50_','150_','300_','320150_','800500_');
+        $directoryPath = $this->container->getParameter('kernel.root_dir') . '/../web/uploads/avatars/';
+        $directoryPath = preg_replace("/app..../i", "", $directoryPath);
+        foreach($thumbnails as $prefix)
+        {
+            if (file_exists($directoryPath.$prefix.$path))
+            {
+                unlink($directoryPath.$prefix.$path);
+            }
+        }
+        if(file_exists($directoryPath.$path)){
+            unlink($directoryPath.$path);
+        }
+        $user->setPath(null);
+        $userManager->updateUser($user);
+
+        if($request->isXmlHttpRequest()){
+            return new JsonResponse(array('success' => true));
+        }
+
+        $referer = $request->headers->get('referer');
+
+        return $this->redirect($referer);
+
+        return $this->redirect($this->generateUrl('back_user_edit', array('id' => $user->getId())));
     }
 }

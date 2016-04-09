@@ -5,11 +5,7 @@
             <div class="profile-sidebar">
                 <!-- SIDEBAR USERPIC -->
                 <div class="profile-userpic">
-                    {% if form.vars.value.path is not null %}
-                            <img src="{{ asset('/uploads/avatars/thumb-50-50-'~form.vars.value.path) }}" class="img-responsive img-rounded text-center" />
-                    {% else %}
-                            <img src="http://placehold.it/50x50" class="img-responsive img-rounded text-center" alt="">
-                    {% endif %}
+
                 </div>
                 <!-- END SIDEBAR USERPIC -->
                 <!-- SIDEBAR USER TITLE -->
@@ -60,7 +56,9 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="profile-content">
-                        {{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
+                        <form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit"  role="form" novalidate>
+                        {#{{ form_start(form, {'method': 'post', 'action': path('fos_user_profile_edit'), 'attr': {'class': 'fos_user_profile_edit'}}) }}#}
+
                         <div class="form-group col-lg-6 padding-left-0 padding-right-15">
                             {{ form_label(form.username, 'Nom d\'utilisateur (login)' ) }}
                             <div class="form-group {% if form_errors(form.username) %} has-error {% endif %}">
@@ -180,35 +178,42 @@
                                 {{ form_widget(form.latitude, { 'attr': {'class': 'form-control', 'placeholder': 'Latitude'} }) }}
                             </div>
                         </div>
-
-                        {#<div class="form-group">
-                            {{ form_label(form.file) }}
-                            {{ form_errors(form.file) }}
-                            {{ form_widget(form.file) }}
-                        </div>#}
-                        <div class="input-group">
-                            {{ form_errors(form.file) }}
-                            <span class="input-group-btn">
-                                <button id="fake-file-button-browse" type="button" class="btn btn-default">
-                                    <span class="glyphicon glyphicon-file"></span>
-                                </button>
-                             </span>
-                            {#<input type="file" id="files-input-upload" style="display:none">#}
-                            {{ form_widget(form.file, { 'id': 'files-input-upload', 'attr': {'class': 'hidden'} }) }}
-                            <input type="text" id="fake-file-input-name" disabled="disabled" placeholder="File not selected" class="form-control">
-                            {#<span class="input-group-btn">
-                                <button type="button" class="btn btn-default" disabled="disabled" id="fake-file-button-upload">
-                                    <span class="glyphicon glyphicon-upload"></span>
-                                </button>
-                            </span>#}
+                        <div class="form-group {% if form_errors(form.file) %} has-error {% endif %}">
+                            {{ form_widget(form.file, { 'attr': {'class': 'form-control'} }) }}
                         </div>
+                            {% if app.user.path is not null %}
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <ul id="files-list" class="list-unstyled">
+                                                    <li>
+                                                        <div class="col-sm-6 col-md-4 file">
+                                                            <div class="thumbnail">
+                                                                {% if app.user.path is not null %}
+                                                                    <img src="{{ asset('/uploads/avatars/300_'~app.user.path) }}" class="img-responsive img-rounded text-center" />
+                                                                {% endif %}
+                                                                <p>
+                                                                    <br />
+                                                                    <a href="{{ path('front_user_file_delete', {'id': app.user.id }) }}" class="btn btn-danger" role="button">Supprimer</a>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
 
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
                         <br />
                         <div>
                             <input type="submit" value="Mettre à jour votre profil" class="btn btn-primary btn-block btn-lg" />
                         </div>
-                        {{ form_rest(form) }}
-                        {{ form_end(form) }}
+                            {{ form_rest(form) }}
+                        </form>
+                        {#{{ form_end(form) }}#}
                     </div>
                 </div>
             </div>

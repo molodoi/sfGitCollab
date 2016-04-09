@@ -26,7 +26,7 @@
                     <td>
                         {% if user.path is not null %}
                             <a href="{{ path('back_user_edit', { 'id': user.id }) }}">
-                                <img src="{{ asset('/uploads/avatars/thumb-50-50-'~user.path) }}" class="img-responsive img-rounded text-center" />
+                                <img src="{{ asset('/uploads/avatars/50_'~user.path) }}" class="img-responsive img-rounded text-center" />
                             </a>
                         {% else %}
                             <a href="{{ path('back_user_edit', { 'id': user.id }) }}">

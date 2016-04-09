@@ -44,7 +44,7 @@
                         <div class="form-group {% if form_errors(edit_form.content) %} has-error {% endif %}">
                             {{ form_errors(edit_form.content) }}
                             {{ form_label(edit_form.content, 'Contenu') }}
-                            {{ form_widget(edit_form.content, { 'attr': {'class': 'form-control', 'placeholder': 'Contenu'} }) }}
+                            {{ form_widget(edit_form.content, { 'attr': {'class': 'form-control ckeditor', 'placeholder': 'Contenu'} }) }}
                         </div>
                     </div>
                     {#<div class="form-group col-lg-12 padding-left-0 padding-right-0">
@@ -160,8 +160,11 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('/js/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('/ckeditor/adapters/jquery.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
+            $( 'textarea.ckeditor' ).ckeditor();
             // Supprimer le text des label sur les checkbox public ect..
             $('.material-switch label').text('');
             $('.city').autocomplete({
