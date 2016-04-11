@@ -56,7 +56,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="profile-content">
-                        <form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit"  role="form" novalidate>
+                        <form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit" enctype="multipart/form-data" role="form" novalidate>
                         {#{{ form_start(form, {'method': 'post', 'action': path('fos_user_profile_edit'), 'attr': {'class': 'fos_user_profile_edit'}}) }}#}
 
                         <div class="form-group col-lg-6 padding-left-0 padding-right-15">

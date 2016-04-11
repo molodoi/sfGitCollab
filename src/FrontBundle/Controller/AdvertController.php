@@ -304,10 +304,23 @@ class AdvertController extends Controller
         if ($this->get('request')->getMethod() == 'GET')
         {
 
+            /*
+             * multi pagination symfony
+             * https://openclassrooms.com/forum/sujet/symfony2-formulaire-de-recherche-et-pagination
+             * http://stackoverflow.com/questions/32525852/best-practice-for-multiple-search-items-and-pagination-in-symfony2
+             * http://stackoverflow.com/questions/4423856/how-to-use-doctrine-or-symfony-pager-with-different-column-selected-from-multipl
+             * http://stackoverflow.com/questions/23272132/is-there-a-way-to-make-the-knp-paginator-show-only-show-next-and-previous-button
+             */
+
             $em = $this->getDoctrine()->getManager();
             $keyword = $request->query->get('keyword') ? $request->query->get('keyword') : null;
             $category = $request->query->get('category') ? $request->query->get('category') : null;
             $city = $request->query->get('city') ? $request->query->get('city') : null;
+
+            /*if(!$request->query->get('sort') && !$request->query->get('direction')) {
+                $_GET['sort'] = 'a.price';
+                $_GET['direction'] = 'asc';
+            }*/
 
             if(empty($page)){
                 $page = $request->query->getInt('page', 1);
@@ -323,17 +336,31 @@ class AdvertController extends Controller
             $form->handleRequest($request);
 
             //$allAdverts = $em->getRepository('MainBundle:Advert')->search($keyword, $category, $city);
-            $adverts = $em->getRepository('MainBundle:Advert')->search($keyword, $category, $city);
+            $allAdverts = $em->getRepository('MainBundle:Advert')->search($keyword, $category, $city);
 
-            /*$paginator = $this->get('knp_paginator');
+            $perpage = 2;
+
+            $paginator = $this->get('knp_paginator');
             $adverts = $paginator->paginate(
                 $allAdverts,
                 $page,
-                2
+                $perpage
             );
+
+            $nbTotalItems = $adverts->getTotalItemCount();
+            if(($nbTotalItems / $perpage) < $page){
+                $page = 1;
+            }
+
+            /*if(!$request->query->get('sort') && !$request->query->get('direction')) {
+                $adverts->setParam('sort', 'a.price');
+                $adverts->setParam('direction', 'asc');
+            }*/
+
             $adverts->setParam('keyword', $keyword);
             $adverts->setParam('category', $category);
-            $adverts->setParam('city', $city);*/
+            $adverts->setParam('city', $city);
+            $adverts->setParam('page', $page);
 
         } else {
             throw $this->createNotFoundException('La page n\'existe pas.');
@@ -342,10 +369,10 @@ class AdvertController extends Controller
         return $this->render('FrontBundle:Search:search-result.html.twig',
             array(
                 'adverts' => $adverts,
-                'page' => $page,
+                /*'page' => $page,
                 'keyword' => $keyword,
                 'category' => $category,
-                'city' => $city,
+                'city' => $city,*/
                 'search_form' => $form->createView()
             )
         );

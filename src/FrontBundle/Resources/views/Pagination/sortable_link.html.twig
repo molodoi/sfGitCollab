@@ -1,0 +1,13 @@
+<span class="glyphicon
+        {% for attr, value in options %}
+            {% if value == 'asc' %}
+                  glyphicon-menu-down {{ direction }}
+                {% elseif value == 'desc' %}
+                  glyphicon-menu-up
+            {% endif %}
+        {% endfor %}"
+        aria-hidden="true">
+
+      </span>
+
+<a{% for attr, value in options %} {{ attr }}="{{ value }}"{% endfor %}>{{ title }}</a>

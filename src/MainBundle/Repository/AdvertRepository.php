@@ -49,7 +49,7 @@ class AdvertRepository extends EntityRepository
                 ->orderBy('a.createdAt', 'DESC');
         ;
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery();
     }
 
     public function findAdvertsByCategoryOnFrontend($category)

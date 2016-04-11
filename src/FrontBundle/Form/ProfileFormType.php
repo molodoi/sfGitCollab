@@ -25,27 +25,22 @@ class ProfileFormType extends AbstractType
             ->add('addressPublic')
             ->add('longitude')
             ->add('latitude')
-            ->add('file','file')
-            ;
+            ->add('file','file', array(
+                'required' => false
+            ));
     }
 
     public function getParent()
     {
-        return 'FOS\UserBundle\Form\Type\ProfileFormType';
+        return 'fos_user_profile';
 
-    // Or for Symfony < 2.8
-    // return 'fos_user_registration';
     }
 
-    public function getBlockPrefix()
-    {
-        return 'front_user_profile';
-    }
 
     // For Symfony 2.x
     public function getName()
     {
-        return $this->getBlockPrefix();
+        return 'front_user_profile';
     }
 
 }

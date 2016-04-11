@@ -1,4 +1,4 @@
 front_search_query:
     path:  /query/
-    defaults: { _controller: FrontBundle:Advert:searchGet, page: 1 }
+    defaults: { _controller: FrontBundle:Advert:searchGet }
     methods:  [GET]

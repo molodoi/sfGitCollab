@@ -37,8 +37,6 @@ class ProfileController extends BaseController
 
         $form = $this->container->get('fos_user.profile.form');
         $formHandler = $this->container->get('fos_user.profile.form.handler');
-        /*$form = $this->container->get('my.profile.form.type');
-        $formHandler = $this->container->get('my.profile.form.handler');*/
 
         $process = $formHandler->process($user);
 

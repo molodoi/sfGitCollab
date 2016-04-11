@@ -14,12 +14,14 @@ class AdvertSearchType extends AbstractType
     protected $keyword;
     protected $category;
     protected $city;
+    protected $page;
     protected $em;
 
-    public function __construct(EntityManager $em = null, $keyword = null, $category = null, $city = null) {
+    public function __construct(EntityManager $em = null, $keyword = null, $category = null, $city = null, $page = null) {
         $this->keyword = $keyword;
         $this->category = $category;
         $this->city = $city;
+        $this->page = $page;
         $this->em = $em;
     }
 

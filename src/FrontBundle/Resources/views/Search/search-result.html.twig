@@ -11,13 +11,17 @@
     <br />
     <div class="row">
         <div class="col-md-8">
-            {#<h2>{{ adverts.getTotalItemCount }} Résultats</h2>#}
-            <h2>
-                {% if adverts|length != 0 %}
-                    {{ adverts|length }}
-                {% endif %}
-                Résultats
-            </h2>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h2 class="pull-left">{{ adverts.getTotalItemCount }} Résultats</h2>
+                    <button type="button" class="btn btn-default btn-lg pull-right">
+
+                        {{ knp_pagination_sortable(adverts, 'Prix', 'a.price')|raw }}
+                    </button>
+                </div>
+            </div>
+
+
             <div class="list-group">
                 {% if adverts|length != 0 %}
                 {% for advert in adverts %}
@@ -64,7 +68,7 @@
                 {% endfor %}
             </div>
 
-           {# {{ knp_pagination_render(adverts) }}#}
+            {{ knp_pagination_render(adverts) }}
 
             {% else %}
                 Aucune annonce

@@ -3,6 +3,50 @@
 {% block content %}
     <h1 class="page-header">Dashboard</h1>
     Hello World! Welcome Back!
+    <hr />
+    {#{% render(controller('BackBundle:Advert:advertNonActivated', {'page': 1})) %}#}
+    {#{% include "BackBundle:Partials:advertNonActivated.html.twig" %}#}
+    <div class="col-md-4">
+        <div class="list-group">
+            <a href="#" class="list-group-item active">
+                Annonces inactives
+            </a>
+            {% for advert in advertsnotactive %}
+                <a href="{{ path('back_advert_show', {'id': advert.id }) }}" class="list-group-item">
+                    {{ advert.title }}
+                </a>
+            {% endfor %}
+            {{ knp_pagination_render(advertsnotactive) }}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="list-group">
+            <a href="#" class="list-group-item active">
+                Annonces inactives
+            </a>
+            {% for user in userssnotactive %}
+                <a href="{{ path('back_user_show', {'id': user.id }) }}" class="list-group-item">
+                    {{ user.lastname }}
+                </a>
+            {% endfor %}
+            {{ knp_pagination_render(userssnotactive) }}
+        </div>
+    </div>
 {% endblock %}
 
-
+{% block javascripts %}
+    {{ parent() }}
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#dish-select-component-canvas').on('click', "ul.pagination a" , function(e){
+                $.ajax({
+                    type: "GET",
+                    url: $(this).attr('href')
+                })
+                .done(function( msg ) {
+                    $('#dish-select-component-items').html(msg);
+                });
+                e.preventDefault();
+            });
+        </script>
+{% endblock %}
