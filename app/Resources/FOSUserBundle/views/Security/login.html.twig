@@ -74,11 +74,10 @@
                     <hr class="hr-or">
                     <span class="span-or">ou</span>
                 </div>
-
                 <form action="{{ path("fos_user_security_check") }}" method="post" role="form">
                     <div class="form-group">
-                        <label for="username">Pseudonyme</label>
-                        <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" required="required" />
+                        <label for="username">Email/Pseudonyme</label>
+                        <input type="text" id="username" name="_username" class="form-control" required="required" />
                     </div>
                     <div class="form-group">
                         <a class="pull-right" href="{{ path("fos_user_resetting_request") }}">Mot de passe oublié?</a>

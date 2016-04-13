@@ -36,6 +36,16 @@ class User extends BaseUser
     protected $facebook_access_token;
 
     /**
+     * @ORM\Column(name="facebook_email", type="string", length=255, nullable=true)
+     */
+    protected $facebook_email;
+
+    /**
+     * @ORM\Column(name="facebook_picture", type="string", length=255, nullable=true)
+     */
+    protected $facebook_picture;
+
+    /**
      * @ORM\Column(name="google_id", type="string", length=255, nullable=true)
      */
     protected $google_id;
@@ -44,6 +54,41 @@ class User extends BaseUser
      * @ORM\Column(name="google_access_token", type="string", length=255, nullable=true)
      */
     protected $google_access_token;
+
+    /**
+     * @ORM\Column(name="google_email", type="string", length=255, nullable=true)
+     */
+    protected $google_email;
+
+    /**
+     * @ORM\Column(name="google_verified_email", type="string", length=10, nullable=true)
+     */
+    protected $google_verified_email;
+
+    /**
+     * @ORM\Column(name="google_link", type="string", length=255, nullable=true)
+     */
+    protected $google_link;
+
+    /**
+     * @ORM\Column(name="google_picture", type="string", length=255, nullable=true)
+     */
+    protected $google_picture;
+
+    /**
+     * @ORM\Column(name="google_gender", type="string", length=15, nullable=true)
+     */
+    protected $google_gender;
+
+    /**
+     * @ORM\Column(name="google_locale", type="string", length=8, nullable=true)
+     */
+    protected $google_locale;
+
+    /**
+     * @ORM\Column(name="ip_user", type="string", length=100, nullable=true)
+     */
+    protected $ip_user;
 
     /**
      * @var string
@@ -890,5 +935,235 @@ class User extends BaseUser
     public function getGoogleAccessToken()
     {
         return $this->google_access_token;
+    }
+
+    /**
+     * Set facebook_email
+     *
+     * @param string $facebookEmail
+     * @return User
+     */
+    public function setFacebookEmail($facebookEmail)
+    {
+        $this->facebook_email = $facebookEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get facebook_email
+     *
+     * @return string 
+     */
+    public function getFacebookEmail()
+    {
+        return $this->facebook_email;
+    }
+
+    /**
+     * Set google_email
+     *
+     * @param string $googleEmail
+     * @return User
+     */
+    public function setGoogleEmail($googleEmail)
+    {
+        $this->google_email = $googleEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get google_email
+     *
+     * @return string 
+     */
+    public function getGoogleEmail()
+    {
+        return $this->google_email;
+    }
+
+    /**
+     * Set ip_user
+     *
+     * @param string $ipUser
+     * @return User
+     */
+    public function setIpUser($ipUser)
+    {
+        $this->ip_user = $ipUser;
+
+        return $this;
+    }
+
+    /**
+     * Get ip_user
+     *
+     * @return string 
+     */
+    public function getIpUser()
+    {
+        return $this->ip_user;
+    }
+
+    /**
+     * Set facebook_picture_data_url
+     *
+     * @param string $facebookPictureDataUrl
+     * @return User
+     */
+    public function setFacebookPictureDataUrl($facebookPictureDataUrl)
+    {
+        $this->facebook_picture_data_url = $facebookPictureDataUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get facebook_picture_data_url
+     *
+     * @return string 
+     */
+    public function getFacebookPictureDataUrl()
+    {
+        return $this->facebook_picture_data_url;
+    }
+
+    /**
+     * Set facebook_picture
+     *
+     * @param string $facebookPicture
+     * @return User
+     */
+    public function setFacebookPicture($facebookPicture)
+    {
+        $this->facebook_picture = $facebookPicture;
+
+        return $this;
+    }
+
+    /**
+     * Get facebook_picture
+     *
+     * @return string 
+     */
+    public function getFacebookPicture()
+    {
+        return $this->facebook_picture;
+    }
+
+    /**
+     * Set google_link
+     *
+     * @param string $googleLink
+     * @return User
+     */
+    public function setGoogleLink($googleLink)
+    {
+        $this->google_link = $googleLink;
+
+        return $this;
+    }
+
+    /**
+     * Get google_link
+     *
+     * @return string 
+     */
+    public function getGoogleLink()
+    {
+        return $this->google_link;
+    }
+
+    /**
+     * Set google_picture
+     *
+     * @param string $googlePicture
+     * @return User
+     */
+    public function setGooglePicture($googlePicture)
+    {
+        $this->google_picture = $googlePicture;
+
+        return $this;
+    }
+
+    /**
+     * Get google_picture
+     *
+     * @return string 
+     */
+    public function getGooglePicture()
+    {
+        return $this->google_picture;
+    }
+
+    /**
+     * Set google_gender
+     *
+     * @param string $googleGender
+     * @return User
+     */
+    public function setGoogleGender($googleGender)
+    {
+        $this->google_gender = $googleGender;
+
+        return $this;
+    }
+
+    /**
+     * Get google_gender
+     *
+     * @return string 
+     */
+    public function getGoogleGender()
+    {
+        return $this->google_gender;
+    }
+
+    /**
+     * Set google_locale
+     *
+     * @param string $googleLocale
+     * @return User
+     */
+    public function setGoogleLocale($googleLocale)
+    {
+        $this->google_locale = $googleLocale;
+
+        return $this;
+    }
+
+    /**
+     * Get google_locale
+     *
+     * @return string 
+     */
+    public function getGoogleLocale()
+    {
+        return $this->google_locale;
+    }
+
+    /**
+     * Set google_verified_email
+     *
+     * @param string $googleVerifiedEmail
+     * @return User
+     */
+    public function setGoogleVerifiedEmail($googleVerifiedEmail)
+    {
+        $this->google_verified_email = $googleVerifiedEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get google_verified_email
+     *
+     * @return string 
+     */
+    public function getGoogleVerifiedEmail()
+    {
+        return $this->google_verified_email;
     }
 }

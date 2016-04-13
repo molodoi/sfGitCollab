@@ -9,7 +9,7 @@ class CategoryController extends Controller
 {
     public function indexAction(Request $request, $slug = null)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $allcategories = $em->getRepository('MainBundle:Category')
             ->getListCategoryBySlugWithAdvertsOnFrontend($slug);
@@ -32,7 +32,7 @@ class CategoryController extends Controller
     }
 
     public function renderListCategoryMenuAction(){
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $categories = $em->getRepository('MainBundle:Category')->findAll();
 

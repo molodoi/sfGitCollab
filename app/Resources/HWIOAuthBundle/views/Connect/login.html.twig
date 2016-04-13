@@ -1,0 +1,72 @@
+{% extends 'HWIOAuthBundle::layout.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/css/front/fos_log_reg_pass.css') }}">
+{% endblock %}
+{% block hwi_oauth_content %}
+    {% if app.user %}
+        <script type="text/javascript">
+            window.location = '/';
+        </script>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-6">
+
+                {% if error is defined and error %}
+                    <div class="alert alert-danger">The follow errors just happened:<br>
+                        - {{ error|trans({}, 'FOSUserBundle') }}
+                    </div>
+                {% endif %}
+                <h3>S'identifier, ou <a href="{{ path("fos_user_registration_register") }}">S'enregistrer</a></h3>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6">
+                        <a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}" class="btn btn-lg btn-primary btn-block">Facebook</a>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6">
+                        <a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}" class="btn btn-lg btn-info btn-block">Google</a>
+                    </div>
+                </div>
+                <div class="login-or">
+                    <hr class="hr-or">
+                    <span class="span-or">ou</span>
+                </div>
+                <form action="{{ path("fos_user_security_check") }}" method="post" role="form">
+                    <div class="form-group">
+                        <label for="username">Email/Pseudonyme</label>
+                        <input type="text" id="username" name="_username" class="form-control" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <a class="pull-right" href="{{ path("fos_user_resetting_request") }}">Mot de passe oublié?</a>
+                        <label for="password">Mot de passe</label>
+                        <input type="password" id="password" name="_password" class="form-control" required="required" />
+                    </div>
+                    <div class="checkbox pull-right">
+                        <label for="remember_me">
+                            <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                            Se souvenir de moi</label>
+                    </div>
+                    <button type="submit" class="btn btn btn-primary btn-block btn-lg">
+                        Se connecter
+                    </button>
+                </form>
+        </div>
+        <div class="col-md-6">
+            <br />
+            <h2>Terms and Conditions</h2>
+            <p>
+                By clicking on "Register" you agree to The Company's' Terms and Conditions
+            </p>
+            <p>
+                While rare, prices are subject to change based on exchange rate fluctuations -
+                should such a fluctuation happen, we may request an additional payment. You have the option to request a full refund or to pay the new price. (Paragraph 13.5.8)
+            </p>
+            <p>
+                Should there be an error in the description or pricing of a product, we will provide you with a full refund (Paragraph 13.5.6)
+            </p>
+            <p>
+                Acceptance of an order by us is dependent on our suppliers ability to provide the product. (Paragraph 13.5.6)
+            </p>
+        </div>
+
+    </div>
+{% endblock hwi_oauth_content %}

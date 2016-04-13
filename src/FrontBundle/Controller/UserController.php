@@ -5,6 +5,7 @@ namespace FrontBundle\Controller;
 use MainBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserController extends Controller
 {
@@ -63,6 +64,6 @@ class UserController extends Controller
 
         return $this->redirect($referer);
 
-        return $this->redirect($this->generateUrl('back_user_edit', array('id' => $user->getId())));
+        /*return $this->redirect($this->generateUrl('back_user_edit', array('id' => $user->getId())));*/
     }
 }

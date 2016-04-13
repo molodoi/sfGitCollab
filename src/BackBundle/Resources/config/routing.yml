@@ -1,3 +1,7 @@
+back_dashboard:
+    resource: "@BackBundle/Resources/config/routing/dashboard.yml"
+    prefix:   /dashboard
+
 back_whishlist:
     resource: "@BackBundle/Resources/config/routing/whishlist.yml"
     prefix:   /whishlist

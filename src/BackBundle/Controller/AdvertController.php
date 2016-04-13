@@ -219,5 +219,4 @@ class AdvertController extends BaseController
 
     }
 
-    
 }

@@ -6,47 +6,71 @@
     <hr />
     {#{% render(controller('BackBundle:Advert:advertNonActivated', {'page': 1})) %}#}
     {#{% include "BackBundle:Partials:advertNonActivated.html.twig" %}#}
-    <div class="col-md-4">
-        <div class="list-group">
-            <a href="#" class="list-group-item active">
-                Annonces inactives
-            </a>
-            {% for advert in advertsnotactive %}
-                <a href="{{ path('back_advert_show', {'id': advert.id }) }}" class="list-group-item">
-                    {{ advert.title }}
+
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="list-group" id="advert_not_active_list">
+                <li class="list-group-item disabled">
+                    {{ advertsnotactive.getTotalItemCount }} annonces inactives
+                </li>
+                {% for advert in advertsnotactive %}
+                <li class="list-group-item">
+                    {{ advert.title|capitalize }}
+                    <a href="{{ path('back_advert_show', {'id': advert.id }) }}" class="btn btn-default btn-xs pull-right activate_advert">
+                        Voir
+                    </a>
+                    <a href="{{ path('back_dashboard_activate_advert', {'id': advert.id }) }}" class="btn btn-default btn-xs pull-right">
+                        Activer
+                    </a>
+                </li>
+                {% endfor %}
+                {{ knp_pagination_render(advertsnotactive) }}
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <div class="list-group">
+                <a href="#" class="list-group-item active">
+                    {{ usersnotactive.getTotalItemCount }} Utilisateurs inactives
                 </a>
-            {% endfor %}
-            {{ knp_pagination_render(advertsnotactive) }}
+                {% for user in usersnotactive %}
+                    <a href="{{ path('back_user_show', {'id': user.id }) }}" class="list-group-item">
+                        {{ user.username }} {{ user.email }} | {{ user.firstname|capitalize }} {{ user.lastname|capitalize }}
+                    </a>
+                {% endfor %}
+                {{ knp_pagination_render(usersnotactive) }}
+            </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="list-group">
-            <a href="#" class="list-group-item active">
-                Annonces inactives
-            </a>
-            {% for user in userssnotactive %}
-                <a href="{{ path('back_user_show', {'id': user.id }) }}" class="list-group-item">
-                    {{ user.lastname }}
-                </a>
-            {% endfor %}
-            {{ knp_pagination_render(userssnotactive) }}
-        </div>
-    </div>
+
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
         <script type="text/javascript">
             $(document).ready(function() {
-                $('#dish-select-component-canvas').on('click', "ul.pagination a" , function(e){
-                $.ajax({
-                    type: "GET",
-                    url: $(this).attr('href')
-                })
-                .done(function( msg ) {
-                    $('#dish-select-component-items').html(msg);
+
+                $('#advert_not_active_list').on('click', "a.activate_advert" , function(e){
+                    e.preventDefault();
+                    if (confirm("Etes-vous sure?")) {
+                        currentLink = $(this);
+                        currentLinkHref = currentLink.attr('href');
+                        currentLink.closest('li').fadeOut(600,function(){
+                            $(this).remove();
+                        });
+
+                        $.ajax({
+                            method:"GET",
+                            url: currentLinkHref,
+                            dataType: 'json'
+                        }).done(function(){
+                            currentLink.parents('li').fadeOut(600,function(){
+                                $(this).remove();
+                            });
+                        });
+                    }
                 });
-                e.preventDefault();
+
+
             });
         </script>
 {% endblock %}

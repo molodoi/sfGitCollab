@@ -1,0 +1,32 @@
+back_dashboard_activate_advert:
+    path:     /dashboard/activate_advert/{id}
+    defaults: { _controller: "BackBundle:Default:activateAnnonceById" }
+    methods:  [GET]
+    requirements:
+        id: \d+
+
+back_dashboard_usersadvertssnotactive:
+    path:     /dashboard/{page_advertsnotactive}{page_usersnotactive}
+    defaults: { _controller: "BackBundle:Default:index" }
+    options:
+        expose: true
+    requirements:
+        page_advertsnotactive: \d+
+        page_usersnotactive: \d+
+
+back_dashboard_advertsnotactive:
+    path:     /dashboard/{page_advertsnotactive}
+    defaults: { _controller: "BackBundle:Default:index", page_advertsnotactive: 1 }
+    options:
+        expose: true
+    requirements:
+        page_advertsnotactive: \d+
+
+back_dashboard_userssnotactive:
+    path:     /dashboard/{page_usersnotactive}
+    defaults: { _controller: "BackBundle:Default:index", page_usersnotactive: 1 }
+    options:
+        expose: true
+    requirements:
+        page_userssnotactive: \d+
+
